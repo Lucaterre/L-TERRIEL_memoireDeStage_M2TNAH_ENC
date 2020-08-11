@@ -1,0 +1,158 @@
+% --------------------------------------------------------------------------------------
+%% Canevas pour le mémoire de Master 2 TNAH - ENC (10/08/2020)
+%% main.tex
+%% Copyright 2020 L. Terriel (lucas.terriel@chartes.psl.eu / ls.terriel@gmail.com)
+% --------------------------------------------------------------------------------------
+% Ce(tte) œuvre est mise à disposition selon les termes de la Licence Creative Commons :
+%% - Attribution 
+%% - Pas d’Utilisation Commerciale 
+%% - Partage dans les Mêmes Conditions 4.0 International.
+% --------------------------------------------------------------------------------------
+% Ce fichier fait partie d'un ensemble de fichiers .tex 
+% appartenant au projet LaTeX "L-TERRIEL_memoireDeStage_M2TNAH_ENC"
+% --------------------------------------------------------------------------------------
+
+\documentclass[a4paper, twoside, 12pt]{book}
+
+\usepackage[french]{babel}
+
+%--------------------------
+% INPUTENC (encodage du texte)
+% FONTENC (positionnement des accents)
+%--------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%--------------------------
+% HYPERREF (liens hypertextes et métadonnées)
+%--------------------------
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+linkcolor=black,
+urlcolor=blue,
+citecolor=black
+}
+
+\title{Mémoire de Master 2 Technologies numériques appliqués à l'histoire - Ecole nationale des chartes - 2020}
+\author{Lucas Terriel}
+
+%--------------------------
+% TOCBIBIND (ajouter la bibliographie dans la Table des matières)
+%--------------------------
+\usepackage{tocbibind}
+
+%--------------------------
+% Éléments de mise en page (marge de 2,5 cm, alinéa en début de paragraphe 1cm, interligne 1,5)
+%--------------------------
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{1cm}
+
+\usepackage{fancyhdr}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0pt}
+
+%--------------------------
+% Modules pour gérer les listes
+%--------------------------
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+%-------------------------
+% LISTING (citer du code)
+%-------------------------
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{dkgreen}{RGB}{112,211,98}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+%\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{orange}{RGB}{229,148,0}
+%\definecolor{lightblue}{RGB}{50,162,223}
+%\definecolor{brickred}{RGB}{206,28,9}
+\definecolor{dkblue}{RGB}{71,118,105}
+\definecolor{lightgray}{RGB}{251,252,251}
+
+\lstset{%
+backgroundcolor=\color{lightgray},
+frameround=fttt,
+aboveskip=3mm,
+belowskip=3mm,
+showstringspaces=false,
+columns=flexible,
+basicstyle={\small\ttfamily},
+numbers=left,
+numberstyle=\tt\tiny\color{gray},
+keywordstyle=\color{dkblue},
+commentstyle=\color{dkgreen},
+stringstyle=\color{orange},
+breaklines=true,
+breakatwhitespace=true,
+tabsize=3
+}
+
+%--------------------------
+% BIBLIOGRAPHIE
+%--------------------------
+\usepackage[backend=biber, sorting=nyt, style=enc]{biblatex}
+\usepackage[autostyle]{csquotes}
+
+%\bibliography{mybibliography.bib}
+\addbibresource{mybibliography.bib}
+
+%--------------------------
+% COMMANDES ET ENVIRONNEMENTS PERSONNALISÉS
+%--------------------------
+\newcommand{\hugeskip}{\bigskip \bigskip \bigskip}
+\newcommand{\citecode}[1]{\texttt{\textmd{#1}}}
+\newcommand{\inquote}[1]{\og{}#1\fg{}}
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{2}
+
+\usepackage[official]{eurosym}
+\usepackage{afterpage}
+
+%--------------------------
+% FIGURES
+%--------------------------
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+\usepackage{float}
+
+% ============================================
+
+\begin{document}
+
+% Pour les parties réglementaires : 
+\frontmatter
+\include{layout/pageTitre}
+\include{layout/licence}
+\include{layout/resume}
+\include{layout/remerciements}
+\include{layout/abbreviations}
+\include{layout/bibliography}
+
+% Pour les parties principales : 
+\mainmatter
+\include{main_templates/Introduction}
+\include{main_templates/part_1}
+\include{main_templates/part_2}
+\include{main_templates/part_3}
+\include{main_templates/Conclusion}
+
+% Pour les annexes :
+\include{main_templates/annexes}
+\backmatter
+\include{layout/lexique}
+\listoffigures
+\tableofcontents
+\end{document}
