@@ -60,13 +60,31 @@ citecolor=black
 \renewcommand{\headrulewidth}{0pt}
 
 %--------------------------
+% Mise en page des tableaux
+%--------------------------
+
+% pour les longs tableaux
+\usepackage{longtable}
+% longueur / largeur :
+\usepackage{chngpage}
+% paysage :
+\usepackage{lscape} 
+% couleurs
+\usepackage{colortbl}
+
+%--------------------------
 % Modules pour gérer les listes
 %--------------------------
 \usepackage{enumerate}
 \usepackage{enumitem}
 
+%--------------------------
+% Modules pour créer des arborescences 
+%--------------------------
+\usepackage{dirtree}
+
 %-------------------------
-% LISTING (citer du code)
+% Modules pour citer du code (LISTING)
 %-------------------------
 \usepackage{listings}
 \usepackage{xcolor}
@@ -99,13 +117,13 @@ tabsize=3
 }
 
 %--------------------------
-% BIBLIOGRAPHIE
+% GESTION DE LA BIBLIOGRAPHIE
 %--------------------------
 \usepackage[backend=biber, sorting=nyt, style=enc]{biblatex}
 \usepackage[autostyle]{csquotes}
 
-%\bibliography{mybibliography.bib}
-\addbibresource{mybibliography.bib}
+%\bibliography{bibliographie.bib}
+\addbibresource{bibliographie.bib}
 
 %--------------------------
 % COMMANDES ET ENVIRONNEMENTS PERSONNALISÉS
@@ -139,7 +157,7 @@ tabsize=3
 \include{layout/resume}
 \include{layout/remerciements}
 \include{layout/abbreviations}
-\include{layout/bibliography}
+\include{layout/bibliographie}
 
 % Pour les parties principales : 
 \mainmatter
@@ -155,4 +173,7 @@ tabsize=3
 \include{layout/lexique}
 \listoffigures
 \tableofcontents
+
+\cfoot{Ce document a été rédigé en \LaTeX via l'interface en ligne Overleaf}
+
 \end{document}

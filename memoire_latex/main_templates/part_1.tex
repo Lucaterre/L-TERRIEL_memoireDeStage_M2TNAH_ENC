@@ -1,0 +1,115 @@
+\part{Le projet Lectaurep : un cas d'application de l' \og intelligence artificielle\fg{}  aux documents historiques}
+
+\chapter{Lectaurep, un projet de recherche et développement en analyse et reconnaissance de document (ARD)}
+
+\section{Historique et objectifs du projet Lectaurep}
+
+\subsection{Lectaurep, un enfant de la rencontre du numérique et de la culture}
+
+\subsubsection{La transformation digitale}
+
+Le projet Lectaurep s'inscrit dans le temps long de la rencontre du numérique et des institutions patrimoniales. L'usage des potentialités de l'intelligence artificielle dans les projets patrimoniaux est l'aboutissement d'efforts menés par les institutions culturelles et universitaires, pour rejoindre la \inquote{transformation digitale}. Cette dernière à touché l'ensemble des secteurs de l'économie et de l'industrie, et prend véritablement son essor avec la démocratisation de la micro-informatique et l'apparition du World Wide Web (Web) inventé dans les années 1989-1990 par Tim Berners-Lee, Jean-François Abramatic et Robert Cailliau. 
+Le chercheur en humanités numériques, Milad Douehi, qualifie même de \inquote{grande conversion numérique} ce boulversement des pratiques de recherche. Cette étape est considéré comme un nouveau processus civilisateur (Norbert Elias) au même titre que l'évolution des bonnes manières et des moeurs en Europe depuis le Moyen-Age : 
+
+\begin{quote}
+    L'environnement numérique, tout en offrant un meilleur accès à l'information et, dans certains cas, des libertés bien nécéssaires, introduit des modes nouveaux et puissants de surveillance et de censure. Autrement dit, par son mode de fonctionnement, la culture numérique ressemble beaucoup à un processus civilisateur, qui apporte avec lui de nouvelles possibilités mais aussi des effets secondaires imprévisibles et parfois inquiétants, voire dangereux. \footnote{\cite{doueihi_grande_2011}, pp.22}
+\end{quote}
+
+Les institutions culturelles se sont confrontés aux nouvelles pratiques des usagers et aux problématiques pour rendre accessible leurs collections via ces nouvelles technologies. 
+
+\subsubsection{Le mouvement de la numérisation des institutions patrimoniales dans les années 1990} 
+
+Dès les années 1990, les services d'archives, musées et bibliothèques ont pressentis les avantages de mener à bien des \textbf{politiques de numérisation des documents massives} pour permettre un large accès aux documents. Ainsi la Bibliothèque du Congrès des États-Unis fut l'une des premières à initier le mouvement avec son projet \inquote{American Memory} en numérisant des livres, affiches, enregistrements sonores et des photographies pour reconstituer l'histoire et la culture des États-Unis. Cette plateforme compte actuellement plus de neuf millions de documents numérisés\footnote{disponible en ligne via : \url{memory.loc.gov/ammem/index.html}}. En France ce mouvement est suivit de près par la Bibliothèque Nationale de France (BNF) qui met en place, en 1998, le projet Gallica en proposant la mise à disposition de documents libres de droits suivant des thématiques (guerre 14-18 ou encore le sport), qui représente aujourd'hui plus de deux millions de documents\footnote{disponibles en ligne via :\url{https://gallica.bnf.fr/accueil/fr/content/accueil-fr?mode=desktop}}\footnote{ces exemples sont tirés de \cite{gillet_introduction_2016}, pp.82}. 
+Pour les Archives, ce sont d'abord les services d'archives départementaux qui ont commencé à rendre leurs contenus accessibles via leurs sites institutionnels, en passant de \inquote{site \inquote{vitrine} statique à de véritables salles virtuelles de consultation d'inventaires et d'archives numérisées}\footnote{\cite{limon-bonnet_innovation_2019}, pp.248}. L'ambition de ces institutions était alors de fournir rapidement des données, mettre le savoir en commun et permettre une meilleure conservation des documents.
+Si cette \inquote{révolution de la numérisation} dans les institutions patrimoniales ne sait pas faite sans douleur\footnote{Parmis les difficultés rencontrées : détriment du qualitatif au profit du quantitatif, manque de formation professionnel, système de gestion inadapté, redondance et perte des données, faiblesse des métadonnées. De plus certains projets de numérisation ce sont heurtés aux politiques nationales et internationales du droit d'auteur et de la commercialisation des oeuvres via la numérisation massive d'oeuvres et le renvoi vers des sites marchands comme dans le cas de l'affaire Google Books en 2005; pour plus de détails sur l'affaire : \cite{jeanneney_quand_2010}}, ce sont les pratiques des chercheurs en sciences humaines qui allaient être modifiés dans leurs approches des sources, désormais numériques, nécessitant des compétences et des formations différentes. En effet, la numérisation des collections a engagé des horizons d’attente tant formels que intellectuels.
+
+\subsubsection{L'essor des humanités numériques} 
+
+En parallèle de cette mutation opéré dans les institutions patrimoniales, le milieu universitaire était bouleversé par \textbf{l'essor des humanités numériques}\footnote{L'expression \textit{Digital Humanities} est popularisé par l'ouvrage \textit{A Companion to Digital Humanities} (2004); on considère, généralement,  l'index informatisé de l'oeuvre de Thomas d'Aquin réalisé par le jésuite italien Roberto Busa, en collaboration avec IBM, en 1949, comme une réalisation pionnière dans le domaine.}. Le paradigme des sciences humaines et sociales évolué vers le croissement des outils d'ingénierie informatique et des méthodes propres aux disciplines des SHS, dont l'histoire. Cependant, la prise de conscience du rôle de l'ordinateur par l'historiographie ne date pas de la naissance des Humanités numériques. En 1968 dans un article intitulé \inquote{La fin des érudits} paru dans \textit{Le Nouvel Observateur} l'historien Emmanuel Le Roy Ladurie concluait déjà que \inquote{L'historien de demain sera programmeur ou ne sera pas}. Plus tard les Actes du colloque de Rome du 20-22 mai 1975 parraissait sous le titre \inquote{Informatique et histoire médiévale}\footnote{citer}, évoquant les problèmes de méthodes et les techniques informatiques pour traiter les grande série de documents historiques. S'appuyant sur la dématérialisation du savoir opéré depuis les années 1990 par les institutions patrimoniales et la naissance du Web qui a modifié les pratiques de recherche, les humanités numériques envisagé des visualisations et des analyses de documents basés sur la constitution de bases de données, l'analyse en réseaux, l'analyse de texte (\textit{text mining}) et la fouille de données (\textit{data mining}), les projets de valorisation via la constitution d'édition numérique en ligne via le standard d'encodage \textit{Text Encoding Initiative}\footnote{pour plus de précision Cf. Partie II, Chapitre 3, 3.2.1}, création de blogs et de sites web spécialisés via des CMS (Omeka, Wordpress) ou directement en langage informatique via le tryptique HTML-CSS-Javascript. D'ailleurs le colloque qui a eu lieu les 17 et 18 octobre 2019 aux Centre des archives diplomatiques de la Courneuve intitulé \inquote{Les archives au défi du numérique}, rend compte des défis posés par la collaboration des humanités numériques avec les institutions patrimoniales\footnote{Ce mémoire n'a pas la prétention de résumer l'histoire des humanités numériques, ni même dans faire l'analyse détaillé, cependant on se rapportera à la Bibliographie à la fin de ce mémoire pour plus de précision sur le sujet}.
+
+% ajouter open édition - humanités numériques dans biblio
+
+\subsubsection{Les potentialités des technologies OCR/HTR pour les institutions patrimoniales et leurs publics} 
+
+Face à ce double mouvement de numérisation et d'essor du champ des humanités numériques, fournir aux usagers un accès distants seul aux documents ne suffisait plus. Cela ne rendait pas nécessairement ces derniers directement exploitables pour les usagers et les chercheurs; l'idée étant de pouvoir chercher une information très spécifique et localisé dans le document, c'est-à-dire de les rendre directement requêtables par la recherche plein-texte, d'où l'intérêt porté aux technologies OCR/HTR. 
+Depuis les années 1960 juqu'aux années 1990, les technologies de reconnaissance de caractères imprimés (\textit{Optical Character Recognition} - OCR) et de manuscrits (\textit{Handwritten Transcription Recognition} - HTR) progressés avec de bons résultats (Cf. Chapitre 2 pour plus de détails sur l'histoire et les technologies OCR/HTR utilisés dans Lectaurep) dans les secteurs des banques et des assurances notamment; les institutions culturelles commencèrent à réellement expérimenter ces technologies à partir des années 2000. En 2010, University College London proposé dans le cadre du consortium européen READ (\textit{Recognition and Enrichment of Archival Documents})\footnote{READ ?} un projet d'HTR intitulé \textit{Transcribe Bentham} visant à transcrire une masse considérable d'archives manuscrites légués par le philosophe anglais Jeremy Bentham (1748-1832)\footnote{url vers projet}. Si la BNF produisait déjà de l'OCR sur certains ouvrages imprimés au travers de Gallica, l'institution lancé en 2012 la plateforme collaborative de recherche Correct\footnote{\url{https://www.bnf.fr/fr/plateforme-correct}} afin de permettre aux usagers de Gallica de corriger les résultats des traitements OCR et de contrôler la qualité des corrections : l'usager devient alors acteur de la production des données d'entraînement pour l'entraînement des modèles de transcription. La même année, le Centre d'études supérieures de la Renaissance (CESR) du CNRS et le laboratoire d'informatique de l'Université de Tours, présenté un projet d'identification des caractères typographiques du XVIe siècle\footnote{article Exploiting Document Image Analysis in the Humanities}, cela ouvrait les possiblités d'offrir des contenus didactiques axés sur la \inquote{paléographie assistée par ordinateur}. Aux Archives nationales, c'est le projet HIMANIS\footnote{Pour l'histoire détaillé du projet et les étapes de mise en oeuvre consulté Médiévales + Gazette des archives} (\textit{HIstorical MANuscript Indexing for user-controlled Search}) qui permis un gros apport stratégique dans la mise en place du projet Lectaurep. HIMANIS est un projet de recherche européen, associant, sous le pilotage de l’IRHT (CNRS, France), la société de reconnaissance en d'écriture manuscrite A2iA (France) futur Teklia, la Rijksuniversiteit Groningen (Pays-Bas) et l’Universitat Politècnica de València (Espagne). Les enjeux du projet repose alors sur la reconnaissance automatique des registres de la chancellerie royale des XIV\up{e} et XV\up{e} siècle (cotes JJ35 à JJ211) à partir des images produites par la numérisation pour permettre le \textit{keyword spotting} (KWS), c'est-à-dire la recherche d'informations par l'exploitation des résultats de l'HTR. L'utilisation du logiciel Transkribus\footnote{Transkribus ?}, apparu en 2015, pour le développement du modèle HTR, couplé à un moteur de recherche spécifique \footnote{url : https://www.himanis.org/} permet actuellement la recherche plein-texte d'informations dans plus de 68000 documents du Trésor des Chartes. 
+
+\subsubsection{La mise en place d'un projet HTR au département du minutier central (DMC) des Archives nationales}
+
+La mise en place d'un projet HTR au département du Minutier Central des notaires de Paris aux Archives nationales n'a pas été aussi évidente. Michel Ollion, ancien conservateur en chef au département du Minutier central, propose dans une note en 2005 adressé au chargé de missions informatiques des Archives nationales, \footnote{Noemi numérisation Cf. note Annexes}l'expérimentation d'un accès automatique au contenu d'un répertoire via un logiciel de reconnaissance HTR, principalement en-ligne, développé par l'IRISA (Institut de Recherche en Informatique et Systèmes Aléatoires) de Rennes qui a fait ces preuves dans la recherche des patronymes manuscrits des registres matricules du XIX\up{e} siècle aux AD des Yvelines, et qui devait dans le cadre d'une vaste opération d'indexation des images numérisés des répertoires de notaires permettre un progrès considérable dans la consultation des microfilms. Le projet ne donne pas de suite direct. En juin 2016, lors du renouvellement PSCE\footnote{PSCE ?} triennal, Marie-Françoise Limon-Bonnet, conservatrice en chef du DMC, et Aurélia Rostaing, directrice du pôle instruments de recherche du DMC, proposent de relancer le projet d'HTR en se concentrant sur les répertoires de contrats de mariage de négociants, corpus de petite taille et présentant une graphie stable. Le manque de partenaires et l'attente des résultats d'HIMANIS, place le projet en attente. Cependant, les résultats prometteurs du projet HIMANIS et la recherche d'un partenariat dans le cadre d'une convention cadre entre le Ministère de la Culture et INRIA en 2016 pour promouvoir des projets innovants marquèrent le commencement du projet Lectaurep pour le DMC. 
+
+% testament de poilus : collaboratif 
+
+\subsection{La reconnaissance automatique des écritures pour le \inquote{plus grand minutier du monde}}
+
+\subsubsection{Le département du minutier central et les répertoires de notaires}
+
+% - Qu'est ce que le DMC ?
+% - Qu'est qu'un Repertoire ? (image)
+
+
+
+\subsubsection{Les objectifs et la chaine de traitement du projet Lectaurep}
+
+% Les objectifs 
+%% - pour les usagers : complexité dans la recherche d'informations => proposer une recherche plein texte (word spotting)
+%% - Chercheurs : histoire quantitative (exploitations statistiques sur l'activité économique), visualisation des données (cartographie)
+%% pour les services d'archives : politique de création instruments de recherche, anticiper les futurs changements de standards RIC  
+%% - paléographie (numérique) et valoriser les sources via édition numérique
+
+% chaine de traitements 
+
+voir diapo 
+
+% ecosystème Lectaurep 
+- Hebergement du corpus d'images numériques ShareDocs (image) golden set / random set
+- gitlab pour l'ajout de module
+- eScriptorium et Kraken (image)
+- segmentation
+- documents de vérité terrain
+
+% phase 1 (2018) exploratoire Marie Laurence Bonhomme permis d'identifier une structure et des technologies a mettre en oeuvre HTR + indexation sur une plateforme de crowdsourcing (images) et d'édutier sur un corpus restreint répertoires 1803-1944 structure napoléonniene
+% phase 2 (mai 2019-novembre 2019) : optimisation des outils migration des données Transkribus vers eScriptorium pipeline, mise en place de eScriptorium et basculement vers Share Docs
+% phase 3
+
+\section{La dimension expérimentale du projet en phase 3}
+
+\subsection{Adapter le workflow avec des outils en cours de développement}
+
+- dévellopement en cours / peu de documentation
+- mode agile / limites : mise a jour fréquentes de eScriptorium / utilisation des cluster de calcul RIOC comme ruse pour l'utilisation des GPU (voir section d'après)
+- pas de transcription automatique et moyens de l'évaluer difficilement accessibles (Mission 1) 
+
+\subsection{Augmenter la visibilité du projet}
+
+Ne bénéficier pas d'une plateforme de retex comme dans certains projets, si la plateforme n'est pas encore totalement exploité
+- hypothèse
+- ganger en confiance
+- visibilité sur les données issues de l'HTR => format pivot alignement des données sur des référentiels internes ou externes aux Archives nationales (mission 2)
+
+\chapter{La reconnaissance automatique des écritures : un domaine entre le \textit{deep learning} et le traitement automatique du langage naturel (TAL)}
+
+\section{Historique et principes élémentaires de l'OCR/HTR}
+
+
+Les applications de la reconnaissance automatique d'écritures manuscrites (HTR), qui s'appuie sur la technologie de reconnaissance optique de caractères (OCR), débute véritablement avec la \inquote{seconde génération d'OCR} dans les années 1965-1975\footnote{citer OCR de line} : les entreprises IBM, Toshiba ou encore Hitachi développés alors des sytèmes pour des chaînes de traitements tels que la lecture automatisée des codes postaux pour cette période les applications sont exclusivement industriels et pour une bonne part expérimental qui se poursuivront jusque dans les années 1990, certains perçoivent déjà les avantages de l'OCR sur les documents historiques.
+- reconnaissance de chèques, de code postaux...
+- en ligne et hors-ligne
+- modèles statistiques 
+- intelligence artificielle => reconnaissance de formes 
+- modèle de segmentation et modèles de transcription
+- vérité terrain pour comparer 
+
+\section{Modèles de réseaux de neurones profonds appliquées à l'HTR}
+
+le deep learning appartient à l'IA et au machine learning open classroom (schéma)
+Modèles de réseaux de neurones profonds: 
+
+Afin d'arriver à ces fonctionnalités évidemment très complexes pour un ordinateur et de créer des objets véritablement \inquote{intelligents}, certaines étapes fondamentales et défis théoriques dans le développement de l'IA ont du être nécessairement soulevés : en 1943, McCulloch-Pitts (image d'un neuronne extrait de introduction aux sciences cognitives) formalisent les principes logiques attachés aux neurones, basé sur l'analogie avec les neurosciences, \footnote{citer "A logical calculus Immanent in Nervous Activity"... le neuronne y est décrit comme un automate à seuil, dont l'état actif ou non, désigne une valeur logique, vraie ou fausse}, puis dans les années 1950, l'architecture de von Neumman définit un cadre, encore actuel, pour la technologie informatique. Le première algorithme\footnote{On définit un algorithme comme une suite d'instructions qui permet d'aboutir à un résultat donné. Une recette de cuisine ou un ensemble de directives pour aller d'un endroit A à un endroit B est un algorithme. En Informatique, il s'agit d'une séquence d'étapes implémentés dans un langage (code) permettant de réaliser un programme ou une tâche précise de ce dernier.} d'apprentissage supervisé pour classifier en deux classes, le perceptron, est inventé en 1957 par Frank Rosenblatt\footnote{Le perceptron est la première implémentation d'un neurone muni d'une règle d'apprentissage basique.},  
+
+- hardware => puissance des GPU (jeux vidéo = calcul matriciel rapide)
+
+\section{Après l'HTR : extraire, analyser et exploiter les données avec le TAL}
+
+- un enjeu pour LEctaurep est la réaliser 
+- HTR = pipeline => données propes issues de la transcription automatique réutilisable dans le cadre du NER, KWS ...
