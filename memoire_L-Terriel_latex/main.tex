@@ -54,10 +54,12 @@ citecolor=black
 \renewcommand{\sectionmark}[1]{\markright{#1}}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LE,RO]{\thepage}
-\fancyhead[LO]{\nouppercase{\rightmark}}
-\fancyhead[RE]{\nouppercase{\leftmark}}
+\renewcommand{\chaptermark}[1]{\markboth{\bsc{\chaptername~\thechapter{} :} #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection{} \ #1}}
 \renewcommand{\headrulewidth}{0pt}
+\lhead[]{\textsl{\rightmark}}
+\rhead[\textsl{\leftmark}]{}
+\cfoot[\thepage]{\thepage}
 
 %--------------------------
 % Mise en page des tableaux
@@ -131,9 +133,10 @@ tabsize=3
 \newcommand{\hugeskip}{\bigskip \bigskip \bigskip}
 \newcommand{\citecode}[1]{\texttt{\textmd{#1}}}
 \newcommand{\inquote}[1]{\og{}#1\fg{}}
+\newcommand{\lgS}{\char"017F}
 
 \setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 
 \usepackage[official]{eurosym}
 \usepackage{afterpage}
@@ -144,7 +147,21 @@ tabsize=3
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\usepackage{minted}
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{listings}
+
 \usepackage{float}
+
+%---------------------------
+% SYMBOLES
+%---------------------------
+\usepackage{eurosym}
+
+
 
 % ============================================
 
@@ -173,6 +190,7 @@ tabsize=3
 \include{layout/lexique}
 \listoffigures
 \tableofcontents
+
 
 \cfoot{Ce document a été rédigé en \LaTeX via l'interface en ligne Overleaf}
 

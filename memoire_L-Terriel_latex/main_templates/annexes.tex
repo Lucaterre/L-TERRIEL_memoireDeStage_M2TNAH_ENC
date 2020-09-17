@@ -8,7 +8,7 @@
 \pagestyle{myheadings}
 \markboth{Annexes}{Annexes}
 
-Les annexes présentent à la fois les livrables effectués durant le stage et des compléments. Cette partie contient également les chemins de localisation des fichiers. Ils sont reproduits sur une \citecode{clé usb} et sur un dépôt Github accessible à l'adresse suivante : \url{https://github.com/Lucaterre/L-TERRIEL_memoireDeStage_M2TNAH_ENC}.
+Les annexes présentent à la fois les livrables effectués durant le stage et des compléments au présent mémoire. Cette partie contient également les chemins de localisation des fichiers. Ils sont reproduits sur une \citecode{clé usb} et sur un dépôt Github accessible à l'adresse suivante : \url{https://github.com/Lucaterre/L-TERRIEL_memoireDeStage_M2TNAH_ENC}.
 
 \chapter{Sources et Ecosystème Lectaurep}
 
@@ -17,30 +17,63 @@ localisation : \citecode{/A-Sources\_et\_Ecosystème\_Lectaurep/} contenant :
 \section{histoire du projet lectaurep}
 localisation : \citecode{/A1-histoire\_projet\_lectaurep/} contenant :
 \begin{itemize}
-    \item \citecode{note}
+    \item \citecode{demande\_ocr\_Ollion.pdf}
 \end{itemize}
 
-% pdf des différentes présentation
 
 \section{Extraits du corpus des répertoires de notaires}
 localisation : \citecode{A2-Extraits\_du\_corpus\_des\_répertoires\_de\_notaires/} contenant :
 \begin{itemize}
-    \item \citecode{image\_repertoire\_de\_notaire}
-    \item \citecode{exemple de la structuration en colonnes} \\
-        \citecode{des répertoires proposé par Marie-Laurence Bohnomme}
+    \item \citecode{exemple\_minute.jpg} ou Figure  \ref{fig:exemple_minute}
+    \item \citecode{repertoire\_structure\_tableaux.png} ou Figure  \ref{fig:tableaux_repertoires}
 \end{itemize}
-
-% inclure les figures
 
 \section{Outils généraux utilisés dans Lectaurep}
 
 localisation : \citecode{A3-Outils\_de\_Lectaurep} contenant :
 \begin{itemize}
-    \item \citecode{Interface\_eScriptorium.png}
-    \item \citecode{Golden\_random\_set\_sharedocs.png}
-    \item \citecode{Entrainement\_modele\_cluster\_calcul\_RIOC.png}
+    \item \citecode{Interface\_eScriptorium.png} ou Figure \ref{fig:appli_eScriptorium}
+    \item \citecode{sharedocs.png} ou Figure \ref{fig:shareDocs}
+    \item \citecode{blog\_lectaurep.png} ou Figure \ref{fig:blog_lectaurep}
 \end{itemize}
-% inclure les figures
+% inclure les figures ici :
+
+\begin{figure}[h!]
+    \centering
+    \centerline{\fbox{\includegraphics[width=19cm]{images_annexes/exemple_minute.jpg}}}
+    \caption{Exemple de minute notariale \textcopyright Archives nationales/DMC, Minute \inquote{Contrat de mariage entre Charles Camille Saint-Saens, compositeur de musique, organiste de la Madeleine demeurant au 168 rue du Faubourg Saint-Honoré, et Marie-Laure Truffot, fille de Rodrigue Truffot, manufacturier au Cateau-Cambrésis}, 18 janvier 1875,  MC/ET/XXVI/1345 (cote originale), MC/RS//872, lien vers la SIV : \url{https://www.siv.archives-nationales.culture.gouv.fr/siv/UD/FRAN_IR_041418/c1p6uqwjl1o3-xlv0cdl5wlgv}(consulté le 14/09/2020).}
+    \label{fig:exemple_minute}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \centerline{\fbox{\includegraphics[width=14cm]{images_annexes/repertoire_structure_tableaux.png}}}
+    \caption{Structuration en tableaux des répertoires \textcopyright \cite{bonhomme_defis_2018}, pp. 27.} 
+    \label{fig:tableaux_repertoires}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \centerline{\fbox{\includegraphics[width=18cm]{images_annexes/interface_eScriptorium.png}}}
+    \caption{Application web eScriptorium \textcopyright L. Terriel, 2020, eScriptorium} 
+    \label{fig:appli_eScriptorium}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \centerline{\fbox{\includegraphics[width=18cm]{images_annexes/sharedocs.png}}}
+    \caption{Exemple du \textit{Golden Set} et du \textit{Random Set} stockés sur Sharedocs (Huma-num) \textcopyright L. Terriel, 2020, Sharedocs (Huma-num)} 
+    \label{fig:shareDocs}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \centerline{\fbox{\includegraphics[width=18cm]{images_annexes/blog_lectaurep.png}}}
+    \caption{Blog hypotheses.org Lectaurep \textcopyright L. Terriel, blog hypotheses.org Lectaurep}
+    \label{fig:blog_lectaurep}
+\end{figure}
+
+
 \chapter{Format pivot XML TEI Lectaurep}
 localisation : \citecode{/B-Format\_pivot\_XML\_TEI\_Lectaurep} contenant :
 \skip
@@ -70,7 +103,7 @@ localisation : \citecode{/B-Format\_pivot\_XML\_TEI\_Lectaurep} contenant :
                 .5 FRAN\_NP\_010150.xml \DTcomment{Notice producteur de l'étude XXIII.}.
                 .5 FRAN\_NP\_010150.xml \DTcomment{Notice producteur de Legay, Ernest.}.
                 .5 Schémas XML et DTD EAD et EAC-CPF.
-            .4  images\DTcomment{Images numérisées du répertoire de notaire d'Ernest Legay (étude XXIII) issues du Golden Set de ShareDocs.}.
+            .4  images/\DTcomment{Images numérisées du répertoire de notaire d'Ernest Legay (étude XXIII) issues du Golden Set de ShareDocs.}.
         .3 generator\_utils/.\DTcomment{Ensemble des modules Python utiles au fonctionnement du CLI generator Lectaurep2TEI. Pour les usages consulter les \textit{docstrings}.}.
             .4  \_\_init\_\_.py.
             .4  build\_utils.py.
@@ -88,8 +121,7 @@ localisation : \citecode{/B-Format\_pivot\_XML\_TEI\_Lectaurep} contenant :
         .3 readme.md.\DTcomment{Documentation pour installer et lancer le programme.}.
         .3 requirements.txt.\DTcomment{Ensemble des \textit{packages} Python nécessaires à l'utilisation du CLI}.
         .3 snap\_generator.png.
-   .
-}
+        }
 
 \chapter{Application Kraken Benchmark}
 localisation : \citecode{/C-Application\_Kraken\_Benchmark} contenant :
@@ -136,5 +168,57 @@ localisation : \citecode{/C-Application\_Kraken\_Benchmark} contenant :
     .3 alto2text.py.\DTcomment{Script Python adapté, provenant de la \textit{StaatsbibliothekBerlin} permettant la conversion de certaines transcriptions vérités terrains en XML ALTO vers des fichiers texte brut.}.
     .3 radar\_graph.py.\DTcomment{Script Python adapté permettant la génération d'un graphique radar, utile pour le rapport concernant les tests spécifiques à Lectaurep durant le stage.}.
    .2 README.md.\DTcomment{Présentation et documentation pricipale de l'application pour l'installation et l'utilisation.}.
-   .
-}
+   }
+
+\chapter{Scripts Python complémentaires}
+\begin{figure}[h]
+\lstset{language=Python}
+\begin{lstlisting}
+"""
+Exemple de script pour l'étiquetage morpho-syntaxique (POS)
+
+Auteur : Lucas Terriel
+Date : 14/09/2020
+"""
+
+# On importe le package spacy (pour le NLP)
+import spacy
+from spacy import displacy
+
+# On charge un modèle français
+# ! préalable télécharger le modèle (réseau convolutionnel entraîné sur deux corpus, WikiNER et Sequoia) !
+# python -m spacy download fr_core_news_sm
+model_fr = spacy.load("fr_core_news_sm")
+
+# On défini une phrase de test
+test = "Dussuel (par Paul Charles Claude) demeurant à Paris"
+
+def return_POS(sentence):
+    """
+    fonction pour tokeniser la phrase et retourner les étiquettes grammaticale
+    de chaque token.
+
+    :param sentence: phrase
+    :type sentence: str
+    :return: token et étiquettes POS
+    :type return : list
+    """
+    # Tokenise la phrase
+    document = model_fr(sentence)
+    # Retourne les étiquettes de chaque token dans une liste en compréhension
+    return [{(X, X.pos_)} for X in document]
+
+# affichage de la liste
+print(return_POS(test))
+
+# Pour la visualisation POS on défini les options
+options = {"color": "red", "font": "Source Sans Pro"}
+
+# Visualisation POS
+doc = model_fr(test)
+displacy.serve(doc, style="dep", options=options)
+
+\end{lstlisting}
+\caption{Script Python pour effectuer de l'étiquetage morpho-syntaxique (POS) \textcopyright L. Terriel, 2020}
+\label{fig:script_python_POS}
+\end{figure}
