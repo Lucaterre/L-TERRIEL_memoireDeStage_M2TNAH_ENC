@@ -407,7 +407,7 @@ L'étape qui suit le repérage des données consistait à répondre à la questi
 
 Une solution que nous avons retenue consistait à commencer par le haut de l'arbre TEI puis à descendre petit à petit dans l'arborescence en prenant les éléments les uns après les autres. Cependant les éléments de Lectaurep appartenant à trois niveaux de granularités différents, nous devions disposer d'une architecture plus concrète que le canevas \inquote{TEI ALL} principal. Dès lors, nous avons conçu une architecture à trois niveaux (Cf. Figure \ref{fig:structure_general_template_tei_lectaurep}), plus concrète basée sur les recommandations des \textit{Guidelines TEI}. Le niveau de granularité des données afin de faciliter par la suite les des différents niveaux entre eux : 
 \begin{itemize}
-    \item La balise \citecode{<teiHeader>}\footnote{\cite{tei_tei_nodate}} pour encoder la partie la plus théorique, correspondant aux métadonnées relatives aux archives physiques et aux images (données issues des fichiers XML EAD/EAC et EXIF) ;
+    \item La balise \citecode{<teiHeader>}\footnote{\cite{tei_tei_nodate}} pour encoder la partie la plus théorique, correspondant aux sources du répertoire c'est-à-dire les métadonnées relatives aux archives physiques et aux images (données issues des fichiers XML EAD/EAC et EXIF), les métadonnées liés à la production du document, les versions du format pivot et des indications sur la publication ;
     \item la balise \citecode{<facsimile>}\footnote{\cite{tei_tei_nodate-2}} pour recevoir les coordonnées (données issues des fichiers XML ALTO) et faire le pont entre les métadonnées générales du \citecode{<teiHeader>} et le \citecode{<text>}, par un système d'identifiants;
     \item la balise \citecode{<body>}\footnote{\cite{tei_tei_nodate-3}} comprise dans la balise \citecode{<text>}\footnote{\cite{tei_tei_nodate-1}} pour accueillir le texte issu du document de vérité terrain. Présent dans les fichiers XML ALTO.
 \end{itemize}
@@ -422,7 +422,17 @@ Une solution que nous avons retenue consistait à commencer par le haut de l'arb
 
 \subsection{Encodage des éléments de description des répertoires EAD et EAC dans le \citecode{teiHeader}}
 
-En comparant les deux IR \inquote{Images des répertoires du notaire $M^{e}$N} et \inquote{Minutes et répertoires du notaire $M^{e}$N} nous avons pu constater qu'un bon nombre d'informations se croisaient et qu'il était préférable de se baser sur l'IR \inquote{Images des répertoires du notaire $M^{e}$N}, qui contenait les informations spécifiques aux répertoires d'un notaire et les liens vers les images de ces derniers, plutôt que l'autre IR, qui contenait en sus des informations sur les minutes, ce qui aurait complexifié le travail.\\
+Une première approche du \citecode{teiHeader} consiste à partir du document lui-même, le ou les répertoires du notaire et de modéliser grossièrement les flux entrants et sortants de métadonnées lors d'un import ou d'un export dans eScriptorium, quitte à affiner le travail par la suite (Cf. Figure \ref{fig:flux_teiheader}). La plupart de ces informations sont visibles dans les IR EAD et NP EAC-CPF.
+
+\begin{figure}[h]
+    \centering
+    \centerline{\fbox{\includegraphics[width=14cm]{flux_teiheader.png}}}
+    \caption{Illustration des entrées et des sorties dans le \citecode{teiHeader} \textcopyright L. Terriel, 2020, diagrams.net (inspiré du document fourni par L. Romary, \inquote{The teiHeader at a glance}))}
+    \label{fig:flux_teiheader}
+\end{figure}
+
+\newpage
+En comparant les deux IR \inquote{Images des répertoires du notaire M$^{e}$N} et \inquote{Minutes et répertoires du notaire M$^{e}$N} nous avons pu constater qu'un bon nombre d'informations se croisaient et qu'il était préférable de se baser sur l'IR \inquote{Images des répertoires du notaire M$^{e}$N}, qui contenait les informations spécifiques aux répertoires d'un notaire et les liens vers les images de ces derniers, plutôt que l'autre IR, qui contenait en sus des informations sur les minutes, ce qui aurait complexifié le travail.\\
 
 Pour déterminer quels types d'éléments utilisés dans la conversion EAD vers TEI, nous sommes parti de l'existant et notamment des transformations EAD vers TEI réalisées dans le cadre du HIMANIS\footnote{\cite{stutzmann_ead-tei_2019}} et du projet Enrich\footnote{\cite{university_of_oxford_-__bodleian_library_ead2enrich_nodate}}. Même si les ambitions d'encodage concernent des documents de natures différentes, certains éléments EAD peuvent être encodés de la même manière en TEI.\\
 
@@ -430,7 +440,7 @@ Dès lors certaines informations comme le nom et le prénom du notaire ont trouv
 
 Un certain nombre de valeurs par défaut ont été ajouté dans le \citecode{publicationStmt}\footnote{\cite{tei_tei_nodate-23}} comme l'organisation de conservation (DMC), l'adresse de l'institution etc. Le fait est que ces valeurs ne sont pas censés être modifié au cours du projet.
 
-La réelle difficulté s'est présentée lors de l'encodage des différents niveaux de description EAD des répertoires de notaires et du contenu de ces derniers (Cf. Figure \ref{fig:TEI_EAD_desc_pivot}). Généralement encodés dans le \citecode{<archDesc>}, il suivent la logique d'imbrications d'un niveau \citecode{<c>}, qui correspond à un répertoire de notaire, qui contient lui-même plusieurs \citecode{<c>} correspondant à des intervalles de pages du répertoire (par exemple l'intervalle des pages 124 r à 150 r\footnote{"r" signifiant "recto".} contiennent une liste chronologique des actes pour la période du 2 janvier au 31 décembre 1877 au 31 décembre 1877). 
+La réelle difficulté s'est présentée lors de l'encodage des différents niveaux de description EAD des répertoires de notaires et du contenu de ces derniers (Cf. Figure \ref{fig:TEI_EAD_desc_pivot}). Un travail très fastidieux de dépouillement des arbres et de compréhension des logiques d'imbrications de ces IR, souvent complexes, été indispensable. Généralement encodés dans le \citecode{<archDesc>}, il suivent la logique d'imbrications d'un niveau \citecode{<c>}, qui correspond à un répertoire de notaire, qui contient lui-même plusieurs \citecode{<c>} correspondant à des intervalles de pages du répertoire (par exemple l'intervalle des pages 124 r à 150 r\footnote{"r" signifiant "recto".} contiennent une liste chronologique des actes pour la période du 2 janvier au 31 décembre 1877 au 31 décembre 1877). 
 
 \begin{figure}[h!]
   \begin{sideways}
