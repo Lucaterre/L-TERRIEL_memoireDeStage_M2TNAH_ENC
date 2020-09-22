@@ -146,7 +146,7 @@ tabsize=3
 %--------------------------
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
-
+\usepackage{float}
 \usepackage{wrapfig}
 \usepackage{subcaption}
 \usepackage{minted}
@@ -174,7 +174,7 @@ tabsize=3
 \include{layout/resume}
 \include{layout/remerciements}
 \include{layout/abbreviations}
-\include{layout/bibliographie}
+
 
 % Pour les parties principales : 
 \mainmatter
@@ -186,6 +186,7 @@ tabsize=3
 
 % Pour les annexes :
 \include{main_templates/annexes}
+\include{layout/bibliographie}
 \backmatter
 \include{layout/lexique}
 \listoffigures

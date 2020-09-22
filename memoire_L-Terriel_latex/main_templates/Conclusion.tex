@@ -2,29 +2,13 @@
 \addcontentsline{toc}{part}{Conclusion}
 \markboth{Conclusion}{Conclusion}
 
--> Meilleure préparation des données 
--> données plus hétérogènes
--> fomat pivot XML TEI avec un schéma plus complet
 
-- Conditions vers le TAL
+Ce mémoire à cherché à rendre compte des étapes de la mise en place d'un format pivot XML-TEI et d'une première exposition des données hétérogènes d'\textit{eScriptorium} dans un format commun TEI. Dans un deuxième temps, nous avons présenté l'utilisation d'un outil créé de toute pièce durant le stage qui permet actuellement d'évaluer des modèles de transcription.
 
+La structure de la première version du pivot XML-TEI doit s'améliorer au fur et à mesure de l'avancement du projet, certains endroits présentant encore une structure arborescente complexe et d'autres données vont venir encore s'agréger. Une fois que les serveurs IIIF seront mis en place pour Lectaurep, il faudra réfléchir à la manière d'injecter les liens vers les images dans ce format pivot. Des tests d'intégration dans la plateforme \textit{eScriptorium} seront sans doute nécessaire et des applications plus concrètes (éditorialisation) devront montrer aux acteurs du projet les potentialités d'un tel format.
 
-- Stage Lectaurep : dialogue entre le chercheur, le métier (archiviste) et les technologies numériques 
-- Dans la peau d'un ingénieur en humnités numériques apport des réflexions techniques, des avantages de tel format, modélisation d'environnement et conception 
+L'outil \textit{Kraken-benchmark} est actuellement utilisable pour effectuer des tests; cependant la condition de son amélioration repose sur la construction de tests plus solides et d'une refonte stratégique du code-source (incluant la possiblité d'utiliser les modèles de segmentation Lectaurep). De plus, les tests sur les données Lectaurep ont montré des résultats très mitigés, au regard des conclusions émises en 2018 par Marie-Laurence Bonhomme dans son mémoire par le biais qui utilisé la plateforme \textit{Transkribus}. Néanmoins, les modèles de transcription vont encore recevoir des données d'entraînements plus nombreuses (pour entraîner un bon segmenteur il faut compter au moins trois cents à quatre cents pages et plus de cent itérations), plus hétérogènes pour une meilleure classification du modèle confronté à de nouveaux cas (des jeu de données d'entraînement mixtes composé d'images de différents répertoires de notaires) et la recherche de normes de transcription pour accompagner les annotateurs d'\textit{eScriptorium} réalisant les vérités terrains formalisées par le DMC est en cours de réflexion. Enfin les derniers modèles de segmentation d'Alix Chagué doivent encore être testés. C'est la condition pour l'exploitation des techniques de TAL, comme l'extraction d'entités nommés, qui doivent disposer de transcription propres, mais aussi pour permettre la recherche en texte intégral dans les répertoires pour les futurs usagers.
 
-Partie II : 
-- reste intégration dans eScriptorium 
-- une fois le serveur IIIF configuré tester l'agrégation des liens IIIF dans le format pivot
-- réfléchir à un référentiel des mains
+Mon stage a été une illustration du dialogue actuel des institutions patrimoniales avec les nouvelles technologies, entre les archivistes du DMC et les ingénieurs d'ALmanaCH. Des réunions mensuelles permettaient d'illustrer les avancés de mes recherches sur les missions que l'ont m'avait confiés. De plus le travail à distance à pu être raccourci par les canaux de communication mis en place (\textit{mattermost}, \textit{zoom}) et les deux réunions hebdomadaires instauré par Alix Chagué pour parler des avancées et des tâches à réaliser la semaine d'après. J'ai beaucoup appris durant ce stage et compléter ma formation initial, j'ai pu appréhender de nouveaux concepts en programmation (POO, exploitation des structures de données plus avancées etc.) et parfaire ma syntaxe en Python par le biais des conseils donné lors des revues de codes et de le tutoriel présenté par Alix Chagué. Mais aussi dans le domaine de l'interopérabilité des données et des usages plus ou moins détourné de la TEI.  
 
-Partie III : 
-
-- mattermost et session de code d'Alix sur Python chaque semaine 2 rdv réguliers
-
-Perspectives professionnelles : 
-- Recrutement en Novembre => continuation sur Lectaurep 
-
-
-Pour l'entrainement d'un segmenteur, il m'a par exemple dit qu'il fallait compter 300 à 400 images segmentées et au moins 100 époques d'entrainement pour avoir quelque chose de vraiment efficace
-11:09 AM
-donc pour LECTAUREP, ça veut dire qu'on a encore du boulot !
+Il est envisagé que je poursuive en novembre sur mes missions à ALmanaCH, en sus de deux autres projets. Dans la suite de Lectaurep, après trois phases préliminaires qui ont permis aux équipes de définir le chaînes de traitements, de paramétrer les outils utilisés, etc., il s'agit de passer à un projet sur le plus long terme. L'installation de procédures normalisés et répétées qui permettront aux Archives nationales de charger des images dans \textit{eScriptorium} avec IIIF notamment, de les mettre à disposition des annotateurs qui pourront les évaluer, puis, après les traitements de les injecter avec leurs métadonnées associées dans le système d'information de la SIV des AN. 
