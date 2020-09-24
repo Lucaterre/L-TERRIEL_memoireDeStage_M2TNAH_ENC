@@ -4,7 +4,7 @@ La deuxième partie du stage était axée sur le développement applicatif. Dans
 
 On souhaitait disposer d'un outil permettant de visualiser rapidement des informations sur la qualité des modèles de transcription et de segmentation, entraînés avec Kraken. 
 
-Cependant, l'outil devait être suffisamment généralisable pour être réutilisé dans d'autres projets. L'application Kraken-Benchmark, créée durant mon stage, a permis de réaliser en partie ces objectifs.\footnote{La seconde mission de stage a été présentée sous la forme d'une \textit{issue} GitLab accessible via le lien : \url{https://gitlab.inria.fr/dh-projects/kraken-benchmark/-/issues/1}}.\\ 
+Cependant, l'outil devait être suffisamment généralisable pour être réutilisé dans d'autres projets. L'application Kraken-Benchmark, créée durant mon stage, a permis de réaliser en partie ces objectifs.\footnote{La seconde mission de stage a été présentée sous la forme d'une \textit{issue} GitLab accessible via le lien : \url{https://gitlab.inria.fr/dh-projects/kraken-benchmark/-/issues/1} [à titre informatif, un accès peut-être requis]}.\\ 
 \clearpage
 \thispagestyle{empty}
 \chapter{État de l'art pour l'évaluation des modèles de transcription entraînés avec le système HTR Kraken}
@@ -141,18 +141,19 @@ Le CER est plus significatif que le WER et le taux de reconnaissance par mots da
 
 L'intuition est de prendre la vérité terrain comme premier document et sa prédiction par le modèle HTR comme un deuxième document. L'indice de Jaccard ainsi que la similarité cosinus peuvent nous y aider :\\
 
-\textbf{L'indice de Jaccard -} Son but est d'estimer le pourcentage de mots communs aux deux documents. L'indice évalue, sur l'union de deux ensembles (deux phrases par exemple), la taille de l'intersection qui regroupe les mots en commun dans la transcription de référence et dans la transcription HTR, divisée par la taille de l'union de deux ensembles.
+\textbf{L'indice de Jaccard -} Son but est d'estimer le pourcentage de mots communs aux deux documents. L'indice évalue, sur l'union de deux ensembles (deux phrases par exemple), la taille de l'intersection qui regroupe les mots commun à la transcription de référence et à la transcription HTR, qu'il divise par la taille de l'union de deux ensembles.
 
-Il est formulé comme suit : $$ J(doc_1,doc_2) = \frac{|doc_1 \cap doc_2|}{|doc_1 \cup doc_2|} $$
+L'indice est formulé comme suit : $$ J(doc_1,doc_2) = \frac{|doc_1 \cap doc_2|}{|doc_1 \cup doc_2|} $$
 
 Plus le résultat approche de 1, plus les documents sont similaires, car le nombre des mots partagés par la référence et par sa transcription HTR dans l'intersection est important. À l'inverse, si le résultat est plus proche de 0, alors on peut en conclure que les deux textes sont davantage éloignés l'un de l'autre.\\
 
-\textbf{La similarité cosinus -} Si l'on reprend la Figure \ref{fig:word_embedding} de la section \ref{TAL_repertoire}, il s'agit de calculer l'angle cosinus noté $cos(\theta)$ entre des mots, alors représentés sous la forme de vecteurs, afin de mesurer leur degré de proximité. La formule de la similarité cosinus est la suivante : $$ similarite\, cosinus \, = cos\, (\theta\,) = \frac{\overrightarrow{V1}\, \times \,\overrightarrow{V2}}{||\overrightarrow{V1}||\, \times \,||\overrightarrow{V2}||} $$
+\textbf{La similarité cosinus -} Si l'on reprend la Figure \ref{fig:word_embedding} de la section \ref{TAL_repertoire}, il s'agit de calculer l'angle cosinus noté $cos(\theta)$ entre des mots, alors représentés sous la forme de vecteurs, afin de mesurer leur degré de proximité. La formule de la similarité cosinus est la suivante : $$ similarite\, cosinus \, = cos\, (\theta\,) = \frac{\overrightarrow{V1}\, \cdot \,\overrightarrow{V2}}{||\overrightarrow{V1}||\, \cdot \,||\overrightarrow{V2}||} $$
 
 où : 
 
 $$ ||\overrightarrow{V1}||\, et\, ||\overrightarrow{V2}||\, >\, 0 $$
 
+\newpage
 Les résultats obtenus sont interprétés de la manière suivante, en fonction de la valeur de $cos(\theta)$ :
 
 \begin{itemize}
@@ -160,18 +161,45 @@ Les résultats obtenus sont interprétés de la manière suivante, en fonction d
     \item Plus elle tend vers 1, plus les vecteurs sont dits (colinéaires de coefficient positif) donc les documents sont proches;
 \end{itemize}
 
+Pour illustrer cette métrique prenons un exemple concret issu d'un répertoire de notaire. En nous appuyant sur une vérité terrain ($R$ pour référence) et une prédiction ($P$) réalisé par un modèle de transcription qui a réalisé quelques erreurs.\\
+
+$R$ = \inquote{An 1920, mois d'Avril pour gerer 2 maisons à Paris Procuration, par Rosalie Adélaïde Eugénie Isoarel, dt à Paris, rue de la Collégiale}\\
+
+$P$ = \inquote{sAn 19s2iOt, mois de Avril per gerer 2ts maisons à Paris Procuration, par Reselie Adelaide Eugenie lisrel, dt a Peres, rue de la Collégiale}\\
+
+Leurs termes sont : \inquote{an, mois, avril, gerer, maisons, paris, procuration, roasalie, adélaïde, reselie, adelaide, eugénie, eugenie, isoarel, isrel, rue, collegiale}\\
+
+On pourra alors représenter $R$ et $P$ sous forme de vecteurs à 17 dimensions (correspondant au nombre de termes relevés) dont les valeurs numériques représentent les occurrences d'apparition du mot dans la phrase :
+
+$$R\,=\,[1,1,1,1,1,2,1,1,1,0,0,1,0,1,0,1,1]$$
+$$P\,=\,[0,1,1,1,1,1,1,0,0,1,1,0,1,0,1,1,1]$$
+
+Si la norme du vecteur $R$ se calcule tel que : $$||\overrightarrow{R}|| = \sqrt{R_1 \cdot R_1 + R_2 \cdot R_2 + \ldots + R_n \cdot R_n}$$
+
+On aura donc $||\overrightarrow{R}|| = 4.0 $ et $||\overrightarrow{P}|| = 3.46 $
+
+Le produit scalaire de $R \cdot P$ se calcule tel que : $$R \cdot P = R_1 \cdot P_1 + R_2 \cdot P_2 + \ldots + R_n \cdot P_n$$
+
+On aura donc $R \cdot P = 9$
+
+Dès lors, si la formule de la similarité cosinus s'exprime tel que : $$SimCos(R,P) = \frac{R \cdot P}{||\overrightarrow{R}|| \cdot ||\overrightarrow{P}||}$$
+
+On obtient alors le résultat suivant : $SimCos(R,P) = 9 / (4.0 \cdot 3.46) = 0.65$ \\ On peut dire que les documents présentent quelques similarités cependant le modèle à commis des erreurs sur des entités.
+
 \subsection{Remarques complémentaires sur les métriques d'évaluation utilisées}
 
-Nous avons présenté les principales métriques que nous retrouverons dans l'application Kraken-Benchmark. La première catégorie de métrique prenant en compte la place du mot et du caractère dans les séquences, la deuxième cherchant à rassembler les mots pour évaluer leur proximité sémantique.\\
+Au vue des différentes métriques présentées plus haut, j'ai décidé de travailler sur deux types de métriques dans l'application \textit{Kraken-Benchmark} pour évaluer la correspondance entre deux phrases.
 
-Il faut noter que pour permettre l'implémentation de ces métriques dans un programme informatique des étapes de normalisation des données textuelles sont requises : on parle de \textit{data pre-processing}. 
+Une première catégorie de métriques, de type \inquote{similarité sémantique}, emprunté à la fouille de textes, va chercher à savoir si les mots généraux ou entités nommées (lieux, personnes ou types d'actes) sont équivalents dans les deux textes. C'est le cas de la similarité cosinus et de l'indice de Jaccard. Cependant, ces métriques ne seront pas assez précises pour savoir si les deux phrases sont strictement équivalentes et syntaxiquement correctes car pour se calculer, ces métriques nécessitent souvent qu'on enlève les mots fréquents (\textit{stops words}) comme les prépositions ou les déterminants par exemple.
 
-Ces méthodes sont empruntées aux tâches du TAL déjà présentées en section \ref{TAL_repertoire}. Ainsi pour calculer la distance de Levensthein, le CER et le WER, on pourra avoir recours à un découpage des phrases en caractères ou en mots (\textit{tokenisation}). 
+La deuxième catégorie de métriques, dite de \inquote{similarité syntaxique}, travaillent sur la position exacte des mots et des caractères dans la phrase. Elles nous apporterons également des précisions sur les types de modifications qui ont été le plus souvent opérés par le modèle. Il s'agira des métriques \inquote{classiques} de l'HTR comme la distance de Levensthein, le CER et le WER.
 
-Pour la similarité cosinus, en plus du découpage en mot, on peut avoir recours à une suppression des mots les plus fréquents (\textit{stops words}), ainsi qu'au plongement des mots pour les convertir en valeurs numériques (\textit{word embedding}) afin de représenter sous la forme vecteurs.\\
+Il faut noter que pour permettre l'implémentation de ces métriques dans un programme informatique des étapes de normalisation des données textuelles sont requises : on parle de \textit{data pre-processing}. On a eu recours à des fonctions de découpage des phrases en caractères ou en mots (\textit{tokenisation}), de suppression des mots les plus fréquents (\textit{stops words}), ainsi des moyens de convertir les mots sous formes de valeurs numériques, comme la transformation en vecteurs (\textit{word embedding}).\\
 
 Pour terminer, en vue de ne pas surcharger le présent mémoire de code brut, il est possible de retrouver dans le \textit{notebook} intitulé \inquote{Évaluation de la similarité entre deux séquences dans le contexte de la reconnaissance automatique de caractères} davantage de précisions sur les métriques, les étapes de normalisation du texte, leurs différentes implémentations en Python, des tests de durée d'exécution et les visualisations rendues possibles (graphiques, matrices de confusion etc.).\\
 
+\clearpage
+\thispagestyle{empty}
 \chapter{Le développement d'une application : Kraken-Benchmark}
 
 \section{Modélisation}
@@ -490,7 +518,7 @@ L'outil proposé actuellement est opérationnel pour tester des modèles de tran
     \item La partie CLI qui permet le chargement des données dans \textit{Kraken-Benchmark}, qui constitue une solution provisoire, pourrait bénéficier d'une interface graphique au même titre que la partie visualisation de données dans le navigateur \textit{web}. Cela est possible en migrant le script principal \citecode{kraken\_benchmark.py} vers un système de routes basé sur \textit{Flask} et des \textit{templates} HTML associées pour téléverser les fichiers dans une interface graphique;
     \item Au lieu de se servir de l'actuel serveur de développement du \textit{micro-framework Flask}, le programme pourrait reposer sur un serveur, comme Heroku\footnote{\textit{Heroku - Cloud Application Platfrom}, URL : \url{https://www.heroku.com/}}, pour permettre le déploiement de \textit{Kraken-Benchmark} sur le \textit{web} et sans avoir à lancer l'application depuis le terminal. Dans, une autre optique \textit{Kraken-Benchmark} pourrait constituer une fonctionnalité (\textit{plugin}) intégrée à \textit{eScriptorium}. Ainsi l'utilisateur effectuant ses vérités terrains et l'entraînement de ses modèles sur \textit{eScriptorium} pourrait bénéficier d'un relais vers \textit{Kraken-Benchmark} pour mesurer l'efficacité de son modèle. Ce dernier point nécessite cependant d'avoir répondu à l'ensemble des tâches précédentes.
 \end{itemize}
-
+%rajouter le lien avec le format pivot tei et un schéma
 \chapter{Tests de \textit{Kraken-Benchmark} sur les données Lectaurep}\label{tests_KB_lectaurep}
 
 Au moment où \textit{Kraken-Benchmark} a atteint une version \inquote{stable}, j'ai envisagé d'expérimenter l'outil avec des données Lectaurep pour évaluer les modèles HTR et simuler des usages répétitifs de l'outil en vue de la suite du projet\footnote{Pour davantage de détail consulter le compte-rendu en Annexes C, \citecode{CR\_tests\_lectaurep\_KB.md}. De plus l'ensemble des fichiers présenté ci-dessous sont disponibles en Annexes C, \citecode{sets\_tests\_lectaurep/}}.
