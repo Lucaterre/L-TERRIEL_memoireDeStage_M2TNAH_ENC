@@ -78,16 +78,16 @@ localisation : \citecode{A3-Outils\_de\_Lectaurep} contenant :
 \end{figure}
 \newpage
 \thispagestyle{empty}
-\chapter{Format pivot XML TEI Lectaurep}\label{annexe_tei_pivot_prog}
+\chapter{Format pivot XML-TEI Lectaurep}\label{annexe_tei_pivot_prog}
 localisation : \citecode{/B-Format\_pivot\_XML\_TEI\_Lectaurep} contenant :
 \skip
 \dirtree{%
 .1 /B-Format\_pivot\_XML\_TEI\_Lectaurep/.
    .2 Doc/\DTcomment{regroupe la documentation sur le projet du fichier pivot XML TEI pour Lectaurep}.
         .3 Modélisation\_et\_documentation\_format\_pivot/.
-           .4 template\_pivot\_TEI\_lectaurep.xml\DTcomment{Canevas (\textit{templates}) pour formaliser les attentes et les réflexions des acteurs pour l'inclusion des données et métadonnées Lectaurep dans la TEI.}.
-           .4 Les ODD aux formats : XML, PDF et HTML.\DTcomment{La documentation standard TEI pour le fichier pivot TEI Lectaurep.}.
-           .4 oddbyexample.xsl\DTcomment{Une feuille de transformation XSL pour générer une nouvelle ODD à partir de la \textit{template} XML TEI pivot.}.
+           .4 template\_pivot\_TEI\_lectaurep.xml\DTcomment{Canevas (\textit{template}) pour formaliser les attentes et les réflexions des acteurs pour l'inclusion des données et des métadonnées Lectaurep dans le fichier pivot XML-TEI.}.
+           .4 Les ODD aux formats : XML, PDF et HTML.\DTcomment{La documentation standard TEI pour le fichier pivot XML-TEI Lectaurep.}.
+           .4 oddbyexample.xsl\DTcomment{Une feuille de transformation XSL pour générer une nouvelle ODD à partir de la \textit{template} XML-TEI pivot.}.
         .3 Crosswalks\_vers\_TEI\DTcomment{Un ensemble de transformations XSL utiles vers les spécifications TEI et ALTO, issues de différents projets.}.
             .4 ALTO -> TEI.
             .4 EAD -> TEI (2 versions).
@@ -96,26 +96,26 @@ localisation : \citecode{/B-Format\_pivot\_XML\_TEI\_Lectaurep} contenant :
             .4 PAGE -> TEI.
    .2 Generator\_Lectaurep2TEI/\DTcomment{CLI Python permettant de simuler 
 	                                     la conversion des données issues de Lectaurep (EAD-EAC, ALTO, EXIF) 
-	                                     vers un fichier XML TEI Pivot suivant les recommandations de l'ODD 
+	                                     vers un fichier XML-TEI Pivot suivant les recommandations de l'ODD 
 	                                     (voir le readme.md pour plus de détails).}.
         .3 Output/\DTcomment{Dossier dans lequel est généré la sortie du script.}.
             .4  test\_legay\_tei.xml\DTcomment{Exemple de fichier pivot TEI Lectaurep de test généré en sortie du script.}.
         .3 Sets\_test\_Legay/\DTcomment{Contient un ensemble de fichiers correspondant aux données fournies par Lectaurep pour tester le programme \textit{generator Lectaurep2TEI} et généré une première version du format pivot.}.
-            .4  Data\_xml\_alto/\DTcomment{fichiers XML ALTO correspondants aux transcriptions vérité terrain récupérés sur \textit{ShareDocs} relatives aux images numérisées du répertoire de notaire d'Ernest Legay (étude XXIII).}.
+            .4  Data\_xml\_alto/\DTcomment{fichiers XML ALTO correspondants aux transcriptions vérité terrain récupérés sur l'espace \textit{ShareDocs} relatives aux images numérisées du répertoire de notaire d'Ernest Legay (étude XXIII).}.
             .4  Data\_xml\_ead\_eac/\DTcomment{fichiers XML EAD et XML EAC-CPF correpondants aux instruments de recherche des répertoires du notaire Ernest Legay (étude XXIII) et notices producteurs récupérées sur la Salle des inventaires virtuels des Archives nationales.}.
                 .5 FRAN\_IR\_041698.xml \DTcomment{IR \inquote{Minutes et répertoires du notaire Ernest LEGAY, 25 février 1875 - 14 mai 1902 (étude XXIII)}.}.
                 .5 FRAN\_IR\_051379.xml \DTcomment{IR \inquote{Images des répertoires du notaire Ernest Legay pour l'étude XXIII}.}.
                 .5 FRAN\_NP\_010150.xml \DTcomment{Notice producteur de l'étude XXIII.}.
                 .5 FRAN\_NP\_010150.xml \DTcomment{Notice producteur de Legay, Ernest.}.
                 .5 Schémas XML et DTD EAD et EAC-CPF.
-            .4  images/\DTcomment{Images numérisées du répertoire de notaire d'Ernest Legay (étude XXIII) issues du \textit{Golden Set} de \textit{ShareDocs}.}.
+            .4  images/\DTcomment{Images numérisées du répertoire de notaire d'Ernest Legay (étude XXIII) issues du \textit{Golden Set} de l'espace \textit{ShareDocs}.}.
         .3 generator\_utils/.\DTcomment{Ensemble des modules Python utiles au fonctionnement du CLI \textit{generator Lectaurep2TEI}. Pour les détails des fonctions consulter les \textit{docstrings} dans les scripts.}.
             .4  \_\_init\_\_.py.
             .4  build\_utils.py.
             .4  extract\_utils.py.
             .4  validation\_utils.py.
-        .3 pack\_schemaRNG/.\DTcomment{Doit accueillir à terme les schémas de validation Relax NG du fichier pivot XML TEI Lectaurep.}.
-            .4 tei\_all.rng.\DTcomment{Schéma Relax NG TEI ALL.}.
+        .3 pack\_schemaRNG/.\DTcomment{Doit accueillir à terme les schémas de validation Relax NG du fichier pivot XML-TEI Lectaurep.}.
+            .4 tei\_all.rng.\DTcomment{Schéma Relax NG \textit{TEI ALL}.}.
         .3 Lectaurep\_ALTO2TEI.xsl.\DTcomment{Une feuille de transformation XSL ALTO vers TEI nécessaire pour le fonctionnement du script principal. Pour plus de détails consulter la \textit{docstring} de la feuille.}.
         .3 Lectaurep\_EADEAC2TEI.xsl.\DTcomment{Une feuille de transformation XSL EAD/EAC vers TEI nécessaire pour le fonctionnement du script principal. Pour les usages consulter la \textit{docstring}.}.
         .3 catalog\_alto.xml.\DTcomment{Fichier automatiquement créé par le script, nécessaire pou l'usage de la fonction Xpath 2.0 \citecode{collection()} pour la feuille XSL \citecode{Lectaurep\_ALTO2TEI.xsl}}.
@@ -139,7 +139,7 @@ localisation : \citecode{/C-Application\_Kraken\_Benchmark} contenant :
     .3 Ensemble d'images rattachés au \textit{notebook} Jupyter.
    .2 KB-app/.\DTcomment{Dossier contenant les fichiers pour faire fonctionner l'application \textit{\textit{Kraken-Benchmark}}.}.
     .3 STS\_Tools/.\DTcomment{Le \textit{package} Python \textit{Sequences to Similarity} créée pour l'application \textit{\textit{Kraken-Benchmark}} contient deux modules Python.}.
-        .4 STSig.py.\DTcomment{module Python \textit{Sequences To Signals} (en cours de développement); module pour créer des visualisations et des métriques pour comparer deux chaînes de caractères expérimentales.}.
+        .4 STSig.py.\DTcomment{module Python \textit{Sequences To Signals} (en cours de développement); module pour créer des visualisations et des métriques expérimentales pour comparer deux chaînes de caractères.}.
         .4 SynSemTS.py.\DTcomment{module Python \textit{Syntactic Semantic To Similarity} qui contient la plupart des métriques (syntaxiques et sémantiques) et les visualisations associées; utilisé dans l'application pour l'analyse de deux chaînes de caractères correspondant à la vérité terrain et la transcription issue du système HTR.}.
         .4  \_\_init\_\_.py.
     .3 kb\_report/.\DTcomment{Dossier contenant les fichiers pour la gestion de la partie affichage dans le navigateur de l'application via le \textit{package} \textit{Flask}.}.
@@ -192,7 +192,7 @@ localisation : \citecode{/D-Doc\_travail\_pivot\_tei\_lectaurep} contenant :
 
 \begin{figure}
   \begin{sideways}
-    \includegraphics[width=24cm, height=16cm]{modèle_metadonnées_vise_V4.png}
+    \includegraphics[width=24cm, height=16cm]{images_annexes/modèle_metadonnées_vise_V4.png}
   \end{sideways}
   \centering
   \caption{Schématisation du modèle de circulation des données dans eScriptorium souhaité par Lectaurep à terme  \textcopyright L. Terriel, 2020, yEd}
@@ -201,7 +201,7 @@ localisation : \citecode{/D-Doc\_travail\_pivot\_tei\_lectaurep} contenant :
 
 \begin{figure}
     \centering
-    \centerline{\fbox{\includegraphics[width=18cm, height=22.5cm]{Generateur-XML-TEI.png}}}
+    \centerline{\fbox{\includegraphics[width=18cm, height=22.5cm]{images_annexes/Generateur-XML-TEI.png}}}
     \caption{Algorigramme du programme Generator Lectaurep-TEI pour simuler la visualisation d'un format XML TEI pivot comprenant des données provenant de fichiers XML ALTO, EAD et EAC-CPF et des métadonnées EXIF provenant d'images.   \textcopyright L. Terriel, 2020, Diagrams.net}
     \label{fig:generateur_tei}
 \end{figure}
@@ -218,21 +218,21 @@ localisation : \citecode{/E-Doc\_travail\_KB} contenant :
 % Figures en dessous :
 \begin{figure}
     \centering
-    \centerline{\fbox{\includegraphics[width=18cm]{transkribus/detail-model-transkribus.png}}}
+    \centerline{\fbox{\includegraphics[width=18cm]{images_annexes/detail-model-transkribus.png}}}
     \caption{fenêtre pour visualiser des détails concernant le modèle envoyé dans l'interface \textit{Transkribus} \textcopyright A. Chague, 2020, \textit{Transkribus}}
     \label{fig:details-model-transkribus}
 \end{figure}
 
 \begin{figure}
     \centering
-    \centerline{\fbox{\includegraphics[width=18cm]{transkribus/compare-texts-transkribus.png}}}
+    \centerline{\fbox{\includegraphics[width=18cm]{images_annexes/compare-texts-transkribus.png}}}
     \caption{fenêtre pour comparer la référence et la prédiction dans l'interface \textit{Transkribus} \textcopyright A. Chague, 2020, \textit{Transkribus}}
     \label{fig:compare-texts-transkribus}
 \end{figure}
 
 \begin{figure}
     \centering
-    \centerline{\fbox{\includegraphics[width=18cm, height=22.5cm]{images_partie_3/Kraken-Benchmark_modelisation.png}}}
+    \centerline{\fbox{\includegraphics[width=18cm, height=22.5cm]{images_annexes/Kraken-Benchmark_modelisation.png}}}
     \caption{Algorigramme de Kraken-Benchmark.   \textcopyright L. Terriel, 2020, Diagrams.net}
     \label{fig:algo-kb}
 \end{figure}
