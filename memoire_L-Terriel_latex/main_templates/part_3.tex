@@ -21,7 +21,7 @@ Toujours par le biais de l'onglet \inquote{Tools} puis de l'onglet \inquote{Comp
 
 \textit{Kraken} est l'outil privilégié pour l'entraînement des modèles de segmentation et de transcription ainsi que pour effectuer des prédictions à partir des modèles. Cependant concernant, l'étape d'évaluation de la transcription obtenue, l'affichage dans le terminal ne permet pas de bien discerner les erreurs, du moins de bien les localiser dans le texte.\\
 
-En effet, le rapport d'évaluation (Cf. Figure \ref{fig:rapport_Kraken}) de la transcription s'obtient grâce à la commande \citecode{\$ ketos test -m model images} qui permet d'obtenir : le nombre total de caractères dans la vérité terrain (sans donner le nombre de caractères dans la prédiction), un taux de réussite général qui correspond au CER, le nombre d'insertions, de suppressions et de substitutions de caractères ainsi qu'une liste des erreurs les plus fréquentes.
+En effet, le rapport d'évaluation (Cf. Figure \ref{fig:rapport_Kraken}) de la transcription s'obtient grâce à la commande \citecode{\$ ketos test -m model images} qui permet d'obtenir : le nombre total de caractères dans la vérité terrain, un taux de réussite général qui correspond au CER, le nombre d'insertions, de suppressions et de substitutions de caractères ainsi qu'une liste des erreurs les plus fréquentes.
 
 \begin{figure}[h]
     \centering
@@ -30,7 +30,7 @@ En effet, le rapport d'évaluation (Cf. Figure \ref{fig:rapport_Kraken}) de la t
     \label{fig:rapport_Kraken}
 \end{figure} 
 
-J'ai également voulu vérifier si d'autres outils d'évaluation similaires existaient déjà en parcourant les dépôts de code sur Github. J'ai donc relevé trois outils parmi lesquels :  \textit{Werpp}\footnote{\textit{Werpp}, URL : \url{https://github.com/nsmartinez/WERpp}}, \textit{XER}\footnote{\textit{XER}, URL : \url{https://https://github.com/jpuigcerver/xer}} et \textit{WER-in-python}\footnote{WER-in-python, URL : \url{https://github.com/zszyellow/WER-in-python}} à partir de deux fichiers texte brut d'exemples comprenant 10 à 20 mots. 
+J'ai également voulu vérifier si d'autres outils d'évaluation similaires existaient déjà en parcourant les dépôts de code sur la plate-forme \textit{Github}. J'ai donc relevé trois outils parmi lesquels :  \textit{Werpp}\footnote{\textit{Werpp}, URL : \url{https://github.com/nsmartinez/WERpp}}, \textit{XER}\footnote{\textit{XER}, URL : \url{https://https://github.com/jpuigcerver/xer}} et \textit{WER-in-python}\footnote{WER-in-python, URL : \url{https://github.com/zszyellow/WER-in-python}} à partir de deux fichiers texte brut d'exemples comprenant 10 à 20 mots. 
 
 Le premier représentant un document de vérité terrain, l'autre étant censé montrer la transcription avec des erreurs volontairement insérées (omission de la ponctuation, abus de majuscules, espaces conséquences entre certains mots etc.).\\
 \newpage
@@ -38,10 +38,11 @@ Une fois les tests effectués, j'ai pu relever les points suivants :
 \begin{itemize}
     \item Certains programmes n'utilisaient pas les mêmes versions de Python, comme \textit{Werpp} qui présentait des défauts de compatibilité avec la version 3. Pour le faire fonctionner, il a fallu modifier quelques lignes de codes afin de le rendre exécutable;
     \item Certaines options proposées par ces programmes comme dans \textit{Werpp} ou \textit{XER} ne fonctionnaient pas. Ainsi dans le cas de \textit{XER} le chargement des fichiers au format texte ne fonctionnait pas. Il fallait inscrire les phrases dans le terminal avec une commande du type \citecode{\$ xer -i str -r "Je suis un document valide" -t "je suis Unn DoCument, invalide !"} ce qui n'est évidemment pas du tout envisageable pour des transcriptions de plus de 10 lignes de texte. D'autres options comme la colorisation des résultats pour les lettres manquantes, proposé par \textit{Werpp}, ne fonctionnaient pas en raison de l'obsolescence des \textit{packages} requis;
-    \item Certains outils ne permettaient pas de cumuler en sortie plusieurs résultats en même temps comme le WER et le CER. C'est par exemple le cas de \textit{WER-in-python} et \textit{Werpp};
+    \item Certains outils ne permettaient pas de cumuler en sortie plusieurs résultats en même temps comme le WER et le CER. C'est par exemple le cas de \textit{WER-in-python} et de \textit{Werpp};
     \item Enfin les temps de calculs pouvaient s'avérer très longs et la plupart des codes n'étaient pas bien documentés, l'usage des commandes devant être déduites de la lecture du code.\\
 \end{itemize}
 \medskip
+
 Si la plupart de ces outils ne se sont pas révélés directement utilisables pour notre projet, pour des utilisations fréquentes, ce premier état de l'art m'a permis de me poser des questions quant aux fonctionnalités qui pouvaient être réutilisées et aux métriques qui pourraient s'avérer utiles dans la future application. 
 
 De plus la lecture du code, m'a permis de me familiariser avec la création de CLI par le biais du \textit{package} intégré à Python \textit{argparse}. 
@@ -62,14 +63,13 @@ Cependant cet outil avait des limites : il supposait de récupérer en amont la 
     \caption{Capture d'écran du rapport produit par le prototype \citecode{cerwer\_tool.py} \textcopyright L. Terriel, 2020, \textit{Pycharm}}
     \label{fig:cerwer}
 \end{figure}
+
 \newpage
 \section{Des métriques pour comparer la transcription automatique et la vérité terrain}\label{metriques}
 
 Après avoir formulé un état de l'art, je me suis penché sur les méthodes de calcul qui permettent d'évaluer une transcription HTR avec sa vérité terrain. C'est un problème qui peut être ramené à la comparaison de deux chaînes de caractères entres-elles (comparaison \textit{text-to-text}). Dans un deuxième temps, pour permettre d'évaluer les transcriptions dans un contexte de traitement par le TAL, je me suis également intéressé aux métriques permettant d'apprécier la proximité sémantique entre des mots appartenant à deux documents différents.\\
 
-J'ai exposé et synthétisé ce travail de recherche dans un \textit{notebook} Jupyter. 
-
-Un \textit{notebook} peut être conçu comme un calepin électronique qui permet d'écrire du texte brut et du code dans un même temps. Comme nous le verrons par la suite, il est indispensable dans tout travaux concernant le traitement de données en ML et DL, notamment pour expérimenter des calculs, des scripts et de préciser certaines étapes.\footnote{Le \textit{notebook} de recherche est disponible dans plusieurs formats dans les Annexes \citecode{/C-Application\_Kraken\_Benchmark/Documentation-Reasearch/\\Evaluation de la similarité entre deux séquences dans le contexte de la reconnaissance automatique de caractère} }. Le \textit{notebook} résume brièvement les définitions et les usages des métriques, les visualisations possibles à partir de ces dernières et les différents algorithmes qui permettent de les implémenter dans un programme.\\
+J'ai exposé et synthétisé ce travail de recherche dans un \textit{notebook} Jupyter. Un \textit{notebook} peut être conçu comme un calepin électronique qui permet d'écrire du texte brut et du code au même endroit. Comme nous le verrons par la suite, il est indispensable dans tout travaux concernant le traitement de données en ML et DL, notamment pour expérimenter des calculs, des \textit{scripts} et de préciser certaines étapes\footnote{Le \textit{notebook} de recherche est disponible dans plusieurs formats dans les Annexes \citecode{/C-Application\_Kraken\_Benchmark/Documentation-Reasearch/\\Evaluation de la similarité entre deux séquences dans le contexte de la reconnaissance automatique de caractère} }. Le \textit{notebook} résume brièvement les définitions et les usages des métriques, les visualisations possibles à partir de ces dernières et les différents algorithmes qui permettent de les implémenter dans un programme.\\
 
 \subsection{La comparaison de chaînes de caractères}
 
@@ -94,8 +94,8 @@ Dans cet exemple, l'algorithme de Ratcliff/Obershelp trouve dans un premier temp
 Pour inclure ces métriques dans un programme informatique le \textit{package} Python \textit{difflib} permet de récupérer des fonctions qui se basent sur cet algorithme.\\
 
 L'avantage est qu'il permet d'obtenir un score rapidement, afin de comparer deux chaînes de caractères. Cependant elles ne rendent pas compte précisément des modifications de caractères qui ont pu s'opérer lors du passage d'une chaîne à une autre. Nous allons voir en quoi les distances mathématiques peuvent nous y aider.\\
-
-\textbf{Les distances de Levensthein, de Hamming et de Damerau-Levenshtein -} La distance de Levensthein\footnote{Établie en 1965 par le mathématicien russe Vladimir Levenshtein (1935-2017)} (équivalent de la distance d'édition), est une distance mathématique, et une généralisation de la distance de Hamming, dans le sens où la première peut travailler sur des chaînes de longueur, ce n'est pas le cas de la seconde.
+\newpage
+\textbf{Les distances de Levensthein, de Hamming et de Damerau-Levenshtein -} La distance de Levensthein\footnote{Établie en 1965 par le mathématicien russe Vladimir Levenshtein (1935-2017)} (équivalent de la distance d'édition), est une distance mathématique, et une généralisation de la distance de Hamming, dans le sens où la première peut travailler sur des chaînes de longueurs différentes, mais pas dans le cas de la seconde.
 
 Cette distance évalue le coût minimal de transformation d'une chaîne de caractères $R$ en une chaîne de caractère $P$ en effectuant les opérations suivantes auxquelles sont associés un coût de 1:
 
@@ -112,13 +112,14 @@ Pour illustrer le calcul de cette distance nous pouvons prendre les exemples sui
     \item soit $R = magasin$ et $P= megasinier $, alors $LD(R, P) = 4$, car il eu 3 insertions \inquote{ier} et une substitution \inquote{a} en \inquote{e}. 
 \end{itemize} 
 \bigskip
-La distance de Damerau-Levenshtein\footnote{\cite{chaumartin_traitement_2020}, pp. 132}, quant à elle, est une variation de la distance de Levensthein qui inclut les transpositions (échange de deux lettres) dans les opérations (pour prendre en compte les fautes d'orthographe ou les échanges de caractères).\\ 
+
+La distance de Damerau-Levenshtein\footnote{\cite{chaumartin_traitement_2020}, pp. 132}, quant à elle, est une variation de la distance de Levensthein qui inclut les transpositions (échange de deux lettres) dans les opérations (pour prendre en compte les fautes d'orthographe ou les échanges de caractères).
 
 Par exemple dans le cas des mots \inquote{acceuil}, \inquote{auteuil} et \inquote{accueil}, la distance de Levensthein calcule une distance de 2 entre chaque mots. Cependant \inquote{acceuil} et \inquote{accueil} sont plus proches (transposition de \inquote{eu} en \inquote{ue}) que \inquote{auteuil} et \inquote{acceuil}, la distance de Damerau-Levenshtein prend en compte cette différence. Ainsi la modification \inquote{acceuil} et \inquote{accueil} sera pondéré à 1 tandis que la modification \inquote{auteuil} et \inquote{acceuil} sera pondéré à 2. Une transposition de deux caractères coûte moins qu'une substitution. 
 
 Cette distance est plutôt utilisée dans le cadre de correcteur orthographique, de plus la complexité algorithmique de la distance de Damerau-Levenshtein est plus élevée que la distance de Levensthein, ce qui est une caractéristique à prendre compte durant l'implémentation. La distance de Damerau-Levenshtein sera plus longue à calculer que la distance de Levensthein (environ 20 secondes pour la première et 0,01 secondes pour la seconde (implémentation la plus rapide) pour des chaînes d'environ 350 caractères).\\
 
-Il existe plusieurs algorithmes pour implémenter cette distance\footnote{\cite{wikibooks_algorithm_2020}}, mais la tâche peut être facilité par des \textit{packages} en Python, comme la fonction \citecode{\_fast\_levenshtein()} de l'API de l'\textit{Kraken}\footnote{\cite{noauthor_kraken_nodate}} ou encore  \textit{python-levenshtein}\footnote{\cite{noauthor_python-levenshtein_nodate}} qui est une implantation plus rapide de la distance (extension écrite en langage C).\\
+Il existe plusieurs algorithmes pour implémenter cette distance\footnote{\cite{wikibooks_algorithm_2020}}; la tâche d'implementation peut être facilité par des \textit{packages} en Python, comme la fonction \citecode{\_fast\_levenshtein()} de l'API de l'\textit{Kraken}\footnote{\cite{noauthor_kraken_nodate}} ou encore  \textit{python-levenshtein}\footnote{\cite{noauthor_python-levenshtein_nodate}} qui est une implantation plus rapide de la distance (extension écrite en langage C).\\
 
 Nous allons voir que cette distance est importante si on veut pouvoir calculer le taux d'erreur par caractères (CER) et le taux d'erreur par mots (WER).\\ 
 
@@ -140,14 +141,14 @@ Le WER se calcule tel que : $$ Word\, Error\, Rate = \frac{S\, + \,D\, + \,I\,}{
 Dès lors si on connaît la distance de Levensthein $D$ pour une phrase de référence notée $R$ et une phrase de prédiction $H$, le CER peut être ramené à l'expression suivante : $$CER = \frac{D(R,H)}{N_{total\, de\, caractères}}$$  et le WER :$$WER = \frac{D(R,H)}{N_{total\, de\, mots}}$$\\
 
 Les résultats obtenus sont interprétés de la sorte : plus le taux approche 0 plus la reconnaissance est efficace, à l'inverse, plus le taux se rapproche de 1, plus le texte a eu du mal à être reconnu. Il peux même dépasser 1, si la reconnaissance est très mauvaise, surtout s'il y a eu beaucoup d'insertions. Nous avons été confronté à ce cas, comme nous le verrons en chapitre \ref{tests_KB_lectaurep}. Notons enfin qu'il est possible de ramener ces taux d'erreurs à des pourcentages pour une meilleure visibilité.\\
-\newpage
+
 A partir du WER on peut également calculer le taux de reconnaissance de mots (ou \textit{Word Accuracy} (WAcc)), calculé pour obtenir un pourcentage de la manière suivante (à noter que le résultat peut-être négatif si le WER dépasse 1): $$W_{ACC}\, = (1 - WER) \cdot 100  $$
 
 Le CER est plus significatif que le WER et que le taux de reconnaissance par mots dans le sens où ces derniers sont corrélés aux erreurs de prédiction des caractères effectués par le modèle. \textit{De facto} le WER augmente et le taux de reconnaissance par mots baisse quand le CER augmente. Cependant, dans un projet HTR ces métriques peuvent se compléter; ainsi il est intéressant de savoir si un modèle qui fait beaucoup de fautes épargne les mots et à l'inverse si un modèle fait peu de fautes, ci ces dernières se retrouvent sur tous les mots.
 
 \subsection{Estimer la similarité entre deux documents}
 
-L'intuition est de prendre la vérité terrain comme premier document et sa prédiction par le modèle HTR comme un deuxième document. L'indice de Jaccard ainsi que la similarité cosinus peuvent nous y aider :\\
+L'intuition est de prendre la vérité terrain comme premier document et sa prédiction par le modèle HTR comme un deuxième document. L'indice de Jaccard ainsi que la similarité cosinus sont des métriques qui évaluent la proximité entre des textes :\\
 
 \textbf{L'indice de Jaccard -} Son but est d'estimer le pourcentage de mots communs aux deux documents. L'indice évalue, sur l'union de deux ensembles (deux phrases par exemple), la taille de l'intersection qui regroupe les mots commun à la transcription de référence et à la transcription HTR, qu'il divise par la taille de l'union de deux ensembles.
 
@@ -191,17 +192,17 @@ On aura donc $R \cdot P = 9$
 
 Dès lors, si la formule de la similarité cosinus s'exprime tel que : $$SimCos(R,P) = \frac{R \cdot P}{||\overrightarrow{R}|| \cdot ||\overrightarrow{P}||}$$
 
-On obtient alors le résultat suivant : $SimCos(R,P) = 9 / (4.0 \cdot 3.46) = 0.65$ \\ On peut dire que les documents sont éloignés dès lors le modèle à commis des erreurs (un écart d'environ 30\%).
+On obtient alors le résultat suivant : $SimCos(R,P) = 9 / (4.0 \cdot 3.46) = 0.65$ \\ On peut dire que les documents sont éloignés dès lors le modèle à commis des erreurs (un écart d'environ 35\%).
 
 \subsection{Remarques complémentaires sur les métriques d'évaluation utilisées}
 
 Au vue des différentes métriques présentées, j'ai décidé de travailler sur deux types de métriques dans l'application \textit{Kraken-Benchmark} afin d'évaluer la correspondance entre deux phrases.
 
-Une première catégorie de métriques, de type \inquote{similarité sémantique}, empruntées à la fouille de textes, va chercher à savoir si les mots généraux ou entités nommées (lieux, personnes ou types d'actes) sont équivalents dans les deux textes et sont donc bien reconnus par le modèle. C'est le cas de la similarité cosinus et de l'indice de Jaccard. Cependant, il s'agit d'une utilisation non conventionnelle dans le cadre de l'évaluation HTR de ces métriques qui évaluent la proximité sémantique des textes. De plus, elles ne seront pas assez précises pour savoir si les deux phrases sont strictement équivalentes et syntaxiquement correctes car pour se calculer ces métriques nécessitent souvent qu'on enlève les mots fréquents (\textit{stops words}) qui peuvent également contenir des fautes de transcription pour réaliser une représentation de type \inquote{sac de mots} (\textit{bag of words}) et obtenir un modèle vectoriel des textes (\textit{word embedding})\footnote{Une intuition, qui n'a pu être testé durant le stage, est qu'on pourrait estimer à partir d'une vérité terrain $A$ une dimension $N$ à atteindre dans le cadre d'une représentation vectoriel des deux textes; si le nombre de termes relevés et pondérés (selon la fréquence d'apparition dans le texte) dans la vérité terrain $A$ et dans la prédiction $B$ dépasse la dimension $N$ initialement posée alors on pourrai en déduire que la prédiction a fait beaucoup d'erreurs de reconnaissance sur les mots.}.
+Une première catégorie de métriques, de type \inquote{similarité sémantique}, empruntées à la fouille de textes, va chercher à savoir si les mots généraux ou les entités nommées (lieux, personnes ou types d'actes) sont équivalents dans les deux textes et sont donc bien reconnus par le modèle. C'est le cas de la similarité cosinus et de l'indice de Jaccard. Cependant, il s'agit d'une utilisation non conventionnelle dans le cadre de l'évaluation HTR de ces métriques qui évaluent la proximité sémantique d'un grand ensemble de documents. De plus, elles ne seront pas assez précises pour savoir si les deux phrases sont strictement équivalentes et syntaxiquement correctes car pour se calculer ces métriques nécessitent souvent qu'on enlève les mots fréquents (\textit{stops words}) qui peuvent également contenir des fautes de transcription (qui sont intéressants à relever si l'on veut obtenir une bonne qualité de transcription) pour réaliser une représentation de type \inquote{sac de mots} (\textit{bag of words}) et obtenir un modèle vectoriel des textes (\textit{word embedding}).
 
-Les métriques, dites de \inquote{similarité syntaxique}, travaillent, quant à elles, sur la position exacte des mots et des caractères dans la phrase. Elles nous apporteront également des précisions sur les types de modifications qui ont été le plus souvent opérées par le modèle. Il s'agira des métriques \inquote{classiques} de l'HTR comme la distance de Levensthein, le CER et le WER.
+Les métriques, dites de \inquote{similarité syntaxique}, travaillent, quant à elles, sur la position exacte des mots et des caractères dans la phrase. Elles nous apporteront des précisions sur les types de modifications qui ont été le plus souvent opérées par le modèle. Il s'agira des métriques \inquote{classiques} de l'HTR comme la distance de Levensthein, le CER et le WER.
 
-Il faut noter que pour permettre l'implémentation de ces métriques dans un programme informatique des étapes de normalisation des données textuelles sont requises : on parle de \textit{data pre-processing}. On a eu recours à des fonctions de découpage des phrases en caractères ou en mots (\textit{tokenisation}), de suppression des mots les plus fréquents (\textit{stops words}), ainsi que des moyens de convertir les mots sous formes de valeurs numériques, comme la transformation en vecteurs (\textit{word embedding}).\\
+Il faut noter que pour permettre l'implémentation de ces métriques dans un programme informatique des étapes de normalisation des données textuelles sont requises : on parle de \textit{data pre-processing}. On a donc eu recours durant le développement de l'application à des fonctions de découpage des phrases en caractères ou en mots (\textit{tokenisation}), de suppression des mots les plus fréquents (\textit{stops words}), ainsi que des moyens de convertir les mots sous formes de valeurs numériques, comme la transformation en vecteurs (\textit{word embedding}).\\
 
 Pour terminer cette section, il est possible de retrouver dans le \textit{notebook} intitulé \inquote{Évaluation de la similarité entre deux séquences dans le contexte de la reconnaissance automatique de caractères} davantage de précisions sur les métriques, les étapes de normalisation du texte, leurs différentes implémentations en Python, des tests de durée d'exécution et les visualisations réalisées (graphiques, matrices de confusion etc.) (Cf. Annexes \ref{annexe_KB}).\\
 \clearpage
@@ -220,7 +221,7 @@ En concertation avec ma tutrice de stage, Alix Chagué, j'ai fixé des cas d'usa
     \item L'utilisateur doit avoir la possibilité de charger les images et le modèle facilement;
     \item Le programme doit être écrit en Python 3 pour assurer sa  maintenabilité dans le temps;
     \item Le code, et l'application, doivent disposer d'une documentation interne et externe;
-    \item Le programme doit pouvoir être généralisé à d'autres projets et/ou viser une interropérabilité avec la plate-forme eScriptorium à terme;
+    \item Le programme doit pouvoir être généralisé à d'autres projets et/ou viser une interropérabilité avec la plate-forme \textit{eScriptorium} à terme;
 \end{itemize}
 
 Nous verrons dans la section \ref{perspectives_amélios} les objectifs qui ont été atteints, ceux qui restent en cours de développement et ceux qui ont émergés au cours des tests et rédaction du code. 
@@ -253,9 +254,9 @@ Pour fonctionner et effectuer des traitements, l'application \textit{Kraken-Benc
     \item Gestion de la partie GUI (\textit{Graphical User Interface}) de l'application dans le navigateur \textit{web} : \textit{Flask}\footnote{\cite{noauthor_flask_nodate}}
 \end{itemize}
 
-Initialement au début du projet il était prévu de n'utiliser que le moteur de \textit{templates}\footnote{Un moteur de \textit{templates} permet de séparer la partie traitement pur des données en Python de la partie visuelle de l'application. Le \textit{template} d'un projet \textit{web} contiendra tous les fichiers HTML (pour la structure), le CSS et les images (style et aspect visuel du site), et le Javascript (pour les animations).} \textit{Jinja}\footnote{\cite{noauthor_jinja_nodate}}. Cependant, j'ai rapidement constaté les limites, notamment quand je devais permettre à l'utilisateur de pouvoir accéder à plusieurs pages dans le navigateur (plusieurs vues), un gestionnaire de \textit{templates} seul n'était pas suffisant. 
+Initialement au début du projet il était prévu de n'utiliser que le moteur de \textit{templates}\footnote{Un moteur de \textit{templates} permet de séparer la partie traitement pur des données en Python de la partie visuelle de l'application. Le \textit{template} d'un projet \textit{web} contiendra tous les fichiers HTML (pour la structure), le CSS et les images (style et aspect visuel du site), et le Javascript (pour les animations).} \textit{Jinja}\footnote{\cite{noauthor_jinja_nodate}}. Cependant, j'ai rapidement constaté les limites, notamment quand je devais permettre à l'utilisatrice ou à l'utilisateur de pouvoir accéder à plusieurs pages dans le navigateur (plusieurs vues), un gestionnaire de \textit{templates} seul n'était pas suffisant. 
 
-L'avantage de \textit{Flask} repose sur le fait qu'il s'agit d'une boîte à outils (mini \textit{framework} \textit{web}) pour construire des applications \textit{web}. Ainsi en plus d'intégrer le moteur de \textit{templates} \textit{Jinja}, il intègre également un gestionnaire de routes (les différentes routes URL pour définir les vues), et dispose d'un gestionnaire de requêtes HTTP ainsi que d'un serveur de développement\footnote{On distingue le serveur de développement, pour tester les applications \textit{web}, du serveur de production, qui permet de déployer et d'installer l'application \textit{web} finalisée qui est donc accessible aux utilisateurs.} pour tester l'application\footnote{\textbf{HTTP} (HyperText Transfer Protocol), est un protocole de communication entre client et serveur pour le \textit{web}.} et pour communiquer avec le code Python (ou WSGI\footnote{WSGI ou \textit{Web Server Gateway Interface}, est interface entre des serveurs et des applications \textit{web} pour Python. c'est une spécification qui permet à l'application Python de recevoir une requête HTTP transformée en un objet Python et de retourner une réponse HTTP sous la forme d’un autre objet Python également.}) \textbf{Werkzeug}\footnote{\cite{noauthor_werkzeug_nodate}}.\\
+L'avantage de \textit{Flask} repose sur le fait qu'il s'agit d'une boîte à outils (mini \textit{framework} \textit{web}) pour construire des applications \textit{web}. Ainsi en plus d'intégrer le moteur de \textit{templates} \textit{Jinja}, il intègre également un gestionnaire de routes (les différentes routes URL pour définir les vues), et dispose d'un gestionnaire de requêtes HTTP ainsi que d'un serveur de développement\footnote{On distingue le serveur de développement, pour tester les applications \textit{web}, du serveur de production, qui permet de déployer et d'installer l'application \textit{web} finalisée qui est donc accessible aux utilisateurs.} pour tester l'application\footnote{\textbf{HTTP} (HyperText Transfer Protocol), est un protocole de communication entre client et serveur pour le \textit{web}.} et pour communiquer avec le code Python (ou WSGI\footnote{WSGI ou \textit{Web Server Gateway Interface}, est interface entre des serveurs et des applications \textit{web} pour Python. c'est une spécification qui permet à l'application Python de recevoir une requête HTTP transformée en un objet Python et de retourner une réponse HTTP sous la forme d’un autre objet Python également.}) \textit{Werkzeug}\footnote{\cite{noauthor_werkzeug_nodate}}.\\
 
 La structuration des éléments de texte (titres, description, paragraphes) de l'interface graphique a été réalisé à partir des \textit{templates} \textit{Jinja}, qui permettent de faire des appels d'objets Python directement dans le fichier HTML pour y insérer d'autres éléments comme les métriques. L'apparence générale du site (fenêtre principal, boutons, formulaires, bannière etc.) repose sur le \textit{framework} \textit{Bootstrap}\footnote{\cite{otto_bootstrap_nodate}} qui est une collection d'outils de stylisation pour les sites \textit{web} qui contient une feuille de style CSS déjà écrite. De plus, afin de rendre le site plus dynamique (symboles de chargement (\textit{loader}), apparition des éléments au défilement etc.), j'ai ajouté des scripts en JQuery à la fin des pages HTML\footnote{JQuery est une bibliothèque JavaScript pour faciliter l'écriture de scripts côté utilisatrices ou utilisateurs.}.\\
 
@@ -263,23 +264,23 @@ La plupart des \textit{packages} Python listés ci-dessus sont disponibles avec 
 
 L'installation et les commandes pour utiliser l'application sont résumés dans un fichier de type \inquote{lisez-moi} (\citecode{README.md}).
 \newpage
-\subsection{Les étapes de fonctionnement : retour sur les aspects de programmation}
+\subsection{Les étapes de fonctionnement : retour sur quelques aspects de programmation}
 
 Après avoir rassemblé les outils pour réaliser le programme, j'ai modélisé les différentes étapes qu'il devait réaliser. De la même manière que pour développer l'outil \textit{Generator Lectaurep-TEI} abordé dans la section \ref{generator-lecto-dev}, j'ai créé un modèle résumant l'algorithme de l'application (Cf. Annexes, Figure \ref{fig:algo-kb}).\\
-\newpage
+
 Le programme se résume aux étapes suivantes :
 \begin{enumerate}
-    \item Avant de lancer, l'utilisatrice ou l'utilisateur place dans différents dossiers les fichiers à traiter. À la racine du script principal \citecode{kraken\_benchmark.py} l'utilisatrice ou l'utilisateur peut créer le dossier \citecode{dataset\_GT} qui reçoit les fichiers en texte brut de la vérité terrain, le dossier \citecode{images} qui reçoit les images (format .jpeg) à reconnaître, et dans le dossier \citecode{model} un modèle (.mlmodel) pré-entraîné avec \textit{Kraken}. L'utilisateur doit conserver le même ordre de fichiers dans les dossiers \citecode{dataset\_GT} et \citecode{images} en utilisant un label dans le nommage de fichiers. Ainsi les images pourront être notées \citecode{image\_1, image\_2 \ldots} et les transcriptions correspondantes \citecode{transcription\_1, transcription\_2 \ldots} Sans cet étiquetage le programme risque d'associer une image avec la mauvaise transcription et la mauvaise vérité terrain.\\
-    \item Une fois l'étape précédente réalisée, on peut lancer le programme via la commande \citecode{\$ python kraken\_benchmark.py}. L'utilisateur peut également spécifier des options derrière sa commande comme \textbf{-{}-label} s'il souhaite renseigner des métadonnées sur ces images, \textbf{-{}-verbosity} si l'utilisateur souhaite avoir un rapport complet durant chacune des étapes du programme, et une option \textbf{-{}-clean\_text} qui permet en outre d'enlever la ponctuation et les caractères non alphabétiques, ce qui peut être utile pour certains types de projets.\\
-    \item Le script principal \citecode{kraken\_benchmark.py} lance une première étape de transcription HTR (qui s'appuie sur les modules de l'\textit{API Kraken}). Après avoir associés les images avec leur transcription vérité terrain, le programme effectue le processus suivant : il charge le modèle de transcription et les images, les images sont binarisées, il procède ensuite à la segmentation des images pour repérer les coordonnées des lignes de textes et effectue les prédictions qui sont normalisées dans un encodage normalisé UTF-8;
-    \item Le script principal \citecode{kraken\_benchmark.py} rassemble alors, par triplet : l'image, la vérité terrain et la prédiction;
+    \item Avant de lancer, l'utilisatrice ou l'utilisateur place dans différents dossiers les fichiers à traiter. À la racine du \textit{script} principal \citecode{kraken\_benchmark.py} l'utilisatrice ou l'utilisateur peut créer le dossier \citecode{dataset\_GT} qui reçoit les fichiers en texte brut de la vérité terrain, le dossier \citecode{images} qui reçoit les images (format .jpeg) à reconnaître, et dans le dossier \citecode{model} un modèle (.mlmodel) pré-entraîné avec \textit{Kraken}. L'utilisatrice ou l'utilisateur doit conserver le même ordre de fichiers dans les dossiers \citecode{dataset\_GT} et \citecode{images} en utilisant un label dans le nommage de fichiers. Ainsi les images pourront être notées \citecode{image\_1, image\_2 \ldots} et les transcriptions correspondantes \citecode{transcription\_1, transcription\_2 \ldots} Sans cet étiquetage le programme risque d'associer une image avec la mauvaise transcription et la mauvaise vérité terrain.\\
+    \item Une fois l'étape précédente réalisée, on peut lancer le programme via la commande \citecode{\$ python kraken\_benchmark.py}. L'utilisatrice ou l'utilisateur peut également spécifier des options derrière sa commande comme \textbf{-{}-label} s'il ou si elle souhaite renseigner des métadonnées sur ces images, \textbf{-{}-verbosity} s'il ou si elle souhaite avoir un rapport complet durant chacune des étapes du programme, et une option \textbf{-{}-clean\_text} qui permet, en outre, d'enlever la ponctuation et les caractères non alphabétiques, ce qui peut être utile pour certains types de projets.\\
+    \item Le \textit{script} principal \citecode{kraken\_benchmark.py} lance une première étape de transcription HTR (qui s'appuie sur les fonctions des modules de l'API \textit{Kraken}). Après avoir associés les images avec leur transcription vérité terrain, le programme effectue le processus suivant : il charge le modèle de transcription et les images, les images sont binarisées, il procède ensuite à la segmentation des images pour repérer les coordonnées des lignes de textes et effectue les prédictions qui sont normalisées dans un encodage UTF-8;
+    \item Le \textit{script} principal \citecode{kraken\_benchmark.py} rassemble alors, par triplet : l'image, la vérité terrain et la prédiction;
     \item Chacun des triplets est transformé en objet \citecode{SynSemTS} appartenant au module \citecode{SynSemTS.py} sur lesquels on peut récupérer les différentes métriques et visualisations associées;
     \item Le groupe d'objets est alors récupéré par le module \citecode{kb\_report} qui prend le relais et se charge d'ouvrir le navigateur \textit{web} automatiquement sur un serveur de développement par défaut;
-    \item L'utilisatrice ou l'utilisateur peut alors circuler dans l'application et afficher les différentes pages \textit{web}. Le script \citecode{routing.py} du dossier \citecode{kb\_report} est chargé d'envoyer et de recevoir les requêtes URL pour afficher la page HTML correspondante durant la navigation de l'utilisatrice ou de l'utilisateur, jusqu'à la fin de la session.
+    \item L'utilisatrice ou l'utilisateur peut alors circuler dans l'application et afficher les différentes pages \textit{web}. Le \textit{script} \citecode{routing.py} du dossier \citecode{kb\_report} est chargé d'envoyer et de recevoir les requêtes URL pour afficher la page HTML correspondante durant la navigation de l'utilisatrice ou de l'utilisateur, jusqu'à la fin de la session.
 \end{enumerate}
 
 Dans les sections qui suivent nous avons souhaité relater quelques questions de programmation rencontrées au cours du développement de l'application, plutôt que de simplement montrer le code Python brut. 
-Le code source de l'application est consultable dans l'Annexe C, et une documentation interne au code explicite le rôle de chaque fonctions codés sous la forme de \textit{docstrings}\footnote{Les \textit{docstrings} sont des chaînes de texte situées à certains endroits du code pour commenter ou documenter. Elles visent à rendre le code source plus explicite pour les personnes qui souhaiteraient le réutiliser ou le maintenir. Elles peuvent suivre des conventions comme la PEP 257, le modèle \textit{Sphinx}, ou le style \textit{Google Python}.}. 
+Le code source de l'application est consultable dans l'Annexe \ref{annexe_KB}, et une documentation interne au code explicite le rôle de chaque fonctions codés sous la forme de \textit{docstrings}\footnote{Les \textit{docstrings} sont des chaînes de texte situées à certains endroits du code pour commenter ou documenter. Elles visent à rendre le code source plus explicite pour les personnes qui souhaiteraient le réutiliser ou le maintenir. Elles peuvent suivre des conventions comme la PEP 257, le modèle \textit{Sphinx}, ou le style \textit{Google Python}.}. 
 
 \subsubsection{Un jeu de données pour réaliser des tests fonctionnels}
 
@@ -287,9 +288,9 @@ Durant le développement de l'application, je devais disposer de transcriptions 
 
 Dans un premier temps, j'ai trouvé sur Gallica\footnote{Bibliothèque numérique de la Bibliothèque nationale de France} une série de 8 images hétérogènes. Parmi celles-ci, certaines contenaient du texte imprimé sur toute la page et d'autres des illustrations, de tailles variables, dans l'optique de tester ces différences. 
 
-La deuxième étape a été de constituer des vérités terrains en me basant sur l'environnement de transcription de \textit{Kraken}\footnote{précisons qu'il s'agit d'un environnement \inquote{dépassé} qui n'est plus compatible avec la dernière version de \textit{Kraken} mais qui reste suffisant pour générer du texte.} (Cf. Figure \ref{fig:transcrire_kraken}). 
+La deuxième étape a été de constituer des vérités terrains en me basant sur l'environnement de transcription de \textit{Kraken}\footnote{Précisons qu'il s'agit d'un environnement \inquote{dépassé} qui n'est plus compatible avec la dernière version de \textit{Kraken} mais qui reste suffisant pour générer du texte.} (Cf. Figure \ref{fig:transcrire_kraken}). 
 
-Après avoir lancé la ligne de commande correspondante, la transcription apparaît sur une page HTML qui comprend, à gauche l'image et à droite les lignes à transcrire. Cela peut s'apparenter à une version minimaliste de la plate-forme \textit{eScriptorium}.   
+Après avoir lancé la ligne de commande correspondante, le canevas de transcription apparaît sur une page HTML qui comprend, à gauche l'image et à droite les lignes à transcrire. Cela peut s'apparenter à une version minimaliste de la plate-forme \textit{eScriptorium}.   
 
 \begin{figure}[H]
     \centering
@@ -309,23 +310,23 @@ Dans la mesure où il s'agit d'un prototype expérimental et interne à ALMAnaCH
 J'ai séparé dès le départ :
 
 \begin{itemize}
-    \item Une partie CLI, qui repose sur le script principal \citecode{kraken\_benchmark.py} contenant la fonction chargée de réaliser la partie HTR. Ce script est relié à un module pour des traitements plus spécifiques \citecode{kraken\_utils.py} : récupération du chemin des fichiers, impressions des messages de succès ou d'erreurs, construction de structures de données Python spécifiques, ou encore récupération des images dans le dossier \citecode{static} pour les afficher dans le navigateur. Le dossier \citecode{STS\_Tools}, qui s'apparente à une mini libraire, et ces deux modules \citecode{SynSemTS.py} et \citecode{STSig.py} pour construire des objets sur lesquels on peut retrouver les métriques et les visualisations graphiques, dans le but de les afficher dans le navigateur (nous reviendrons sur la spécificité de ces deux modules);\\
-     \item Une partie GUI axé sur l'affichage dans le navigateur des métriques et des visualisations par l'ouverture du serveur de développement, le système de gestion des routes URL et des pages HTML dans le module \citecode{kb\_report} qui est appelé à l'issue du script principal \citecode{kraken\_benchmark.py}. Il s'agit du script \citecode{routing.py} du dossier \citecode{kb\_report}.
+    \item Une partie CLI, qui repose sur le \textit{script} principal \citecode{kraken\_benchmark.py} contenant la fonction chargée de réaliser la partie HTR. Ce \textit{script} est relié à un module pour des traitements plus spécifiques \citecode{kraken\_utils.py} : récupération du chemin des fichiers, impressions des messages de succès ou d'erreurs, construction de structures de données Python spécifiques, ou encore récupération des images dans le dossier \citecode{static} pour les afficher dans le navigateur. Le dossier \citecode{STS\_Tools}, qui s'apparente à une \inquote{mini libraire} contient  deux modules \citecode{SynSemTS.py} et \citecode{STSig.py} qui sont utilisés pour construire des objets sur lesquels on peut retrouver les métriques et les visualisations graphiques, dans le but de les afficher dans le navigateur (nous reviendrons sur la spécificité de ces deux modules);\\
+     \item Une partie GUI axée sur l'affichage dans le navigateur des métriques et des visualisations par l'ouverture du serveur de développement, le système de gestion des routes URL et des pages HTML par le module \citecode{routing.py} dans le dossier \citecode{kb\_report} qui est appelé à l'issue du \textit{script} principal \citecode{kraken\_benchmark.py}. 
 \end{itemize}
 \bigskip
-Enfin, j'ai tenté de rendre l'affichage dans le terminal, pour la partie CLI, suffisamment convivial et explicite grâce à des \textit{packages} Python. L'objectif étant que l'utilisatrice ou l'utilisateur puisse avoir des informations sur les étapes en cours. Chaque étape dispose d'une barre de progression qui indique le temps de traitement (\textit{tqdm}\footnote{\cite{noauthor_tqdm_nodate}}), une colorisation indique bien à l'utilisatrice ou l'utilisateur les messages d'erreurs et les messages de succès (\textit{termcolor}\footnote{\cite{noauthor_termcolor_nodate}}) et un affichage stylisé et une indication sonore alerte l'utilisatrice ou l'utilisateur que le programme est en attente d'informations(\textit{prompt\_toolkit}\footnote{\cite{noauthor_prompt-toolkit_nodate}}). 
+Enfin, j'ai tenté de rendre l'affichage dans le terminal, pour la partie CLI, suffisamment convivial et explicite grâce à des \textit{packages} Python. L'objectif étant que l'utilisatrice ou l'utilisateur puisse avoir des informations sur les étapes en cours. Chaque étape dispose d'une barre de progression qui indique le temps de traitement (\textit{tqdm}\footnote{\cite{noauthor_tqdm_nodate}}), une colorisation indique bien à l'utilisatrice ou l'utilisateur les messages d'erreurs et les messages de succès (\textit{termcolor}\footnote{\cite{noauthor_termcolor_nodate}}) et un affichage stylisé et une indication sonore alerte l'utilisatrice ou l'utilisateur que le programme est en attente d'informations (\textit{prompt\_toolkit}\footnote{\cite{noauthor_prompt-toolkit_nodate}}). 
 
 \subsubsection{La programmation orientée objet : une solution pour généraliser et mieux documenter le code}
-Au fur et à mesure du développement de l'application la nécessité de rassembler les fonctions de calculs des principales métriques\footnote{Décrites pour la plupart en section \ref{metriques}} en dehors du script principal \citecode{kraken\_benchmark.py} s'est fait ressentir. En effet celui-ci se surchargeait de fonctions et la clarté du code devenait plus difficile à maintenir.\\ 
+Au fur et à mesure du développement de l'application la nécessité de rassembler les fonctions de calculs des principales métriques\footnote{Décrites pour la plupart en section \ref{metriques}} en dehors du \textit{script} principal \citecode{kraken\_benchmark.py} s'est fait ressentir. En effet celui-ci se surchargeait de fonctions et la clarté du code devenait plus difficile à maintenir.\\ 
 
-Le recours à la programmation orientée objet (POO), rendue possible par Python, a été un bon moyen de contourner le problème et cela pour plusieurs raisons. Cependant, pourquoi ne pas avoir pris le parti de mettre les fonctions métriques dans un module comme \citecode{kraken\_utils.py} qui regroupe des fonctions annexes au script principal ?\\ 
+Le recours à la programmation orientée objet (POO), rendue possible par Python, a été un bon moyen de contourner le problème et cela pour plusieurs raisons. Cependant, pourquoi ne pas avoir pris le parti de mettre les fonctions métriques dans un module comme \citecode{kraken\_utils.py} qui regroupe des fonctions annexes au \textit{script} principal ?\\ 
 
-Les paragraphes suivants ont pour but de présenter brièvement la programmation objet, qui n'a pas la prétention de résumer un sujet aussi vaste, mais uniquement de cerner les enjeux, pour en venir à son utilisation concrète et ses avantages pour l'application.\\
-
+Les paragraphes suivants ont pour but de présenter brièvement la programmation objet, qui n'a pas la prétention de résumer un sujet aussi vaste, mais uniquement de cerner les enjeux, pour en venir à son utilisation concrète et à ses avantages pour l'application.
+\newpage
 La programmation objet est un paradigme de programmation qui consiste à structurer une application sur la base d'un assemblage d'entités indépendantes reliées entre-elles. C'est entités sont appelées \inquote{objets}. On peut voir un objet comme un concept du monde réel possédant des caractéristiques (en Python, on parle de propriétés), des comportements (méthodes), et peuvent avoir des interactions avec d'autres objets (Cf. Figure \ref{fig:concept_POO}). 
 \begin{figure}[H]
     \centering
-    \centerline{\fbox{\includegraphics[width=13cm]{images_partie_3/concept_POO.png}}}
+    \centerline{\fbox{\includegraphics[width=16cm]{images_partie_3/concept_POO.png}}}
     \caption{Le concept de personne peut être représenté sous la forme d'un objet \textcopyright L. Terriel, 2020, Diagrams.net}
     \label{fig:concept_POO}
 \end{figure}
@@ -356,17 +357,17 @@ Personne_1 = Personne("Mabillon", "Jean", 388, "Saint-Pierremont")
 
 """On peut vérifier l'objet créé"""
 print(Personne_1)
-# >>> <__main__.Personne object at 0x1013862d0>
+>>> <__main__.Personne object at 0x1013862d0>
 
 """On peut récupérer des propriétés de l'objet"""
 print(Personne_1.prenom)
-# >>> Jean
+>>> Jean
 
 """On peut faire agir l'objet"""
 Personne_1.marcher_en_avant()
-# >>> Jean Mabillon a fait 1 pas !
+>>> Jean Mabillon a fait 1 pas !
 Personne_1.parler('De re diplomatica')
-# >>> mon mot est : "De re diplomatica"
+>>> mon mot est : "De re diplomatica"
 \end{lstlisting}
 
 C'est cette technique de programmation que j'ai mis en pratique afin de créer les deux modules \citecode{SynSemTS.py} et \citecode{STSig.py}. Nous aurons l'occasion de revenir sur ce dernier module d'expérimentation créé pour tester de nouvelles métriques et qui est encore en phase de développement, dans la section \ref{inter_fonc}.\\
@@ -385,22 +386,22 @@ En reprenant le diagramme, une première classe (\citecode{RecognizerTypeFiles})
 
 Une seconde classe (\citecode{FilesToMetrics}) qui hérite des propriétés et méthodes de la première, effectue la transition entre la première classe et la troisième, en réalisant les calculs de la distance de Levenshtein et en récupérant les résultats sous forme d'entier et de matrice. Ce résultat permet en outre, d'effectuer les futurs calculs.
 
-Une troisième classe (\citecode{TranscriptionMetricsTools}), la plus importante, hérite de la première et de la deuxième. Elle se charge des dernières tâches de normalisation textuelle (suppression des \textit{stop words}) et réalise les calculs permettant de retrouver les métriques qui seront affichées plus tard dans le navigateur \textit{web} (distance de Hamming, WER, CER, indice de Jaccard et similarité cosinus). Dès lors, les objets créés à la fin du script principal \citecode{kraken\_benchmark.py} sont issus de la dernière classe. 
+Une troisième classe (\citecode{TranscriptionMetricsTools}), la plus importante, hérite de la première et de la deuxième. Elle se charge des dernières tâches de normalisation textuelle (suppression des \textit{stop words}) et réalise les calculs permettant de retrouver les métriques qui seront affichées plus tard dans le navigateur \textit{web} (distance de Hamming, WER, CER, indice de Jaccard et similarité cosinus). Dès lors, les objets créés à la fin du \textit{script} principal \citecode{kraken\_benchmark.py} sont issus de la dernière classe. 
 
-Une autre classe est créée indépendamment (\citecode{VisualSynTS}) elle permet de réaliser des objets spécifiques correspondant aux visualisations graphiques affichées dans le navigateur \textit{web}. En revanche, pour des raisons de temps de chargement trop longs, j'ai décidé de créer ces objets dans les routes (\citecode{routing.py}) au moment où l'utilisatrice ou l'utilisateur formule une requête pour les consulter.\\
+Une autre classe est créée indépendamment (\citecode{VisualSynTS}); elle permet de réaliser des objets spécifiques correspondant aux visualisations graphiques affichées dans le navigateur \textit{web}. En revanche, pour des raisons de temps de chargement trop longs, j'ai décidé de créer ces objets dans les routes (\citecode{routing.py}) au moment où l'utilisatrice ou l'utilisateur formule une requête pour les consulter.\\
 
 Pour conclure, il n'était pas obligatoire de programmer avec ce paradigme, mais les avantages de la programmation orientée objet sont nombreux et ont séduit pour la suite du projet. 
 
-Chaque objet présente une documentation claire quant à ses propriétés et ses méthodes, ce qui permet de savoir quels types de fonctions on manipule pendant le développement. Les types d'objets créés peuvent servir de base pour d'autres objets (on évite ainsi de réécrire du code existant). On peut réutiliser ces objets dans le cadre d'autres projets en réutilisant certains briques déjà posées dans ces classes. 
+Chaque objet présente une documentation claire quant à ses propriétés et ses méthodes, ce qui permet de savoir quels types de fonctions on manipule pendant le développement. Les types d'objets créés peuvent servir de base pour d'autres objets (on évite ainsi de réécrire du code existant). On peut réutiliser ces objets dans le cadre d'autres projets en réutilisant certaines briques déjà posées dans ces classes. 
 
-Enfin en plus d'obtenir un code plus compréhensible, il est plus facile de le maintenir et de le faire évoluer. On pourra modifier les objets, par exemple ajouter de nouvelles métriques ou les corriger, sans toucher à l'ensemble de l'interface comme la séquence HTR ou la partie affichage dans le navigateur.
+Enfin en plus d'obtenir un code plus compréhensible, il est plus facile de le maintenir et de le faire évoluer. On pourra modifier les objets, par exemple, ajouter de nouvelles métriques ou les corriger, sans toucher à l'ensemble de l'interface comme la séquence HTR ou la partie affichage dans le navigateur.
 
 \subsubsection{Retour sur les principales difficultés rencontrées}
 
 Parmi les difficultés auxquelles je me suis heurté au cours du développement de l'application, on peut relever les points suivants :
 
 \begin{itemize}
-    \item La gestion des données d'entrée (fichiers texte, images et modèle) n'est pas encore optimale. Actuellement, l'utilisatrice ou l'utilisateur doit stocker ses fichiers à la racine du script principal suivant un système d'étiquetage comme on l'a vu plus haut. Ce système pourrait être amélioré;
+    \item La gestion des données d'entrée (fichiers texte, images et modèle) n'est pas encore optimale. Actuellement, l'utilisatrice ou l'utilisateur doit stocker ses fichiers à la racine du \textit{script} principal suivant un système d'étiquetage comme on l'a vu plus haut. Ce système pourrait être amélioré;
     \item Durant le développement de la fonction coïncidant avec la séquence HTR, je devais trouver le moyen de stocker et d'associer les fichiers entre-eux sans perdre l'ordre des fichiers pour ne pas mélanger une prédiction avec sa vérité terrain et son image. Je pouvais aboutir à des structures de données trop complexes (liste imbriquées de tuples) à manipuler. Je devais souvent lancer le programme en entier, plusieurs fois, pour être sûr que l'ordre n'avait pas été modifié. La programmation objet m'a permis de résoudre le problème;
     \item N'étant pas familier de la programmation objet au moment de coder l'application, beaucoup d'essais ont étaient nécessaires pour aboutir au résultat actuel. Le module \citecode{SynSemTS.py} doit encore pouvoir être simplifié. Une réflexion doit être menée sur cet aspect qui permettrait d'accélérer davantage le processus de création des objets à la fin du script principal;
     \item Je n'ai pas réussi à trouver le moyen d'afficher deux visualisations graphiques différentes sur la même route URL. 
@@ -418,9 +419,9 @@ Ce fichier réalisait un test sur le code source, par le biais du logiciel \text
 
 Ce système, bien qu'en apparence contraignant, m'a obligé à assurer une rigueur tout au long de la rédaction de mon code, au fur et à mesure des développement et m'a permis d'accroître mes réflexes tels que la rédaction d'une documentation pour chaque fonctions, nommage des variables etc.
 \newpage
-\textbf{Tests fonctionnels et retours utilisateurs - } Sur ce point, les tests fonctionnels ont primés sur la rédaction de tests unitaires. On entend par tests unitaires un ensemble de scripts rédigés en langage Python, qui permettent de tester et de s'assurer du bon fonctionnement de plusieurs parties spécifiques du code.  \textit{Kraken-Benchmark} est considéré comme une application \inquote{non-critique} et qui fait une large part à l'expérimentation ; elle est actuellement utilisée par un nombre restreint de personnes au sein d'ALMAnaCH. Une fonctionnalité défaillante n'entraîne donc pas de retard conséquent pour l'avancement du projet, contrairement à une application \textit{eScriptorium}, par exemple, qui doit être opérationnelle pour un grand nombres d'usages. 
+\textbf{Tests fonctionnels et retours utilisateurs - } Sur ce point, les tests fonctionnels ont primés sur la rédaction de tests unitaires. On entend par tests unitaires un ensemble de scripts rédigés en langage Python, qui permettent de tester et de s'assurer du bon fonctionnement de plusieurs parties spécifiques du code.  \textit{Kraken-Benchmark} est considéré comme une application \inquote{non-critique} et qui fait une large part à l'expérimentation ; elle est actuellement utilisée par un nombre restreint de personnes au sein d'ALMAnaCH. Une fonctionnalité défaillante n'entraîne donc pas de retard conséquent pour l'avancement du projet, contrairement à une application comme \textit{eScriptorium}, par exemple, qui doit être opérationnelle pour un grand nombres d'usages. 
 
-De plus, les difficultés rencontrées pour développer certaines fonctionnalités essentielles de l'application, conjuguées au besoin de pouvoir effectuer des tests sur des données Lectaurep avant la fin du stage, m'ont obligé à me concentrer sur l'aspect général et les résultats visibles de l'application, plutôt que de couvrir, par la rédaction de tests longs, chaque détails de fonctionnement.
+De plus, les difficultés rencontrées pour développer certaines fonctionnalités essentielles de l'application, conjuguées au besoin de pouvoir effectuer des tests sur des données Lectaurep avant la fin du stage, m'ont obligé à me concentrer sur l'aspect général et les résultats visibles de l'application, plutôt que de couvrir, par la rédaction de tests longs, chaque détails de fonctionnement de l'application.
 
 Cependant, si l'outil doit évoluer dans la suite du projet, ou inclure de nouvelles fonctionnalités et hypothétiquement être mis en production à plus grande échelle, la rédaction de tests unitaires s'avérera être une priorité absolue afin s'assurer des bases plus solides.\\
 
@@ -434,7 +435,9 @@ Ces retours positifs montrent que l'utilisation de l'application peut être gén
 Nous proposons dans cette partie de passer en revue les fonctionnalités implémentées actuellement dans Lectaurep et la manière dont on peut interpréter les résultats.
 
 \textbf{La page d'accueil : tableau général de métriques et visualisation par images (Figure \ref{fig:accueil_KB_1} et Figure \ref{fig:accueil_KB_2}) - } La page d'accueil est la première page rencontrée par l'utilisatrice ou l'utilisateur. Un tableau de métriques (\textit{Dashboard}) permet d'obtenir rapidement des scores sur l'ensemble de son corpus (Figure \ref{fig:accueil_KB_1}). Ces métriques ont été présentées en section \ref{metriques} de ce mémoire. On peut attirer l'attention sur la distance de Hamming. C'est l'indicateur qui permet de révéler rapidement à l'utilisateur si la taille de la vérité terrain et de la prédiction font la même longueur. Dans le cas contraire, un symbole \inquote{$\emptyset$} l'indiquera. Un code couleur renseigne les meilleurs scores obtenus (vert) et les scores moins bons (rouge). De plus, sur la suggestion d'Alix Chagué, des hyperliens placés sur les numéros des images permettent d'accéder à l'image en question avec un niveau de détails plus important (Cf. Figure \ref{fig:accueil_KB_2}). 
-À l'échelle de l'image, certaines métriques du tableau sont répétées afin d'éviter des alternances à l'utilisateur entre le haut et le bas de la page.\\ Un premier graphique montre le nombre de caractères exactement reconnus, supprimés et insérés. Enfin, il est possible d'accéder aux autres fonctionnalités de l'application qui montrent d'autres vues de l'application.
+À l'échelle de l'image, certaines métriques du tableau sont répétées afin d'éviter des alternances à l'utilisateur entre le haut et le bas de la page.
+
+Un premier graphique montre le nombre de caractères exactement reconnus, supprimés et insérés. Enfin, il est possible d'accéder aux autres fonctionnalités qui montrent d'autres vues de l'application.
 \begin{figure}[H]
     \centering
     \includegraphics[width=16cm]{images_partie_3/interface_KB/KB_2.png}
@@ -449,7 +452,7 @@ Nous proposons dans cette partie de passer en revue les fonctionnalités implém
         \label{fig:accueil_KB_2}
 \end{figure}
 \newpage
-\textbf{Une option pour confronter la vérité terrain et la prédiction HTR (Figure \ref{fig:accueil_KB_3}) - } La fonctionnalité \textit{Show versus} de la page d'accueil permet de confronter la vérité terrain dans la colonne de gauche à la prédiction située dans la colonne de droite. La colonne du milieu est une superposition des deux textes. Un code couleur signale à l'utilisateur les caractères parfaitement reconnus en vert, les caractères supprimés ou substitués en rouge, et les insertions en bleu. 
+\textbf{Une option pour confronter la vérité terrain et la prédiction HTR (Figure \ref{fig:accueil_KB_3}) - } La fonctionnalité \textit{Show versus} de la page d'accueil permet de confronter la vérité terrain dans la colonne de gauche à la prédiction située dans la colonne de droite. La colonne du milieu est une superposition des deux textes. Un code couleur signale à l'utilisatrice ou à l'utilisateur les caractères parfaitement reconnus en vert, les caractères supprimés ou substitués en rouge, et les insertions en bleu. 
 
 Au niveau supérieur, la distance de Levensthein indique à l'utilisateur la mesure des différences entre les deux textes : si le score est supérieur à 10, il s'affiche en rouge pour indiquer que le texte contient un grand nombre d'erreurs.
 \begin{figure}[H]
@@ -470,7 +473,7 @@ Au niveau supérieur, la distance de Levensthein indique à l'utilisateur la mes
 \bigskip
 
 \textbf{Une visualisation des phrases sous la forme de signaux (Figures \ref{fig:accueil_KB_5},  \ref{fig:accueil_KB_6} et \ref{fig:accueil_KB_7}) - } La fonctionnalité \textit{Vizualize signals} (Cf. Figure \ref{fig:accueil_KB_5}) permet de générer une visualisation expérimentale qui appartient au module \citecode{STSig.py}\footnote{Le détail de l'algorithme est présenté dans le \textit{notebook} Jupyter intitulé \inquote{Evaluation de la similarité entre deux séquences dans le contexte de la reconnaissance automatique de caractères}.}. 
-J'ai essayé de superposer sous la forme de droites. Ces droites passent par des points dont les coordonnées correspondent, en abscisses, l'ordre d'enchaînement des caractères dans les deux phrases, et, en ordonnées, des valeurs numériques correspondant aux caractères, eux-mêmes accessibles par l'onglet \textit{Dictionnary position-weight characters}. Il s'agit d'un dictionnaire qui permet de décoder les valeurs numériques de l'axe des ordonnées.\\ 
+J'ai essayé de superposer sous la forme de droites le texte de référence et la prédiction. Ces droites passent par des points dont les coordonnées correspondent, en abscisses, à l'ordre d'enchaînement des caractères dans les deux textes, et, en ordonnées, des valeurs numériques correspondant aux caractères, eux-mêmes accessibles par l'onglet \textit{Dictionnary position-weight characters}. Il s'agit d'un dictionnaire qui permet de décoder les valeurs numériques de l'axe des ordonnées.\\ 
 
 \begin{figure}[h!]
     \centering
@@ -479,7 +482,7 @@ J'ai essayé de superposer sous la forme de droites. Ces droites passent par des
         \label{fig:accueil_KB_5}
 \end{figure}
 \newpage
-Ces valeurs numériques en ordonnées sont attribuées comme suit : un caractère de ponctuation sera associé à une pondération de 0.5, un espace à 0, et un caractère non reconnu ou des chiffres à une valeur de -1.
+Ces valeurs numériques en ordonnées sont construites selon un système de pondération comme suit : un caractère de ponctuation sera associé à une pondération de 0.5, un espace à 0, et un caractère non reconnu ou des chiffres à une valeur de -1.
 
 Chaque caractère de l'alphabet latin est encodé de la manière suivante : \inquote{a} vaudra 1, \inquote{b} vaudra 2, \inquote{c} vaudra 3 etc. 
 Si ces caractères subissent une ou des transformation(s) on leur ajoute un poids : une accentuation vaudra 0.5, une capitalisation 0.1 et une capitalisation ajoutée à une accentuation 0.6. Par exemple si \inquote{a} vaut 1 alors \inquote{à} vaudra 1.5 et un \inquote{À} vaudra 1.6, de même si \inquote{b} vaut 2 alors \inquote{B} vaudra 2.1 etc.
@@ -493,7 +496,7 @@ Si les deux droites se confondent, cela signifie que la prédiction correspond �
         \label{fig:accueil_KB_7}
 \end{figure}
 
-Dans le but de ne pas surcharger le graphique et prendre le risque de le rendre illisible, un système d'intervalles est réglable (Cf. Figure \ref{fig:accueil_KB_6}) par l'utilisatrice ou l'utilisateur pour accéder à certaines parties du texte par le biais de l'onglet \textit{Settings sequence signals}. Cette représentation est un essai, et elle ne peut se substituer aux métriques classiques d'évaluation des modèles HTR présentées plus haut; de plus un trop grand nombre d'erreurs rend rapidement la lecture impossible.
+Dans le but de ne pas surcharger le graphique et prendre le risque de le rendre illisible, un système d'intervalles est réglable (Cf. Figure \ref{fig:accueil_KB_6}) par l'utilisatrice ou l'utilisateur pour accéder à certaines parties des textes par le biais de l'onglet \textit{Settings sequence signals}. Cette représentation est un essai, et elle ne peut se substituer aux métriques classiques d'évaluation des modèles HTR présentées plus haut; de plus un trop grand nombre d'erreurs rend rapidement la lecture impossible.
 
 \begin{figure}[h!]
     \centering
@@ -510,25 +513,24 @@ Dans la section \ref{objectifs}, nous avions fixé plusieurs objectifs à attein
 L'outil proposé actuellement est opérationnel pour tester des modèles de transcription, regroupant les métriques classiques d'évaluation de l'HTR. Cependant, l'outil peut encore être largement amélioré, voici un potentiel cahier des charges de l'application :
 \begin{itemize}
     \item Dans la section \ref{gestion_projet}, nous avons évoqué le manque de tests unitaires pour l'application;
-    \item La gestion des données en entrée pour bénéficier d'amélioration conséquences : possibilité pour l'utilisateur de choisir un chemin sans avoir à trier ses données en amont du projet et de les étiqueter par un système de label dans le nommage des fichiers, le programme associant automatiquement la bonne image à sa transcription de vérité terrain. De plus, l'utilisateur doit pouvoir importer ses données dans des formats structurés comme le XML-TEI;
+    \item La gestion des données en entrée peut bénéficier d'améliorations conséquences : possibilité pour l'utilisatrice ou l'utilisateur de choisir un chemin sans avoir à trier ses données en amont du projet et de les étiqueter par un système de label dans le nommage des fichiers, le programme associant automatiquement la bonne image à sa transcription de vérité terrain. De plus, l'utilisatrice ou l'utilisateur doit pouvoir importer ses données dans des formats structurés comme le XML-TEI;
     \item La seule manière de conserver le rapport est de sauvegarder la page HTML : l'application devrait proposer l'export du rapport dans des formats structurés comme XML-TEI ou XML ALTO ou encore en PDF. Le XML ALTO permet d'inclure des métriques comme le taux de confiance de reconnaissance (\textit{word accuracy}) dans des éléments prédéfinis; 
     \item Un scénario envisageable pourrai faire correspondre le fichier XML-TEI en import et en export dans l'application au format pivot XML-TEI de Lectaurep présenté dans la partie \ref{partie_2} (Cf. Figure \ref{fig:TEI-KB})
     \item Certaines étapes de la séquence du traitement HTR dans l'application devraient être optionnelles (la binarisation par exemple);
     \item D'autres traitements TAL pourraient être proposés dans \textit{Kraken-Benchmark}, ainsi l'application pourrait être interfacée avec l'API d'\textit{Entity-Fishing} et paramétrée avec le référentiel souhaité pour tester les modèles spécifiquement entraînés à la reconnaissance d'entités nommées; 
-    \item Actuellement, il n'est pas possible d'utiliser son propre modèle de segmentation dans l'application. À noter qu'au début du stage la documentation de l'API Kraken était moins fournie qu'aujourd'hui;
+    \item Actuellement, il n'est pas possible d'utiliser son propre modèle de segmentation dans l'application. À noter qu'au début du stage la documentation de l'API Kraken était moins fournie, ce qui n'est plus le cas;
     \item Découlant de la proposition précédente, l'évaluation des modèles de segmentation dans l'application n'a pas été implémentée. Cependant la documentation de l'API Kraken enrichie depuis peu, ainsi qu'une rapide prospection des outils dans les dépôts de code montrent que cela est réalisable\footnote{Le code du dépôt \textit{TMG\_ImageAnnotation} disponible sur GitHub propose un module d'annotation d'images qui pourrait être adapté pour les besoins d'évaluation de la segmentation pour \textit{Kraken-Benchmark}. En combinaison avec les fonctions de l'API Kraken et le \textit{package} Python \textit{PIL} pour le traitement d'images; on pourrait implémenter dans \textit{Kraken-Benchmark} une visualisation de la segmentation sous la forme de rectangles entourant les zones de textes sur l'image indiquant si la segmentation a été correctement effectuée, via un code couleur, sur les images. \textit{TMG\_ImageAnnotation}, URL : \url{https://github.com/guillotel-nothmann/imageAnnotation}};
-    \item La partie CLI qui permet le chargement des données dans \textit{Kraken-Benchmark} constitue une solution provisoire, pourrait bénéficier d'une interface graphique au même titre que la partie visualisation de données dans le navigateur \textit{web}. Cela est possible en migrant le script principal \citecode{kraken\_benchmark.py} vers un système de routes basé sur \textit{Flask} et des \textit{templates} HTML associées pour téléverser les fichiers dans une interface graphique;
-    \item Au lieu de se servir de l'actuel serveur de développement du \textit{micro-framework Flask}, le programme pourrait reposer sur un serveur, comme Heroku\footnote{\textit{Heroku - Cloud Application Platfrom}, URL : \url{https://www.heroku.com/}}, pour permettre le déploiement de \textit{Kraken-Benchmark} sur le \textit{web} et sans avoir à lancer l'application depuis le terminal. Dans, une autre optique \textit{Kraken-Benchmark} pourrait constituer une fonctionnalité (\textit{plugin}) intégrée à \textit{eScriptorium}\footnote{\textit{eScriptorium} est programmé avec le \textit{framework Django} qui, comme \textit{Flask}, repose sur une architecture de type MVT (Modèle-Vue-\textit{Templates}) dès lors une migration vers ce projet doit être réalisable.}. Ainsi l'utilisateur effectuant ses vérités terrains et l'entraînement de ses modèles sur \textit{eScriptorium} pourrait bénéficier d'un relais vers \textit{Kraken-Benchmark} pour mesurer l'efficacité de son modèle. Ce dernier point nécessite cependant d'avoir répondu à l'ensemble des tâches précédentes.
+    \item La partie CLI, qui permet le chargement des données dans \textit{Kraken-Benchmark}, constitue une solution provisoire. Elle pourrait bénéficier d'une interface graphique au même titre que la partie visualisation de données dans le navigateur \textit{web}. Cela est possible en migrant le script principal \citecode{kraken\_benchmark.py} vers un système de routes basé sur \textit{Flask} et des \textit{templates} HTML associées pour téléverser les fichiers dans une interface graphique;
+    \item Au lieu de se servir de l'actuel serveur de développement du \textit{micro-framework Flask}, le programme pourrait reposer sur un serveur, comme Heroku\footnote{\textit{Heroku - Cloud Application Platfrom}, URL : \url{https://www.heroku.com/}}, pour permettre le déploiement de \textit{Kraken-Benchmark} sur le \textit{web} et sans avoir à lancer l'application depuis le terminal. Dans, une autre optique \textit{Kraken-Benchmark} pourrait constituer une fonctionnalité (\textit{plugin}) intégrée à \textit{eScriptorium}\footnote{\textit{eScriptorium} est programmé avec le \textit{framework Django} qui, comme \textit{Flask}, repose sur une architecture de type MVT (Modèle-Vue-\textit{Templates}) dès lors une migration vers ce projet doit être réalisable.}. Ainsi l'utilisatrice ou l'utilisateur effectuant ses vérités terrains et l'entraînement de ses modèles sur \textit{eScriptorium} pourrait jouïr d'un relais vers \textit{Kraken-Benchmark} pour mesurer l'efficacité de son modèle. Ce dernier point nécessite cependant d'avoir répondu à l'ensemble des tâches précédentes.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[h!]
     \centering
     \centerline{\fbox{\includegraphics[width=19cm]{images_partie_3/scenari_KB.png}}}
     \caption{Le Cas 2 représente un scénario utilisateur envisageable dans \textit{Kraken-Benchmark} \textcopyright L. Terrie, 2020, \textit{Diagrams.net}}
     \label{fig:TEI-KB}
 \end{figure}
 
-\newpage
 \thispagestyle{empty}
 \chapter{Tests de \textit{Kraken-Benchmark} sur les données Lectaurep}\label{tests_KB_lectaurep}
 
