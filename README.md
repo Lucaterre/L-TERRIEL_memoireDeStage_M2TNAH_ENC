@@ -8,11 +8,19 @@
 
 - `memoire_L-Terriel_latex` : contient le code-source ![](latex_logo.png)   du mémoire de stage
 
-- `L_TERRIEL_memoireDeStage_M2TNAH_ENC-vf.pdf` : PDF du mémoire
+- `L_TERRIEL_memoireDeStage_M2TNAH_ENC-vf.pdf` : PDF du mémoire de stage
 
-- `Annexes` : PDF du mémoire
-    - A
-    - B
-    - C
-    - D
-    - E
+- `Annexes` : annexes du mémoire contenant les livrables techniques et des documents complémentaires
+
+    - `A-Sources_et_Ecosystème_Lectaurep`
+        - `A1-histoire_projet_lectaurep`
+        - `A2-Extraits_du_corpus_des_répertoires_de_notaires`
+        - `A3-Outils_de_lectaurep`
+        
+    - `B-Format_pivot_XML_TEI_Lectaurep` (livrable)
+    
+    - `C-Application_Kraken_Benchmark` (livrable)
+    
+    - `D-Doc_travail_pivot_tei_lectaurep`
+    
+    - `E-Doc_travail_KB`
