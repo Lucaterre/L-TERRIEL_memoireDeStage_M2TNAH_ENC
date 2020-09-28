@@ -6,11 +6,11 @@
 ###### lieu de stage : INRIA (ALMAnaCH)
 --------------
 
-- `memoire_L-Terriel_latex` : contient le code-source ![](latex_logo.png)   du mémoire de stage
+- `memoire_L-Terriel_latex` : Code-source ![](latex_logo.png)   du mémoire de stage
 
-- `L_TERRIEL_memoireDeStage_M2TNAH_ENC-vf.pdf` : PDF du mémoire de stage
+- `L_TERRIEL_memoireDeStage_M2TNAH_ENC-vf.pdf` : Fichier PDF du mémoire de stage
 
-- `Annexes` : annexes du mémoire contenant les livrables techniques et des documents complémentaires
+- `Annexes` : Annexes du mémoire de stage contenant les livrables techniques et des documents complémentaires
 
     - `A-Sources_et_Ecosystème_Lectaurep`
         - `A1-histoire_projet_lectaurep`
