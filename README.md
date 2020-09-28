@@ -6,7 +6,7 @@
 ###### lieu de stage : INRIA (ALMAnaCH)
 --------------
 
-- `memoire_L-Terriel_latex` : contient le code-source Latex  ![Screenshot](screenshot.png)   du mémoire de stage
+- `memoire_L-Terriel_latex` : contient le code-source ![](latex_logo.png)   du mémoire de stage
 
 - `L_TERRIEL_memoireDeStage_M2TNAH_ENC-vf.pdf` : PDF du mémoire
 
