@@ -17,9 +17,9 @@
         - `A2-Extraits_du_corpus_des_répertoires_de_notaires`
         - `A3-Outils_de_lectaurep`
         
-    - `B-Format_pivot_XML_TEI_Lectaurep` (livrable)
+    - `B-Format_pivot_XML_TEI_Lectaurep` (livrable également accessible sur [Gitlab, branche master](https://gitlab.inria.fr/almanach/lectaurep/documentation/-/tree/master))
     
-    - `C-Application_Kraken_Benchmark` (livrable)
+    - `C-Application_Kraken_Benchmark` (livrable également accessible sur [Gitlab, branche KB-app](https://gitlab.inria.fr/dh-projects/kraken-benchmark/-/tree/KB-app))
     
     - `D-Doc_travail_pivot_tei_lectaurep`
     
