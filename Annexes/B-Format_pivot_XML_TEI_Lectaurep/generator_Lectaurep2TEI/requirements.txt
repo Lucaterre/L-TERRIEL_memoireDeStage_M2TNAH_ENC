@@ -1,0 +1,6 @@
+lxml
+bs4
+pyfiglet
+pillow
+tqdm
+termcolor

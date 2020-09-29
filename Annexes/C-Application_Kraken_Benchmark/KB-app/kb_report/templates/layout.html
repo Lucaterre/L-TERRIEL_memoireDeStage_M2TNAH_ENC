@@ -1,0 +1,96 @@
+{% extends 'default.html' %}
+
+{% block body %}
+
+<!-- Header -->
+
+<div class="jumbotron" style="background-color: #f07e26">
+    <div class="row">
+        <div>
+            <a href="{{url_for('report')}}">
+                <img src="{{ url_for('static', filename='./KB_logo.svg') }}">
+            </a>
+        </div>
+        <div class="col-sm">
+            <a href="{{url_for('report')}}" style="color: black">
+                <h1>Kraken-Benchmark</h1>
+            </a>
+            <p>Metrics dashboard to evaluate HTR/OCR models in NLP context based on <a href="http://kraken.re/" title="kraken">Kraken</a> and STS Tools (Similarity to Sequences Tools)</p>
+        </div>
+    </div>
+</div>
+
+<!--Help dialog pop-up-->
+
+<div class="container" id="help_pop_1">
+    <div class="row">
+        <div class="col-sm">
+            <p><i id="icon_pop_cross" class="fas fa-times-circle first" style="color: darkred"></i><i> For help with metrics and / or usage tips on Kraken-Benchmark, click the help icon ( <i class="far fa-question-circle"></i> ) at the bottom right of the screen.</i></p>
+        </div>
+    </div>
+</div>
+<br>
+
+{% block content %}{% endblock content %}
+
+<div class="cRetour"></div>
+
+<!--Use this help modal canevas for another pages-->
+
+<!--<div class="hRetour">-->
+<!-- Button to Open the Modal -->
+<!--<button type="button" class="btn btn-primary btn-help" data-toggle="modal" data-target=".bd-example-modal-lg">
+        <i class="far fa-question-circle"></i>
+    </button>-->
+
+<!--The Modal-->
+<!--<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">-->
+
+<!-- Modal Header -->
+<!--<div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>-->
+
+<!-- Modal body -->
+<!--<div class="modal-body">
+                    <p>Modal body..</p>
+                </div>-->
+
+<!-- Modal footer -->
+<!--<div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<!--footer-->
+
+<footer id="sticky-footer" class="py-4 bg-dark text-white-50" style="flex-shrink: none;">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-sm">
+                <small>Copyright &copy;2020 Kraken-Benchmark | version 1.1.1</small>
+                <br>
+                <small>Inria-ALMAnaCH | Lucas Terriel | KB logo by Alix Chagué</small>
+            </div>
+            <div class="col-sm">
+                <p><a href="https://gitlab.inria.fr/dh-projects/kraken-benchmark/-/tree/KB-app" title="source code Kraken-Benchmark" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.33334 9.33332 7.58668 15.3333V9.33332L4.92001 1.14666C4.78334.725325 4.13601.725325 4.00001 1.14666L1.33334 9.33332z" fill="#e24329" />
+                            <path d="M22.6667 9.33332 16.4133 15.3333V9.33332L19.08 1.14666C19.2167.725325 19.864.725325 20 1.14666L22.6667 9.33332z" fill="#e24329" />
+                            <path d="M12 22.92 2 9.33334H22L12 22.92z" fill="#e24329" />
+                            <path d="M12 22.92 7.58668 9.33334H1.33334L4.00001 16.6667 12 22.92z" fill="#fc6d26" />
+                            <path d="M12 22.92 16.4133 9.33334H22.6667L20 16.6667 12 22.92z" fill="#fc6d26" />
+                            <path d="M1.33333 9.33334.0666658 13.44C-.0533342 13.8167.0666659 14.24.399999 14.48L12.0133 22.92 1.33333 9.33334z" fill="#fca326" />
+                            <path d="M22.6667 9.33334 23.9333 13.44C24.0533 13.8167 23.9333 14.24 23.6 14.48L12 22.92 22.6667 9.33334z" fill="#fca326" /></svg></a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% endblock body %}

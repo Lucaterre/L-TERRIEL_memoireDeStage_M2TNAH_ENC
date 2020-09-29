@@ -1,0 +1,1375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Guide d'encodage et représentation des données au sein d'un format pivot XML TEI
+               dans le cadre du projet Lectaurep</title>
+            <author>Lucas Terriel, stagiaire Almanach-INRIA dans le cadre du master TNAH de l'Ecole
+               nationale des chartes</author>
+         </titleStmt>
+         <publicationStmt>
+            <p>projet Lectaurep (2018-2020) © Almanach (INRIA) / Minutier central des notaires de
+               Paris (Archives Nationales)</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>ODD construite à partir de oddbyexample.xsl afin de servir de base à la
+               représentation et à l'encodage des données du projet Lectaurep au sein d'un format
+               pivot XML TEI</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <p>Author : Lucas Terriel</p>
+         <p>Reviewers : Laurent Romary, Alix Chagué</p>
+         <p>Version : 1.1.0</p>
+         <div1 type="introduction">
+            <head>Introduction</head>
+            <div2 type="context">
+               <head>Contexte et problématique</head>
+               <p>Nous présentons ici une modélisation et un guide d’encodage, devant servir à
+                  l'élaboration d'un format pivot en XML TEI dans le cadre du projet <ref
+                     target="https://lectaurep.hypotheses.org/lectaurep">LECTAUREP</ref> (Lecture
+                  automatique des répertoires de notaires). Le projet LECTAUREP vise à développer
+                  une plateforme autour de <ref target="https://escripta.hypotheses.org/"
+                     >eScriptorium</ref> comme un outil de transcription, de lecture et d’analyse
+                  par ordinateur des répertoires de notaires conservés au Minutier central des
+                  notaires de Paris aux Archives nationales. Actuellement, le projet compte autant
+                  de formats de représentation de données que de systèmes de stockage ou de
+                  reconnaissance (<ref target="http://kraken.re/">Kraken</ref> via eScriptorium).
+                  Leur seul point commun l’encodage en XML.</p>
+            </div2>
+            <div2 type="data_presentation">
+               <head>Formats des données et des métadonnées du projet Lectaurep</head>
+               <p>Ci-après, la liste des fichiers XML et des schémas associés pour les documents
+                  issus de la transcription automatique dans Lectaurep :</p>
+               <list>
+                  <item>Deux types d’Instruments de recherche (« Minutes et répertoires du
+                     notaire… » et « Images des répertoires du notaire… ») en <ref
+                        target="https://www.loc.gov/ead/">XML EAD</ref> (Encoded Archival
+                     Description) ;</item>
+                  <item>Deux types de fiches producteur correspondant au notaire et à l'étude en <ref
+                        target="https://eac.staatsbibliothek-berlin.de/">XML EAC-CPF</ref> (Encoded
+                     Archival Context for Corporate Bodies, Persons, and Families) ;</item>
+                  <item>Des images, correspondant aux numérisation des répertoires de notaires,
+                     contenant des métadonnées techniques au format <ref
+                        target="https://exiftool.org/TagNames/EXIF.html">XML EXIF</ref>
+                     (Exchangeable image file format);</item>
+                  <item>Les documents de vérité terrain (<emph>Ground Truth</emph>) contiennent la
+                     structure physique et la transcription attendues pour être comparées à celles
+                     reconnues par le système, lors d’une phase d’évaluation ultérieure. Ils sont
+                     actuellement exportés depuis eScriptorium dans le format <ref
+                        target="https://www.loc.gov/standards/alto/">XML ALTO</ref> (Analysed Layout
+                     and Text Object). À noter que ces documents de vérité terrain peuvent être
+                     exportées au format <ref
+                        target="https://projet.liris.cnrs.fr/imagine/pub/proceedings/ICPR-2010/data/4109a257.pdf"
+                        >XML PAGE</ref> (Page Analysis and Ground-Truth Elements). Pour les XML
+                     PAGE, datant généralement de l’utilisation de la plateforme <ref
+                        target="https://transkribus.eu/Transkribus/">Transkribus</ref>, on
+                     envisagera une conversion vers XML ALTO au moyen d’une feuille de style
+                     XSL.</item>
+               </list>
+            </div2>
+            <div2 type="solutions">
+               <head>XML TEI, format pivot des données pour Lectaurep</head>
+               <p>Face à la diversité des formats présentés ci-dessus, on constate que
+                  l'intéropérabilité est quasi-impossible d'une plateforme ou d'un silo
+                  d'information à l'autre. On constate également la volonté de conserver une
+                  cohérence dans les données, au cours des différentes étapes de reconnaissance
+                  (OCR) et des traitements associés dans le projet. Une des solutions proposée
+                  consisterai à homogénéiser ces données et/ou métadonnées grâce à l'utilisation
+                  d'un unique format pivot XML-TEI. Cela permettrai de représenter tous les modèles
+                  de données et de faciliter le transfert et la récupération de ces données (export
+                  dans des formats multiples) entre les diﬀérents modules et les plateformes de
+                  l’éco-système technique LECTAUREP.</p>
+               <p>La TEI (Text Encoding Initiative) est une communauté académique qui vise à
+                  proposer des recommandations pour l’encodage des documents textuels, formalisé
+                  dans les <ref target="https://tei-c.org/guidelines/p5/">Guidelines P5</ref>.
+                  L’encodage et la modélisation TEI proposé ici est dit « <emph>TEI
+                     conformant</emph> », car il vise, à terme l’échange de fichiers, la production
+                  de données pérennes, le traitement par des outils « open-source » et partagés par
+                  les acteurs du projet et enfin la réalisation d’un modèle documenté via l’ODD (One
+                  Document Does it all) présentée ici. L’ODD permet alors la génération d’un schéma
+                  de validation (RelaxNG XML, XML Schema, DTD) et une documentation dans différents
+                  formats (XHTML, XML, PDF…).</p>
+               <p>Cette ODD présente une première modélisation expérimentale du format pivot TEI
+                  ainsi que la liste des éléments TEI permettant de représenter les différents
+                  formats de données utilisés dans LECTAUREP.</p>
+            </div2>
+         </div1>
+         <div1 type="template_pivot_tei">
+            <head>Template format pivot XML TEI</head>
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+               <!-- ***********************************************************     -->
+               <!-- Version 1.1.1 / Date : 2020-07-27                               -->
+               <!--                                                                 -->
+               <!-- La template suivante est développée dans le cadre du projet     -->
+               <!-- LECTAUREP en lien avec les Archives Nationales/INRIA            -->
+               <!-- pour envisager un format XML TEI Pivot pour rassembler          -->
+               <!-- les données  dans une structure logique                         -->
+               <!-- provenant des schémas suivants (CF. ODD) :                      -->
+               <!--                                                                 -->
+               <!-- + EAD (Encoded Archival Description)                            -->
+               <!-- + EAC-CPF (Encoded Archival Context for Corporate Bodies,       -->
+               <!--   Persons, and Families)                                        -->
+               <!-- + ALTO (Analysed Layout and Text Object) - structure physique   -->
+               <!--   document de vérité                                            -->
+               <!-- + EXIF (Exchangeable image file format)                         -->
+               <!--                                                                 -->
+               <!-- ***********************************************************     -->
+               <!--  Author : Lucas Terriel                                         -->
+               <!--  Reviewers : Laurent Romary, Alix Chagué                        -->
+               <!--          Des Questions ?                                        -->
+               <!-- @Gitlab-INRIA/ALMANACH                                          -->
+               <!-- ***********************************************************     -->
+               <!--                                                                 -->
+               <!-- ***********************************************************     -->
+               <!-- Ce script est libre à la réutilisation selon les termes         -->
+               <!-- de la Creative Commons Attribution license.                     -->
+               <!-- ***********************************************************     -->
+               <!--                                                                 -->
+               <!-- Les éléments contenus dans les attributs @ sont ici à titre     -->
+               <!-- d'exemples                                                      -->
+               <!-- ***********************************************************     -->
+               <TEI>
+                  <!--*********************************************************** -->
+                  <!-- LIAISON AVEC INSTRUMENTS DE RECHERCHE EAD & FICHE PRO-     -->
+                  <!-- DUCTEUR EAC                                                -->
+                  <!--*********************************************************** -->
+                  <teiHeader>
+                     <fileDesc>
+                        <titleStmt>
+                           <title>Répertoire du notaire <!-- EAD: <persname> --> - <!-- EAD: <corpname> --></title>
+                           <respStmt>
+                              <persName>
+                                 <!-- EAD : <persname> -->
+                                 <forename><!-- ** Prénom notaire --></forename>
+                                 <surname><!-- ** Nom notaire --></surname>
+                              </persName>
+                              <resp>Conversion des instruments de recherche en EAD :
+                                 <!-- récupération des noms des fichiers EAD <eadid> -->, des fiches producteurs
+                                 EAC, des fichiers ALTO, et des métadonnées EXIF vers le format pivot TEI
+                                 <!-- valeur par défaut --></resp>
+                           </respStmt>
+                        </titleStmt>
+                        
+                        <!-- PARTIE ADMINISTRATIVE -->
+                        
+                        <publicationStmt>
+                           <publisher>
+                              <orgName>Minutier central des notaires parisiens, Archives nationales de France
+                                 <!-- valeur par défaut --></orgName>
+                           </publisher>
+                           <pubPlace>
+                              <address>
+                                 <addrLine>11 rue des Quatre-Fils <!-- valeur par défaut --></addrLine>
+                                 <addrLine>75003 Paris <!-- valeur par défaut --></addrLine>
+                                 <addrLine>FRANCE <!-- valeur par défaut --></addrLine>
+                              </address>
+                           </pubPlace>
+                           <availability status="free">
+                              <!-- Voir pour changer le status -->
+                              <p>Format XML-TEI pivot pour le projet Lectaurep <!-- valeur par défaut --></p>
+                              <!-- Ajout d'une licence à discuter -->
+                           </availability>
+                        </publicationStmt>
+                        
+                        <!-- PARTIE CONCERNANT LES SOURCES DE REPERTOIRES -->
+                        
+                        <sourceDesc>
+                           <!-- ** Identification de la localisation des répertoires du notaire -->
+                           <msDesc xml:id="id_automatique" xml:lang="fr">
+                              <msIdentifier>
+                                 <country>France</country>
+                                 <settlement>Paris</settlement>
+                                 <institution>Archives nationales de France</institution>
+                                 <repository>Minutier central des notaires parisiens</repository>
+                                 <idno type="identifiant">
+                                    <!--EAD [Images et répertoires de notaires] : cotes étude MC/RE => <unitid type="cote-de-consultation"> --></idno>
+                              </msIdentifier>
+                              
+                              <!-- ** Description du contenu des répertoires -->
+                              <!-- Rassemble les métadonnées présentes dans EAD [Images et répertoires de notaires] -->
+                              <msContents>
+                                 <summary>
+                                    <!-- premier niveau -->
+                                    <!-- EAD : @xml:id correspond à l'identifiant du premier <c> -->
+                                    <list type="Répertoire" xml:id="id_repertoire">
+                                       <item>
+                                          <idno><!-- EAD : cote du repertoire <unitid type="cote-de-consultation"> --></idno>
+                                          <origDate from="1000" to="1000"
+                                             ><!-- EAD :  Date du répertoire <unitdate> --></origDate>
+                                          <desc><!-- EAD : Description physique du répertoire  <physdesc> --></desc>
+                                          <note><!-- EAD : Informations supplémentaires sur le répertoire <scopecontent> --></note>
+                                          <!-- deuxième niveau -->
+                                          <list type="Contenu_Répertoire">
+                                             <!-- EAD : @xml:id correspond à l'identifiant des <c> inférieurs -->
+                                             <item xml:id="Id_table-listechrono">
+                                                <idno type="pieces"
+                                                   ><!-- EAD : pages recto/verso <unitid> --></idno>
+                                                <title><!--  EAD : <unittitle> --></title>
+                                                <material><!-- EAD : nombre de feuillets <physdesc>/<extent>--></material>
+                                                <note><!-- EAD (optionnel) : informations supplémentaires <scopecontent> --></note>
+                                                <!-- On rapporte dans <graphic> ici de l'intervalle des images qui comprend les 
+                                                les feuillets -->
+                                                <graphic
+                                                   url="DAFANCH96_023MIC08132_L.jpg#DAFANCH96_023MIC08141_L.jpg"/>
+                                             </item>
+                                             <item xml:id="Id_table-listechrono2"/>
+                                             <!-- ... -->
+                                          </list>
+                                       </item>
+                                    </list>
+                                 </summary>
+                                 <msItemStruct xml:lang="fr">
+                                    <locus from="MC/RE/XXX" to="MC/RE/XXX"><!-- EAD [Images et répertoires de notaires] : <unitid type="cote-de-consultation"> première et derniere côte des répertoires --></locus>
+                                    <!-- ** Authentification du notaire et de l'étude -->
+                                    <author>
+                                       <!-- Ici on fait le lien avec la fiche producteur EAC via les attributs @source-->
+                                       <persName source="lien_vers_fiche_EAC_Notaire">
+                                          <!-- EAD : <persname> -->
+                                          <forename><!-- ** Prénom notaire --></forename>
+                                          <surname><!-- ** Nom notaire --></surname>
+                                       </persName>
+                                       <!-- *** Affiliation à une étude -->
+                                       <orgName source="lien_vers_fiche_EAC_Etude"
+                                          ><!-- EAD : <corpname> --></orgName>
+                                       <!-- *** Dates des répertoires == Dates d'exercices du notaire (EAC) -->
+                                       <date when-custom="1875-02-24 / 1875-02-24"
+                                          ><!-- EAD : <did>/<unitdate> --></date>
+                                    </author>
+                                    <textLang mainLang="fr">français <!-- valeur par défaut --></textLang>
+                                 </msItemStruct>
+                              </msContents>
+                              <!-- Ici on gère les genres auxquels sont rattachés les répertoires -->
+                              <additional>
+                                 <surrogates>
+                                    <bibl source="Référentiel_genreform">
+                                       <title type="genreform" xml:id="ID_genreform1"
+                                          ><!-- EAD : répertoire d'officier public ministériel <controlaccess>/<genreform> --></title>
+                                       <title type="genreform" xml:id="ID_genreform2"
+                                          ><!-- EAD : répertoire <controlaccess>/<genreform> --></title>
+                                    </bibl>
+                                 </surrogates>
+                              </additional>
+                           </msDesc>
+                        </sourceDesc>
+                     </fileDesc>
+                     <!--***********************************************************   -->
+                     <!-- LIAISON AVEC LES METADONNEES TECHNIQUES DES IMAGES AU FORMAT -->
+                     <!-- EXIF DANS DES ELEMENTS TEI <XenoData>                        -->
+                     <!-- chaque élément <XenoData> reçoit :
+                     - @xmlns : espace de nom correspondant au schéma des métadonnées techniques EXIF
+                     - @facs : qui permet aux groupe de métadonnées EXIF d'être relier à un fichier
+                     image contenu dans @id de <graphic> (voir plus bas)
+                     - @n : contient le nom du fichier image avec l'extension de fichier
+                     -->
+                     <!--***********************************************************   -->
+                     
+                     <!-- Exemple Exif :  -->
+                     
+                     <xenoData xmlns:exif="http://ns.adobe.com/exif/1.0/" facs="#FRAN_0025_0039_L-1"
+                        n="FRAN_0025_0039_L-1.jpeg">
+                        <!-- @facs : relier à <graphic> -->
+                        <exif:EXIF>
+                           <exif:ApertureValue/>
+                           <exif:ColorSpace/>
+                           <!-- ... -->
+                        </exif:EXIF>
+                     </xenoData>
+                     <xenoData>
+                        <!-- .... -->
+                     </xenoData>
+                     <xenoData>
+                        <!-- ... -->
+                     </xenoData>
+                     <!-- Notifications effectuées sur le Format pivot TEI -->
+                     <encodingDesc>
+                        <editorialDecl>
+                           <p><!-- en cas de modifications ou spécificités aux format pivot TEI à documenter --></p>
+                        </editorialDecl>
+                     </encodingDesc>
+                     <revisionDesc>
+                        <change when="2020-05-14">File created</change>
+                     </revisionDesc>
+                  </teiHeader>
+                  
+                  <!--***********************************************************          -->
+                  <!-- LIAISON AVEC LES FICHIERS XML ALTO (1ere partie : <facsimile>)      -->
+                  <!-- 
+                  + <facsimile> : contient les représentations des répertoires de notaires sous la forme d'un ensemble d'images (correspond au <Layout>);
+                  Puis pour chaque fichiers ALTO : 
+                  + 1 <surface> : correspond à la surface en deux dimensions qui correspond à la page de l'image transcrite (élément ALTO : <Page>)
+                  - @facs : reçoit l'identifiant de l'élément ci-dessous <graphic>
+                  + 1 <graphic> : correspond à l'image transcrite
+                  - @url : lien vers le nom du fichier image
+                  - @xml:id : reçoit un identifiant nommé tel que name_img...
+                  + 1 à n <zone> qui correspondent aux éléments ALTO : <PrintSpace> (Rectangle couvrant la zone imprimée d'une page == <surface>) => <TextBlock> (bloc/paragraphe de texte) => <TextLine> (une ligne de texte) => <String> (contient des mots) => <Shape>/<Polygon> (forme du texte) : 
+                  - @type : reprend l'intitulé de la balise ALTO (sauf pour <Shape> qui prend la valeur "Polygon")
+                  - @xml:id : chaque zone dispose d'un identifiant nommé tel que facPS_name_img => facblock_name_img => facline_name_img_1 => facs_name_img_1
+                  - @ulx-@uly-@lrx-@lry : coordonnées de la zone concernée dans le XML ALTO (@WIDTH, @HEIGHT, @VPOS et @HPOS)
+                  - @points : pour <zone type="Polygon"> représente les points du polygones
+
+                  -->
+                  <!--***********************************************************           -->
+                  
+                  <!-- Exemple Alto (partie 1) :  -->
+                  <facsimile>
+                     <surface facs="#FRAN_0025_0039_L-1">
+                        <graphic url="FRAN_0025_0039_L-1.jpeg" xml:id="FRAN_0025_0039_L-1"/>
+                        <zone type="PrintSpace" xml:id="facPS_FRAN_0025_0039_L-1" ulx="0" uly="0" lrx="2972"
+                           lry="4356">
+                           <zone type="TextBlock" xml:id="facblock_FRAN_0025_0039_L-1">
+                              <zone type="TextLine" xml:id="facline_FRAN_0025_0039_L-1_1" ulx="2575" uly="284"
+                                 lrx="2830" lry="348">
+                                 <zone type="String" xml:id="facs_FRAN_0025_0039_L-1_1" ulx="2575" uly="284"
+                                    lrx="2830" lry="348"/>
+                                 <zone type="Polygon"
+                                    points="2585,217 2588,206 2594,212 2618,207 2626,213 2644,216 2662,208 2675,218 2700,216 2720,227 2727,220 2744,217 2745,232 2720,228 2710,233 2687,231 2681,235 2675,227 2653,227 2644,217 2627,217 2607,228 2602,225 2585,229"
+                                 />
+                              </zone>
+                           </zone>
+                        </zone>
+                     </surface>
+                     <surface>
+                        <!-- ... -->
+                     </surface>
+                     <surface>
+                        <!-- ... -->
+                     </surface>
+                  </facsimile>
+                  
+                  <!--***********************************************************          -->
+                  <!-- LIAISON AVEC LES FICHIERS XML ALTO (2eme partie : <body>/<div>)     -->
+                  <!-- Pour chaque fichiers XML ALTO : 
+                  + 1 <div> : correspond à une <surface> (voir plus haut) reçoit :
+                  - @facs : nom de l'image correspondant à l'id de <graphic> (voir plus haut)
+                  + 1 <ab> : correspond à un bloc de texte quelconque et correspond à la zone de type "TextBlock" reçoit :
+                  - @facs : correspond à l'id de la zone de type "TextBlock"
+                  - @xml_id : un identifiant unique comme block_name_image_1 pour le premier
+                  + 1 à n <w> : élément vide ou non qui contient des données textuelles et reçoit :
+                  - @xml:id : un identifiant unique comme w_name_image_1
+                  - @facs : relie les données textuelles à sa zone de type String via l'identifiant de ce dernier
+                  + 1 à n <lb> : qui correspond à la zone contenant la ligne de texte (TextLine) et reçoit
+                  - @xml:id : un identifiant unique noté tel que esc_line_name_image_1 pour le premier
+                  - @facs : relie la ligne à sa zone de type TextLine via l'identifiant de ce dernier
+                  -->
+                  <!--***********************************************************          -->
+                  <text>
+                     <body>
+                        <!-- Exemple Alto (partie 2) :  -->
+                        <div type="GT" facs="#FRAN_0025_0039_L-1">
+                           <ab facs="#facblock_FRAN_0025_0039_L-1" xml:id="block_FRAN_0025_0039_L-1_1">
+                              <w facs="#facs_FRAN_0025_0039_L-1_1" xml:id="w_FRAN_0025_0039_L-1_1"/>
+                              <lb facs="#facs_FRAN_0025_0039_L-1_1" xml:id="esc_line_FRAN_0025_0039_L-1_1"/>
+                              <w facs="#facs_FRAN_0025_0039_L-1_2" xml:id="w_FRAN_0025_0039_L-1_2">Ceci est un
+                                 élément w contenant du texte</w>
+                              <lb facs="#facline_FRAN_0025_0039_L-1_2" xml:id="esc_line_FRAN_0025_0039_L-1_2"/>
+                              <!-- ... -->
+                           </ab>
+                        </div>
+                        <div>
+                           <!-- ... -->
+                        </div>
+                        <div>
+                           <!-- ... -->
+                        </div>
+                     </body>
+                  </text>
+               </TEI>  
+            </egXML>
+            <p>À noter qu'il est possible de visualiser ce format XML-TEI pivot à partir de 
+               données réelles issues de Lectaurep (set test Legay) via ce <ref
+                  target="https://gitlab.inria.fr/almanach/lectaurep/documentation/-/blob/master/generator_Lectaurep2TEI/Output/test_Legay_tei.xml"
+                  >lien</ref>. Ce dernier a été généré grâce à un script Python <ref
+                  target="https://gitlab.inria.fr/almanach/lectaurep/documentation/-/tree/master/generator_Lectaurep2TEI"
+                  >generator_Lectaurep2TEI</ref> (@Lucaterre) qui simule un fichier TEI pivot en
+               sortie à partir de fichiers XML EAD-EAC, EXIF, images, ALTO, ou encore Pages via une
+               conversion XSLT vers ALTO. Si les liens échouent, vous devez être connecter préalablement sinon se rendre sur le Gitlab@InriaAlamanach.</p>
+         </div1>
+         <div1 type="evolutions">
+            <head>Perspectives et évolutions pour le format pivot TEI</head>
+            <p>Cette version du format pivot TEI constituant un premier essai de représentation, qui
+               ne pourrai composé une version stable, un certains nombre de points sont encore a
+               discuter et susceptibles d’évoluer par la suite : </p>
+            <list>
+               <item>Distinguer et fixer clairement un format (XML PAGE ou XML ALTO) correspondant
+                  aux documents de vérité terrain et aux documents issus de l’OCR (actuellement, on
+                  trouve ces documents de vérité terrain en XML PAGE, XML ALTO, et en texte brut, ce
+                  que l’on peut confirmer en se référant au stockage mis en place sur
+                  ShareDocs);</item>
+               <item>Modéliser au sein de la template TEI, l’accueil des futures structures logiques
+                  des transcriptions issues du système de transcription automatique (eScriptorium),
+                  afin de mettre les mettre en vis-à-vis du document de vérité terrain. Actuellement
+                  seul le document de vérité terrain est rapporté dans la template TEI présentée
+                  ici (Sinon Cf. piste METS évoquée plus bas). On peut utiliser un <att>type</att> sur <gi>surface</gi> de la partie
+                     <gi>facsimile</gi> et sur la <gi>div</gi> de la partie <gi>body</gi> pour
+                  distinguer le document de vérité tel que : <egXML
+                     xmlns="http://www.tei-c.org/ns/Examples"><surface type="GT"
+                        ><!-- ... --></surface> ou <div type="GT"><!-- ... --></div></egXML> et la
+                  transcription issu d'un système OCR tel que : <egXML
+                     xmlns="http://www.tei-c.org/ns/Examples"><surface type="OCR"
+                        ><!-- ... --></surface> ou <div type="OCR"><!-- ... --></div></egXML>
+                  ;</item>
+               <item>Réfléchir et modéliser en XML-TEI un référentiel de mains génériques
+                  correspondant aux classes de graphies repérées dans les répertoires de notaires;
+                  Il est également possible de modéliser ce référentiel basé sur les éléments
+                     <gi>msDesc</gi> et <gi>physDesc</gi> dans des éléments <gi>handDesc</gi> avec
+                  des éléments concernant la police, la date... tel que (ceci n'est qu'une
+                  illustration) <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                     <msDesc>
+                        <physDesc>
+                           <handDesc hands="1" when="1800">
+                              <p>Main typique du tout début XIXe</p>
+                           </handDesc>
+                           <handDesc hands="2" when="1841">
+                              <p>Main Barthélemy Cahouet 1841 plus cursive</p>
+                           </handDesc>
+                           <handDesc hands="3" when="1830">
+                              <p>Main petite et régulière de Didier Nicolas Rians 1830</p>
+                           </handDesc>
+                           <handDesc hands="4" when="1800">
+                              <p>calligraphie Fraktur</p>
+                           </handDesc>
+                           <handDesc hands="5" when="1879">
+                              <p>Main Jean Dufour 1879 lisible et moderne</p>
+                           </handDesc>
+                        </physDesc>
+                     </msDesc>
+                  </egXML> et de proposer une ODD spécifique à ce référentiel intéropérable avec le
+                  format pivot TEI ; </item>
+               <item>Une fois le référentiel de mains abouti (point précédant), modéliser et
+                  réfléchir à la manière d’insérer les métadonnées issues du dit référentiel des
+                  mains dans le format pivot XML TEI, en fonction des types de mains repérés dans
+                  les documents de chaque notaire;</item>
+               <item>Restreindre et adapter les modules de la TEI en fonction des cas rencontrés, et
+                  de l’avancement du format pivot TEI dans l’ODD ci-présente. L’objectif étant de
+                  proposer un schéma RelaxNG de validation propre au format pivot XML TEI de
+                  LECTAUREP. Actuellement le format pivot TEI présenté ici, est valide au regard
+                  d’un schéma RelaxNG XML TEI-ALL; </item>
+               <item>Proposer une représentation plus fine, via les éléments TEI ou ALTO, de la
+                  structure logique du document de vérité et de la transcription issue du système
+                  OCR. On pourra s’appuyer sur le travail de repérage des colonnes mené dans le
+                     <emph>Rapport exploratoire. Répertoire de Notaires parisiens. Segmentation
+                     automatique et reconnaissance d’écriture</emph> par Marie-Laurence Bonhomme
+                  pour définir des <att>type</att> sur les éléments <gi>zone</gi> pour évaluer les
+                  différentes colonnes; </item>
+               <item>Réfléchir à l’opportunité de connecter ALTO (structure physique de la transcription issue de l'OCR), images (Jpeg,
+                  Jpg) et TEI (structure logique contenant les métadonnées EAD-EAC et EXIF  et le document de vérité terrain) par l’intermédiaire d’un fichier METS (Metadata
+                  Encoding and Transmission Standard). « La génération d’un fichier METS est
+                  automatique et elle est un simple transcodage des liens trouvés par le système de
+                  reconnaissance dans un fichier XML mettant en correspondance les ID d’un fichier
+                  avec les ID d’un autre » (extrait de l’article Belaïd A., Falk I., Rangoni Y.,
+                     <emph>Représentation des données en XML pour l’analyse d’images de
+                     documents</emph>, LORIA-CNRS-ATILF, Juillet 2007) </item>
+            </list>
+         </div1>
+         <div1>
+            <head>Tableau des éléments pour le format pivot TEI</head>
+         <schemaSpec ident="oddbyexample" start="TEI ">
+            <moduleRef key="tei"/>
+            <!--Checking module textcrit-->
+            <classRef key="att.textCritical"/>
+            <classRef key="model.rdgLike"/>
+            <classRef key="model.rdgPart"/>
+            <classSpec ident="att.textCritical" type="atts" mode="change">
+               <attList>
+                  <attDef ident="type" mode="delete"/>
+                  <attDef ident="cause" mode="delete"/>
+                  <attDef ident="varSeq" mode="delete"/>
+                  <attDef ident="require" mode="delete"/>
+               </attList>
+            </classSpec>
+            <!--Checking module msdescription-->
+            <classRef key="model.physDescPart"/>
+            <moduleRef key="msdescription"
+                       include="msDesc locus material origDate msIdentifier institution repository msContents msItemStruct summary additional surrogates"/>
+            <elementSpec ident="msDesc" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="locus" mode="change">
+               <attList>
+                  <attDef ident="scheme" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="target" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="material" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="origDate" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="msIdentifier" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="institution" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="repository" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="msContents" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="msItemStruct" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="summary" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="additional" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="surrogates" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <!--Checking module namesdates-->
+            <classRef key="att.datable.custom"/>
+            <classRef key="model.persNamePart"/>
+            <moduleRef key="namesdates"
+                       include="orgName persName surname forename country settlement"/>
+            <elementSpec ident="orgName" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+                  <attDef ident="full" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="yes"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="persName" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+                  <attDef ident="full" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="yes"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="surname" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="full" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="yes"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="forename" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="full" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="yes"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="country" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="settlement" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <classSpec ident="att.datable.custom" type="atts" mode="change">
+               <attList>
+                  <attDef ident="notBefore-custom" mode="delete"/>
+                  <attDef ident="notAfter-custom" mode="delete"/>
+                  <attDef ident="from-custom" mode="delete"/>
+                  <attDef ident="to-custom" mode="delete"/>
+                  <attDef ident="datingPoint" mode="delete"/>
+                  <attDef ident="datingMethod" mode="delete"/>
+               </attList>
+            </classSpec>
+            <!--Checking module dictionaries-->
+            <classRef key="att.lexicographic"/>
+            <classRef key="model.entryLike"/>
+            <classRef key="model.formPart"/>
+            <classRef key="model.gramPart"/>
+            <classRef key="model.lexicalRefinement"/>
+            <classRef key="model.morphLike"/>
+            <classRef key="model.ptrLike.form"/>
+            <classSpec ident="att.lexicographic" type="atts" mode="change">
+               <attList>
+                  <attDef ident="expand" mode="delete"/>
+                  <attDef ident="split" mode="delete"/>
+                  <attDef ident="value" mode="delete"/>
+                  <attDef ident="location" mode="delete"/>
+                  <attDef ident="mergedIn" mode="delete"/>
+                  <attDef ident="opt" mode="delete"/>
+               </attList>
+            </classSpec>
+            <!--Checking module tagdocs-->
+            <classRef key="att.combinable"/>
+            <classRef key="att.identified"/>
+            <classRef key="model.contentPart"/>
+            <moduleRef key="tagdocs"
+                       include="att gi classRef moduleRef schemaSpec elementSpec classSpec attList attDef valItem valList"/>
+            <elementSpec ident="att" mode="change">
+               <attList>
+                  <attDef ident="scheme" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="gi" mode="change">
+               <attList>
+                  <attDef ident="scheme" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="classRef" mode="change">
+               <attList>
+                  <attDef ident="expand" mode="delete"/>
+                  <attDef ident="include" mode="delete"/>
+                  <attDef ident="except" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="moduleRef" mode="change">
+               <attList>
+                  <attDef ident="prefix" mode="delete"/>
+                  <attDef ident="except" mode="delete"/>
+                  <attDef ident="url" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="schemaSpec" mode="change">
+               <attList>
+                  <attDef ident="prefix" mode="delete"/>
+                  <attDef ident="targetLang" mode="delete"/>
+                  <attDef ident="docLang" mode="delete"/>
+                  <attDef ident="defaultExceptions" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="mode" mode="delete"/>
+                  <attDef ident="status" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="elementSpec" mode="change">
+               <attList>
+                  <attDef ident="prefix" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="mode" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="change"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="classSpec" mode="change">
+               <attList>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="atts"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="generate" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="mode" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="change"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="atts"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="attList" mode="change">
+               <attList>
+                  <attDef ident="org" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="attDef" mode="change">
+               <attList>
+                  <attDef ident="usage" mode="delete"/>
+                  <attDef ident="ns" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="mode" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="change"/>
+                        <valItem ident="delete"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="valItem" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="mode" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="valList" mode="change">
+               <attList>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="closed"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="mode" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="add"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <classSpec ident="att.identified" type="atts" mode="change">
+               <attList>
+                  <attDef ident="predeclare" mode="delete"/>
+                  <attDef ident="module" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.ascribed.directed" type="atts" mode="change">
+               <attList>
+                  <attDef ident="toWhom" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.dimensions" type="atts" mode="change">
+               <attList>
+                  <attDef ident="unit" mode="delete"/>
+                  <attDef ident="quantity" mode="delete"/>
+                  <attDef ident="extent" mode="delete"/>
+                  <attDef ident="precision" mode="delete"/>
+                  <attDef ident="scope" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.damaged" type="atts" mode="change">
+               <attList>
+                  <attDef ident="agent" mode="delete"/>
+                  <attDef ident="degree" mode="delete"/>
+                  <attDef ident="group" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.datable.w3c" type="atts" mode="change">
+               <attList>
+                  <attDef ident="notBefore" mode="delete"/>
+                  <attDef ident="notAfter" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.datable" type="atts" mode="change">
+               <attList>
+                  <attDef ident="calendar" mode="delete"/>
+                  <attDef ident="period" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.editLike" type="atts" mode="change">
+               <attList>
+                  <attDef ident="evidence" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.media" type="atts" mode="change">
+               <attList>
+                  <attDef ident="width" mode="delete"/>
+                  <attDef ident="height" mode="delete"/>
+                  <attDef ident="scale" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.naming" type="atts" mode="change">
+               <attList>
+                  <attDef ident="role" mode="delete"/>
+                  <attDef ident="nymRef" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.typed" type="atts" mode="change">
+               <attList>
+                  <attDef ident="subtype" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.pointing" type="atts" mode="change">
+               <attList>
+                  <attDef ident="targetLang" mode="delete"/>
+                  <attDef ident="evaluate" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.pointing.group" type="atts" mode="change">
+               <attList>
+                  <attDef ident="domains" mode="delete"/>
+                  <attDef ident="targFunc" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.segLike" type="atts" mode="change">
+               <attList>
+                  <attDef ident="function" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.timed" type="atts" mode="change">
+               <attList>
+                  <attDef ident="start" mode="delete"/>
+                  <attDef ident="end" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.transcriptional" type="atts" mode="change">
+               <attList>
+                  <attDef ident="status" mode="delete"/>
+                  <attDef ident="cause" mode="delete"/>
+                  <attDef ident="seq" mode="delete"/>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.personal" type="atts" mode="change">
+               <attList>
+                  <attDef ident="sort" mode="delete"/>
+               </attList>
+            </classSpec>
+            <!--Checking module core-->
+            <moduleRef key="core"
+                       include="p emph desc address addrLine date ref list item head note graphic lb author respStmt resp title publisher pubPlace bibl textLang"/>
+            <elementSpec ident="p" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="part" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="N"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="emph" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="desc" mode="change">
+               <attList>
+                  <attDef ident="type" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="address" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="addrLine" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="date" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="ref" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="list" mode="change">
+               <attList>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="Contenu_Répertoire"/>
+                        <valItem ident="Répertoire"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="Contenu_Répertoire"/>
+                        <valItem ident="Répertoire"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="item" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="head" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="note" mode="change">
+               <attList>
+                  <attDef ident="targetEnd" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="target" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="graphic" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="lb" mode="change">
+               <attList>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="author" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="respStmt" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="resp" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="title" mode="change">
+               <attList>
+                  <attDef ident="level" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="genreform"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="genreform"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="publisher" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="pubPlace" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="bibl" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="default" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="false"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="textLang" mode="change">
+               <attList>
+                  <attDef ident="otherLangs" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <!--Checking module figures-->
+            <!--Checking module header-->
+            <moduleRef key="header"
+                       include="teiHeader fileDesc titleStmt publicationStmt idno availability sourceDesc encodingDesc editorialDecl xenoData revisionDesc change"/>
+            <elementSpec ident="teiHeader" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="fileDesc" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="titleStmt" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="publicationStmt" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="idno" mode="change">
+               <attList>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="identifiant"/>
+                        <valItem ident="pieces"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="when" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="identifiant"/>
+                        <valItem ident="pieces"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="availability" mode="change">
+               <attList>
+                  <attDef ident="status" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="free"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="default" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="false"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="sourceDesc" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="default" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="false"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="encodingDesc" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="editorialDecl" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="default" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="false"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="xenoData" mode="change">
+               <attList>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="default" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="false"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="revisionDesc" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="change" mode="change">
+               <attList>
+                  <attDef ident="target" mode="delete"/>
+                  <attDef ident="from" mode="delete"/>
+                  <attDef ident="to" mode="delete"/>
+                  <attDef ident="when-custom" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <!--Checking module gaiji-->
+            <!--Checking module verse-->
+            <!--Checking module transcr-->
+            <classRef key="att.coordinated"/>
+            <classRef key="att.global.facs"/>
+            <moduleRef key="transcr" include="facsimile surface zone"/>
+            <elementSpec ident="facsimile" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="surface" mode="change">
+               <attList>
+                  <attDef ident="attachment" mode="delete"/>
+                  <attDef ident="flipping" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="ulx" mode="delete"/>
+                  <attDef ident="uly" mode="delete"/>
+                  <attDef ident="lrx" mode="delete"/>
+                  <attDef ident="lry" mode="delete"/>
+                  <attDef ident="points" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="GT"/>
+                        <valItem ident="OCR"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="zone" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="Polygon"/>
+                        <valItem ident="PrintSpace"/>
+                        <valItem ident="String"/>
+                        <valItem ident="TextBlock"/>
+                        <valItem ident="TextLine"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <classSpec ident="att.coordinated" type="atts" mode="change">
+               <attList>
+                  <attDef ident="start" mode="delete"/>
+               </attList>
+            </classSpec>
+            <!--Checking module linking-->
+            <moduleRef key="linking" include="ab"/>
+            <elementSpec ident="ab" mode="change">
+               <attList>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+                  <attDef ident="part" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="N"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <!--Checking module analysis-->
+            <classRef key="att.linguistic"/>
+            <elementSpec ident="w" mode="change">
+               <attList>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="part" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="N"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <classSpec ident="att.linguistic" type="atts" mode="change">
+               <attList>
+                  <attDef ident="lemma" mode="delete"/>
+                  <attDef ident="lemmaRef" mode="delete"/>
+                  <attDef ident="pos" mode="delete"/>
+                  <attDef ident="msd" mode="delete"/>
+                  <attDef ident="join" mode="delete"/>
+               </attList>
+            </classSpec>
+            <!--Checking module textstructure-->
+            <moduleRef key="textstructure" include="TEI text body div div1 div2"/>
+            <elementSpec ident="TEI" mode="change">
+               <attList>
+                  <attDef ident="version" mode="delete"/>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="text" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="body" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="div" mode="change">
+               <attList>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="org" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="uniform"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="sample" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="complete"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="part" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="N"/>
+                     </valList>
+                  </attDef>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="GT"/>
+                        <valItem ident="OCR"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="div1" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="org" mode="delete"/>
+                  <attDef ident="sample" mode="delete"/>
+                  <attDef ident="part" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="evolutions"/>
+                        <valItem ident="introduction"/>
+                        <valItem ident="template_pivot_tei"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="div2" mode="change">
+               <attList>
+                  <attDef ident="facs" mode="delete"/>
+                  <attDef ident="source" mode="delete"/>
+                  <attDef ident="org" mode="delete"/>
+                  <attDef ident="sample" mode="delete"/>
+                  <attDef ident="part" mode="delete"/>
+                  <attDef ident="type" mode="change">
+                     <valList mode="add" type="closed">
+                        <valItem ident="context"/>
+                        <valItem ident="data_presentation"/>
+                        <valItem ident="solutions"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+         </schemaSpec>
+         </div1>
+      </body>
+   </text>
+</TEI>

@@ -1,0 +1,210 @@
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        
+        <title>Kraken-Benchmark report</title>
+       
+
+<!--                        ___                              -->
+<!--                     .-'   `'                            -->
+<!--                    /         \                          -->
+<!--                    |         ;                          -->
+<!--                    |         |           ___.--,        -->
+<!--           _.._     |0) ~ (0) |    _.---'`__.-( (        -->
+<!--    __.--'`_.. '.__.\    '--. \_.-' ,.--'`     `""`      -->
+<!--   ( ,.--'`   ',__ /./;   ;, '.__.'`                     -->
+<!--   _`) )  .---.__.' / |   |\   \__..--"""""""--.,_       -->
+<!--  `---' .'.''-._.-'`_./  /\ '.  \ _.-~~~````~~~-._`-.__.'-->
+<!--        | |  .' _.-' |  |  \  \  '.               `~---` -->
+<!--         \ \/ .'     \  \   '. '-._)  KRAKEN-BENCHMARK   -->
+<!--artist     \/ /        \  \    `=.__`~-.                 -->
+<!--     @jgs  / /\         `) )    / / `"".`\               -->
+<!--    , _.-'.'\ \        / /    ( (     / /                -->
+<!--     `--~`   ) )    .-'.'      '.'.  | (                 -->
+<!--            (/`    ( (`          ) )  '-;                -->
+<!--             `      '-;         (-'                      -->        
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://kit.fontawesome.com/ea6f94abf5.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+        <style type="text/css">
+            body {
+                background-color: #f3f3f3;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            table.diff {
+                border: medium;
+            }
+
+            .diff_header {
+                background-color: #e0e0e0;
+            }
+
+            td.diff_header {
+                text-align: right;
+            }
+
+            .diff_next {
+                background-color: #c0c0c0;
+            }
+
+            .diff_exact {
+                background-color: #3CB371;
+            }
+
+            .diff_error {
+                background-color: #D2122E;
+            }
+
+            .diff_insert {
+                background-color: #4169E1;
+            }
+
+
+            /* Up buttons */
+
+            .cRetour {
+                border-radius: 3px;
+                padding: 10px;
+                font-size: 15px;
+                text-align: center;
+                color: #fff;
+                background: rgba(0, 0, 0, 0.25);
+                z-index: 99999;
+                transition: all ease-in 0.2s;
+                position: fixed;
+                cursor: pointer;
+                bottom: 1em;
+                right: 20px;
+                display: none;
+            }
+
+            .cRetour:before {
+                content: "\25b2";
+            }
+
+            .cRetour:hover {
+                background: rgba(0, 0, 0, 1);
+                transition: all ease-in 0.2s;
+            }
+
+            .hRetour {
+                border-radius: 3px;
+                padding: 3px;
+                font-size: 15px;
+                text-align: center;
+                z-index: 99999;
+                transition: all ease-in 0.2s;
+                position: fixed;
+                bottom: 1em;
+                right: 64px;
+                cursor: pointer;
+            }
+
+            .btn-help {
+                background-color: rgba(0, 0, 0, 0.25);
+                border-color: rgba(0, 0, 0, 0.25);
+
+            }
+
+            .btn-help:hover {
+                background-color: rgba(0, 0, 0, 1);
+                border-color: rgba(0, 0, 0, 1);
+
+            }
+
+            /* Levensthein index */
+
+            .distance {
+                font-size: 5em;
+                margin: .25em 0 0;
+                text-align: center;
+                text-shadow: 2px 2px 0 #fff, 3px 3px 0 #ac6551;
+
+                background-color: #3CB371;
+                display: inline-block;
+                padding: .15em .5em;
+                border-radius: 100%;
+                border: 3px double #fff;
+                position: relative;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .distance-label {
+                padding-top: .5em;
+                color: black;
+                font-size: .85em;
+                letter-spacing: 1px;
+                padding: 0;
+                margin: 0;
+                text-align: center;
+                text-transform: uppercase;
+            }
+        </style>
+    </head>
+    <body>
+       
+        {% block body %}{% endblock body %}
+
+        <script>
+            // Manage scroll observer
+            // script inspired source code : @DjangoBlais API
+
+            jQuery(document).ready(function() {
+                var duration = 500;
+                jQuery(window).scroll(function() {
+                    if (jQuery(this).scrollTop() > 100) {
+                        // If a scrolling of 100 pixels or more.
+                        // Add the button
+                        jQuery('.cRetour').fadeIn(duration);
+                    } else {
+                        // Otherwise remove the button
+                        jQuery('.cRetour').fadeOut(duration);
+                    }
+                });
+
+                jQuery('.cRetour').click(function(event) {
+                    // A click causes the animated return to top.
+                    event.preventDefault();
+                    jQuery('html, body').animate({
+                        scrollTop: 0
+                    }, duration);
+                    return false;
+                })
+            });
+
+            jQuery(document).ready(function() {
+                var duration = 500;
+                jQuery(window).scroll(function() {
+                    if (jQuery(this).scrollTop() > 100) {
+                        jQuery('.hRetour').fadeIn(duration);
+                    } else {
+                        jQuery('.hRetour').fadeOut(duration);
+                    }
+                });
+            })
+
+            // Manage Help pop-up
+
+            $(".first").click(function() {
+                $("div[id='help_pop_1']").hide()
+            });
+
+
+            $(".second").click(function() {
+                $("div[id='help_pop_2']").hide()
+            });
+            
+        </script>
+    </body>
+
+    </html>

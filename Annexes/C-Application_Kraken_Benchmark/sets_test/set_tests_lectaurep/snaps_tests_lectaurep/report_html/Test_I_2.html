@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        
+        <title>Kraken-Benchmark report</title>
+       
+
+<!--                        ___                              -->
+<!--                     .-'   `'                            -->
+<!--                    /         \                          -->
+<!--                    |         ;                          -->
+<!--                    |         |           ___.--,        -->
+<!--           _.._     |0) ~ (0) |    _.---'`__.-( (        -->
+<!--    __.--'`_.. '.__.\    '--. \_.-' ,.--'`     `""`      -->
+<!--   ( ,.--'`   ',__ /./;   ;, '.__.'`                     -->
+<!--   _`) )  .---.__.' / |   |\   \__..--"""""""--.,_       -->
+<!--  `---' .'.''-._.-'`_./  /\ '.  \ _.-~~~````~~~-._`-.__.'-->
+<!--        | |  .' _.-' |  |  \  \  '.               `~---` -->
+<!--         \ \/ .'     \  \   '. '-._)  KRAKEN-BENCHMARK   -->
+<!--artist     \/ /        \  \    `=.__`~-.                 -->
+<!--     @jgs  / /\         `) )    / / `"".`\               -->
+<!--    , _.-'.'\ \        / /    ( (     / /                -->
+<!--     `--~`   ) )    .-'.'      '.'.  | (                 -->
+<!--            (/`    ( (`          ) )  '-;                -->
+<!--             `      '-;         (-'                      -->        
+
+        <link rel="stylesheet" href="Test_I_2_fichiers/bootstrap.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link href="Test_I_2_fichiers/font-awesome.css" rel="stylesheet">
+        <link href="Test_I_2_fichiers/css2.css" rel="stylesheet">
+        <script src="Test_I_2_fichiers/jquery.js"></script>
+        <script src="Test_I_2_fichiers/ea6f94abf5.js" crossorigin="anonymous"></script><link href="Test_I_2_fichiers/free-v4-shims.css" media="all" rel="stylesheet" id="font-awesome-5-kit-css"><link href="Test_I_2_fichiers/free-v4-font-face.css" media="all" rel="stylesheet" id="font-awesome-5-kit-css"><link href="Test_I_2_fichiers/free.css" media="all" rel="stylesheet" id="font-awesome-5-kit-css">
+        <script src="Test_I_2_fichiers/popper.js"></script>
+        <script src="Test_I_2_fichiers/bootstrap.js"></script>
+
+        <style type="text/css">
+            body {
+                background-color: #f3f3f3;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            table.diff {
+                border: medium;
+            }
+
+            .diff_header {
+                background-color: #e0e0e0;
+            }
+
+            td.diff_header {
+                text-align: right;
+            }
+
+            .diff_next {
+                background-color: #c0c0c0;
+            }
+
+            .diff_exact {
+                background-color: #3CB371;
+            }
+
+            .diff_error {
+                background-color: #D2122E;
+            }
+
+            .diff_insert {
+                background-color: #4169E1;
+            }
+
+
+            /* Up buttons */
+
+            .cRetour {
+                border-radius: 3px;
+                padding: 10px;
+                font-size: 15px;
+                text-align: center;
+                color: #fff;
+                background: rgba(0, 0, 0, 0.25);
+                z-index: 99999;
+                transition: all ease-in 0.2s;
+                position: fixed;
+                cursor: pointer;
+                bottom: 1em;
+                right: 20px;
+                display: none;
+            }
+
+            .cRetour:before {
+                content: "\25b2";
+            }
+
+            .cRetour:hover {
+                background: rgba(0, 0, 0, 1);
+                transition: all ease-in 0.2s;
+            }
+
+            .hRetour {
+                border-radius: 3px;
+                padding: 3px;
+                font-size: 15px;
+                text-align: center;
+                z-index: 99999;
+                transition: all ease-in 0.2s;
+                position: fixed;
+                bottom: 1em;
+                right: 64px;
+                cursor: pointer;
+            }
+
+            .btn-help {
+                background-color: rgba(0, 0, 0, 0.25);
+                border-color: rgba(0, 0, 0, 0.25);
+
+            }
+
+            .btn-help:hover {
+                background-color: rgba(0, 0, 0, 1);
+                border-color: rgba(0, 0, 0, 1);
+
+            }
+
+            /* Levensthein index */
+
+            .distance {
+                font-size: 5em;
+                margin: .25em 0 0;
+                text-align: center;
+                text-shadow: 2px 2px 0 #fff, 3px 3px 0 #ac6551;
+
+                background-color: #3CB371;
+                display: inline-block;
+                padding: .15em .5em;
+                border-radius: 100%;
+                border: 3px double #fff;
+                position: relative;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .distance-label {
+                padding-top: .5em;
+                color: black;
+                font-size: .85em;
+                letter-spacing: 1px;
+                padding: 0;
+                margin: 0;
+                text-align: center;
+                text-transform: uppercase;
+            }
+        </style>
+    </head>
+    <body>
+       
+        
+
+<!-- Header -->
+
+<div class="jumbotron" style="background-color: #f07e26">
+    <div class="row">
+        <div>
+            <a href="http://127.0.0.1:5000/">
+                <img src="Test_I_2_fichiers/KB_logo.svg">
+            </a>
+        </div>
+        <div class="col-sm">
+            <a href="http://127.0.0.1:5000/" style="color: black">
+                <h1>Kraken-Benchmark</h1>
+            </a>
+            <p>Metrics dashboard to evaluate HTR/OCR models in NLP context based on <a href="http://kraken.re/" title="kraken">Kraken</a> and STS Tools (Similarity to Sequences Tools)</p>
+        </div>
+    </div>
+</div>
+
+<!--Help dialog pop-up-->
+
+<div class="container" id="help_pop_1">
+    <div class="row">
+        <div class="col-sm">
+            <p><i id="icon_pop_cross" class="fas fa-times-circle first" style="color: darkred" aria-hidden="true"></i><i> For help with metrics and / or usage tips on Kraken-Benchmark, click the help icon ( <i class="far fa-question-circle" aria-hidden="true"></i> ) at the bottom right of the screen.</i></p>
+        </div>
+    </div>
+</div>
+<br>
+
+
+<div class="container" id="help_pop_2">
+    <div class="row">
+        <div class="col-sm">
+            <p><i id="icon_pop_cross" class="fas fa-times-circle second" style="color: darkred" aria-hidden="true"></i><i> Click on <i id="icon_1" class="fas fa-crosshairs" aria-hidden="true"></i> and on <i id="icon_2" class="fas fa-project-diagram" aria-hidden="true"></i> to collapse or expand</i></p>
+        </div>
+    </div>
+</div>
+
+<!--Global information report zone-->
+
+<div class="container">
+    <ul>
+        <li>Report author : Lucas</li>
+        <li>Date : 31-07-2020 23:44</li>
+        <li>Model : model_test_lectaurep_bin_accuracy_6064.mlmodel</li>
+        <li>Number of Images : 3</li>
+        <li>ID report : 0eaa24d2</li>
+    </ul>
+</div>
+<br>
+<br>
+
+<!--Overview zone-->
+
+<div class="container">
+    <h2 style="text-align: center">Overview</h2><br><br><br><br><table class="table table-dark">
+        
+        
+        <thead>
+            <tr>
+                <th scope="col">Image</th>
+                
+                
+                <td><a href="#1">1</a></td>
+                
+                
+                <td><a href="#2">2</a></td>
+                
+                
+                <td><a href="#3">3</a></td>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="col">CER</th>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <td>
+                    <p>0.76</p>
+                </td>
+                
+                
+                
+                <td style="color: red">0.78</td>
+                
+                
+                
+                <td style="color: green">0.74</td>
+                
+                
+            </tr>
+            <tr>
+                <th scope="col">CER (%)</th>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <td>
+                    <p>76.66 %</p>
+                </td>
+                
+                
+                
+                <td style="color: red">78.86 %</td>
+                
+                
+                
+                <td style="color: green">74.82 %</td>
+                
+                
+            </tr>
+            <tr>
+                <th scope="col">WER</th>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <td style="color: red">0.94</td>
+                
+                
+                
+                <td style="color: red">0.94</td>
+                
+                
+                
+                <td style="color: red">0.94</td>
+                
+                
+            </tr>
+            <tr>
+                <th scope="col">WER (%)</th>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <td style="color: green">94.42 %</td>
+                
+                
+                
+                <td>
+                    <p>94.58 %</p>
+                </td>
+                
+                
+                
+                <td style="color: red">94.93 %</td>
+                
+                
+            </tr>
+            
+            <tr>
+                <th scope="col">Word accuracy</th>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <td style="color: green">5 %</td>
+                
+                
+                
+                <td style="color: green">5 %</td>
+                
+                
+                
+                <td style="color: green">5 %</td>
+                
+                
+            </tr>
+            
+            <tr>
+                <th scope="col">Hamming distance</th>
+                
+                <td>Ø</td>
+                
+                <td>Ø</td>
+                
+                <td>Ø</td>
+                
+            </tr>
+            <tr>
+                <th scope="col" style="color: #8e44ad">Jaccard Index</th>
+                
+                <td>0.03</td>
+                
+                <td>0.02</td>
+                
+                <td>0.02</td>
+                
+            </tr>
+            
+            <tr>
+                <th scope="col" style="color: #8e44ad">Cosine Similarity</th>
+                
+                <td>0.09</td>
+                
+                <td>0.15</td>
+                
+                <td>0.02</td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<br>
+
+<!--Images details zone-->
+
+<div class="container">
+    <h2 style="text-align: center">Report by Images</h2>
+    <br>
+    <br>
+    
+    <div>
+        <h3><i class="fas fa-file-image" aria-hidden="true"></i> Image 1</h3>
+        <hr>
+        <p><b>Filename</b> : <a id="1">temoin_1_marotte_FRAN_0148_3270_L-0.jpeg</a></p>
+        <p><b>length reference</b> : 2460</p>
+        <p><b>length prediction</b> : 2028</p>
+        
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <img src="Test_I_2_fichiers/temoin_1_marotte_FRAN_0148_3270_L-0.jpeg" class="img-thumbnail">
+        </div>
+        <div class="col-sm">
+            <h5><b><i id="icon_1" class="fas fa-crosshairs" aria-hidden="true"></i> Syntactic performance recognition metrics</b></h5>
+            <hr>
+            <div id="metrics_1">
+                <p><b>CER</b> ( <i>Character Error Rate</i> ) : 76.66 %</p>
+                <p><b>WER</b> ( <i>Word Error Rate</i> ) : 94.42 %</p>
+                <p><b>Word accuracy</b> : 5 %</p>
+
+                <!--histogram graph position-->
+
+                <div>
+                    <div id="preload" style="display: none;"><div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status"> <span class="sr-only">Loading...</span> </div></div>
+                    <p id="help_graph" style=""><i>Click on image to enlarge</i></p>
+                    <img id="graph" src="Test_I_2_fichiers/rat-ob-steps-image-0.png" alt="ratcliff-obershelp sequence steps" style="border-width: 1px; border-style: solid; border-color: black" width="150px">
+                </div>
+                <br>
+                <div>
+                    <div><button id="preload_redirect" onclick="window.location.href='/vs_text/0';" class="btn btn-secondary btn-lg active"><i class="fas fa-not-equal" aria-hidden="true"></i> Show versus</button></div>
+                    <br>
+                    <div><button id="preload_redirect" onclick="window.location.href='/ranking_classification_errors/0';" class="btn btn-secondary btn-lg active"><i class="fas fa-medal" aria-hidden="true"></i> Ranking errors</button></div>
+                    <br>
+                    <div><button id="preload_redirect" onclick="window.location.href='/sequences_to_signals/0';" class="btn btn-secondary btn-lg active"><i class="fas fa-wave-square" aria-hidden="true"></i> Vizualize signals</button></div>
+                </div>
+                <br>
+            </div>
+            <h5><b><i id="icon_2" class="fas fa-project-diagram" aria-hidden="true"></i> Semantic performance recognition metrics</b></h5>
+            <hr>
+            <div id="metrics_2">
+                <p><b>Jaccard Index</b> : 0.03</p>
+                <p><b>Cosine Similarity</b> : 0.09</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <br>
+    <br>
+
+    
+    <div>
+        <h3><i class="fas fa-file-image" aria-hidden="true"></i> Image 2</h3>
+        <hr>
+        <p><b>Filename</b> : <a id="2">temoin_2_marotte_FRAN_0148_3268_L-1.jpeg</a></p>
+        <p><b>length reference</b> : 2389</p>
+        <p><b>length prediction</b> : 2154</p>
+        
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <img src="Test_I_2_fichiers/temoin_2_marotte_FRAN_0148_3268_L-1.jpeg" class="img-thumbnail">
+        </div>
+        <div class="col-sm">
+            <h5><b><i id="icon_1" class="fas fa-crosshairs" aria-hidden="true"></i> Syntactic performance recognition metrics</b></h5>
+            <hr>
+            <div id="metrics_1">
+                <p><b>CER</b> ( <i>Character Error Rate</i> ) : 78.86 %</p>
+                <p><b>WER</b> ( <i>Word Error Rate</i> ) : 94.58 %</p>
+                <p><b>Word accuracy</b> : 5 %</p>
+
+                <!--histogram graph position-->
+
+                <div>
+                    <div id="preload" style="display: none;"><div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status"> <span class="sr-only">Loading...</span> </div></div>
+                    <p id="help_graph" style=""><i>Click on image to enlarge</i></p>
+                    <img id="graph" src="Test_I_2_fichiers/rat-ob-steps-image-1.png" alt="ratcliff-obershelp sequence steps" style="border-width: 1px; border-style: solid; border-color: black" width="150px">
+                </div>
+                <br>
+                <div>
+                    <div><button id="preload_redirect" onclick="window.location.href='/vs_text/1';" class="btn btn-secondary btn-lg active"><i class="fas fa-not-equal" aria-hidden="true"></i> Show versus</button></div>
+                    <br>
+                    <div><button id="preload_redirect" onclick="window.location.href='/ranking_classification_errors/1';" class="btn btn-secondary btn-lg active"><i class="fas fa-medal" aria-hidden="true"></i> Ranking errors</button></div>
+                    <br>
+                    <div><button id="preload_redirect" onclick="window.location.href='/sequences_to_signals/1';" class="btn btn-secondary btn-lg active"><i class="fas fa-wave-square" aria-hidden="true"></i> Vizualize signals</button></div>
+                </div>
+                <br>
+            </div>
+            <h5><b><i id="icon_2" class="fas fa-project-diagram" aria-hidden="true"></i> Semantic performance recognition metrics</b></h5>
+            <hr>
+            <div id="metrics_2">
+                <p><b>Jaccard Index</b> : 0.02</p>
+                <p><b>Cosine Similarity</b> : 0.15</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <br>
+    <br>
+
+    
+    <div>
+        <h3><i class="fas fa-file-image" aria-hidden="true"></i> Image 3</h3>
+        <hr>
+        <p><b>Filename</b> : <a id="3">temoin_3_marotte_FRAN_0148_3268_L-0.jpeg</a></p>
+        <p><b>length reference</b> : 2999</p>
+        <p><b>length prediction</b> : 1799</p>
+        
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <img src="Test_I_2_fichiers/temoin_3_marotte_FRAN_0148_3268_L-0.jpeg" class="img-thumbnail">
+        </div>
+        <div class="col-sm">
+            <h5><b><i id="icon_1" class="fas fa-crosshairs" aria-hidden="true"></i> Syntactic performance recognition metrics</b></h5>
+            <hr>
+            <div id="metrics_1">
+                <p><b>CER</b> ( <i>Character Error Rate</i> ) : 74.82 %</p>
+                <p><b>WER</b> ( <i>Word Error Rate</i> ) : 94.93 %</p>
+                <p><b>Word accuracy</b> : 5 %</p>
+
+                <!--histogram graph position-->
+
+                <div>
+                    <div id="preload" style="display: none;"><div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status"> <span class="sr-only">Loading...</span> </div></div>
+                    <p id="help_graph" style=""><i>Click on image to enlarge</i></p>
+                    <img id="graph" src="Test_I_2_fichiers/rat-ob-steps-image-2.png" alt="ratcliff-obershelp sequence steps" style="border-width: 1px; border-style: solid; border-color: black" width="150px">
+                </div>
+                <br>
+                <div>
+                    <div><button id="preload_redirect" onclick="window.location.href='/vs_text/2';" class="btn btn-secondary btn-lg active"><i class="fas fa-not-equal" aria-hidden="true"></i> Show versus</button></div>
+                    <br>
+                    <div><button id="preload_redirect" onclick="window.location.href='/ranking_classification_errors/2';" class="btn btn-secondary btn-lg active"><i class="fas fa-medal" aria-hidden="true"></i> Ranking errors</button></div>
+                    <br>
+                    <div><button id="preload_redirect" onclick="window.location.href='/sequences_to_signals/2';" class="btn btn-secondary btn-lg active"><i class="fas fa-wave-square" aria-hidden="true"></i> Vizualize signals</button></div>
+                </div>
+                <br>
+            </div>
+            <h5><b><i id="icon_2" class="fas fa-project-diagram" aria-hidden="true"></i> Semantic performance recognition metrics</b></h5>
+            <hr>
+            <div id="metrics_2">
+                <p><b>Jaccard Index</b> : 0.02</p>
+                <p><b>Cosine Similarity</b> : 0.02</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <br>
+    <br>
+
+    
+
+</div>
+
+
+<div class="hRetour" style="">
+
+    <!-- Button to Open the Modal -->
+    <button type="button" class="btn btn-primary btn-help" data-toggle="modal" data-target=".help_main">
+        <i class="far fa-question-circle" aria-hidden="true"></i>
+    </button>
+
+    <!-- The Modal -->
+    <div class="modal fade bd-example-modal-lg help_main" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Bienvenue dans Kraken-Benchmark / Welcome to Kraken-Benchmark</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h4>Présentation / Presentation</h4>
+                    <div>
+                        <p>🇫🇷</p>
+                        <p>Kraken-Benchmark est une application web sous
+ la forme d’un dashboard de métriques pour évaluer la qualité de votre 
+modèle (model ML) de transcription.</p>
+                        <p>Kraken-Benchmark distingue deux classes de métriques :</p>
+                        <br>
+                        <h5>Evaluation de la similarité syntaxique <i id="icon_1" class="fas fa-crosshairs" aria-hidden="true"></i></h5>
+                        <br>
+                        <p>Les métriques s’appuient sur les algorithmes 
+classiques d’évaluation de la similarité syntaxique entre deux séquences
+ de caractères :</p>
+                        <br>
+                        <ul>
+                            <li><b><a href="https://fr.wikipedia.org/wiki/Distance_de_Levenshtein" alt="wikipédia - distance de Levensthein" target="_blank">Distance de Levenshtein</a></b>
+ : également appelée distance d’édition, donne une mesure de la 
+différence entre deux chaînes de caractères. Elle constitue le coût 
+minimal pour transformer la phrase de référence en la phrase de 
+prédiction en terme de suppressions, d’insertions ou de remplacement de 
+caractères. Les trois opérations de transformation ont un coût égal à 1.</li>
+                            <br>
+                            <li><b><a href="https://fr.wikipedia.org/wiki/Distance_de_Hamming" alt="wikipédia - Distance de Hamming" target="_blank">Distance de Hamming</a></b> : Proche de la distance de Levenshtein, à la différence que cette métrique ne travaille que sur des chaines de mêmes longueurs;</li>
+                            <br>
+                            <li><b><a href="https://fr.wikipedia.org/wiki/Taux_d%27erreur_de_mots" alt="wikipédia - WER, CER, taux de reconnaissance de mots" target="_blank">Taux d’erreur par mots (WER), Taux d’erreur par caractères (CER), taux de reconnaissance de mots (word accuracy)</a></b>
+ : unités de mesure classiques pour évaluer les performances d’un 
+système de reconnaissance de caractères ou de mots, qui travaillent à 
+partir de la distance de Levenshtein. Ces métriques donnent des 
+indicateurs généraux sur le nombre de caractères ou de mots 
+effectivement reconnus. Plus le taux est faible 0.0 plus la 
+reconnaissance est bonne, à l’inverse plus le taux est proche de 1.0 
+plus la reconnaissance est mauvaise, pour le taux de reconnaissance par 
+mots plus le taux est fort (proche de 100%) plus la reconnaissance est 
+bonne;</li>
+                        </ul>
+                        <br>
+                        <p>Ainsi que des visualisations associés :</p>
+                        <ul>
+                            <li><b>Histogramme basé sur l’algorithme Ratcliff/Obershelp (<a href="https://en.wikipedia.org/wiki/Gestalt_Pattern_Matching" alt="wikipédia - Gestalt Pattern Matching" target="_blank">Gestalt Pattern Matching</a>)</b>
+ : évalue le nombre de caractères similaires, de suppressions et 
+d’insertions dans les sous-chaînes de caractères communes entre la 
+séquence de caractères de référence et la séquence de caractères prédite
+ par le modèle;</li>
+                            <br>
+                            <li><b>Versus Text</b> : fonctionnalité qui 
+permet à partir d’un code de couleurs, d’observer les transformations 
+(caractères communs, suppressions, insertions) entre votre texte de 
+référence (vérité terrain) et votre texte prédit (hypothèse), cette 
+visualisation est basée sur l’algorithme de Levenshtein;</li>
+                            <br>
+                            <li><b>Classement paires de caractères confondues et matrice de confusion</b>
+ : Visualiser sous la forme d’un classement les paires d’erreurs de 
+caractères les plus fréquentes entre la référence et la prédiction 
+(occurrences), cette visualisation est basée sur l’algorithme de 
+Levenshtein;</li>
+                            <br>
+                            <li><b>Séquences sous la forme de signaux</b>
+ : visualisation expérimentale qui vise à représenter les séquences de 
+caractères sous la forme de signaux à partir d’un dictionnaire qui 
+affecte un poid et/ou une position à chacun des glyphes latins connus 
+afin de visualiser finement les erreurs de types accentuation, 
+capitalisation et/ou confusion de caractères;</li>
+                            <br>
+                            <!--<li><b>Visualisations de deltas</b> : visualisation expérimentale basée sur l’analyse des séquences sous la forme de signaux; les deltas sont compris comme la distance entre les poids-position de la phrase de référence et de la phrase prédite par rapport à une position commune à la phrase de référence et la phrase prédite. Le calcul de l’écart-type permet alors de créer une classification des deltas autour de la moyenne total des deltas et d’estimer des probabilités d’erreurs par rapport aux écarts constatés entre les deltas et la moyenne total des deltas (éloignement plus ou moins important par rapport à la moyenne total d’un ensemble de deltas compris dans des intervalles).</li>-->
+                            <br>
+                        </ul>
+                        <br>
+                        <h5>Evaluation de la similarité sémantique <i id="icon_2" class="fas fa-project-diagram" aria-hidden="true"></i></h5>
+                        <p>Au-delà de l’évaluation des performances d’un
+ modèle de transcription, Kraken-Benchmark permet également de créer une
+ pipeline d’évaluation de la transcription d’un corpus vers vos projets 
+de TAL (reconnaissance d’entités, fouille de textes, word spotting…) en 
+proposant des métriques de type «&nbsp;bag of words&nbsp;» (occurrences 
+des mots composant un document donné) d’analyse sémantique avec :</p>
+                        <ul>
+                            <li><b><a href="https://fr.wikipedia.org/wiki/Indice_et_distance_de_Jaccard" alt="wikipédia - Indice de jaccard" target="_blank">Indice de jaccard</a></b></li>
+                            <br>
+                            <li><b><a href="https://fr.wikipedia.org/wiki/Similarit%C3%A9_cosinus" alt="wikipédia - Similarité cosinus" target="_blank">Similarité cosinus</a></b></li>
+                        </ul>
+                        <p>Ces métriques s’appuient sur des modules de 
+normalisation et de segmentation du texte implémentés dans 
+Kraken-Benchmark tel que la tokenisation en mots et en caractères et la 
+suppression des stops words.</p>
+                        <br>
+                        <p>** L’application est toujours en cours de développement **</p>
+                        <ul>
+                            <li>La partie d’analyse sémantique devrai être améliorée par la suite avec l’intégration de l’API <a href="https://nerd.readthedocs.io/en/latest/restAPI.html" alt="entity-fishing documentation" target="_blank">entity-fishing</a>;</li>
+                            <li>L’évaluation des modèles de segmentation est également prévu à terme.</li>
+                        </ul>
+                        <br>
+                        <p>Le projet s’appuie sur un <a href="http://127.0.0.1:5000/KB-notebook" title="jupyter notebook" target="_blank">notebook Jupyter</a> de recherche auquel vous pouvez accéder pour plus de précisions sur les métriques et leurs implémentations.</p>
+                        <br>
+                        <p>Accéder au <a href="https://gitlab.inria.fr/dh-projects/kraken-benchmark/-/tree/KB-app" title="source code Kraken-Benchmark" target="_blank">code source</a> du projet</p>
+                    </div>
+                    <div>
+                        <br>
+                        <p>🇬🇧</p>
+                        <p>Kraken-Benchmark is a web application in the 
+form of a metrics dashboard to assess the quality of your transcription 
+model (model ML).</p>
+                        <p>Kraken-Benchmark distinguishes between two types of metrics:</p>
+                        <br>
+                        <h5>Evaluation of syntactic similarity <i id="icon_1" class="fas fa-crosshairs" aria-hidden="true"></i></h5>
+                        <br>
+                        <p>The metrics are based on classic algorithms for evaluating the syntactic similarity between two sequences of characters:</p>
+                        <br>
+                        <ul>
+                            <li><b><a href="https://en.wikipedia.org/wiki/Levenshtein_distance" alt="wikipédia - Levenshtein distance" target="_blank"> Levenshtein distance</a></b>
+ : also called editing distance, gives a measure of the difference 
+between two strings. It constitutes the minimum cost to transform the 
+reference sentence into the prediction sentence in terms of deletions, 
+insertions or replacement of characters. The three transformation 
+operations have a cost equal to 1.</li>
+                            <br>
+                            <li><b><a href="https://en.wikipedia.org/wiki/Hamming_distance" alt="wikipédia - Hamming distance" target="_blank">Hamming distance</a></b> : Close to the Levenshtein distance, with the difference that this metric only works on chains of the same length;</li>
+                            <br>
+                            <li><b><a href="https://fr.wikipedia.org/wiki/Taux_d%27erreur_de_mots" alt="wikipédia - WER, CER, taux de reconnaissance de mots" target="_blank">Word Error Rate (WER), Character Error Rate (CER), word accuracy</a></b>
+ : classic units of measurement for evaluating the performance of a 
+character or word recognition system, who work from the distance of 
+Levenshtein. These metrics give general indicators of the number of 
+characters or words actually recognized. The lower the rate 0.0 the 
+better the recognition, conversely the closer the rate to 1.0 the worse 
+the recognition, for the word recognition rate, the higher the rate 
+(close to 100%) the better the recognition;</li>
+                        </ul>
+                        <br>
+                        <p>as well as associated visualizations:</p>
+                        <ul>
+                            <li><b>Histogram based on Ratcliff / Obershelp algorithm (<a href="https://en.wikipedia.org/wiki/Gestalt_Pattern_Matching" alt="wikipédia - Gestalt Pattern Matching" target="_blank">Gestalt Pattern Matching</a>)</b>
+ : evaluates the number of similar characters, deletions and insertions 
+in character substrings common to the reference character sequence and 
+the predicted character sequence by the model;</li>
+                            <br>
+                            <li><b>Versus Text</b> : functionality which
+ allows from a color code, to observe the transformations (common 
+characters, deletions, insertions) between your reference text (ground 
+truth) and your predicted text (hypothesis), this visualization is based
+ on the Levenshtein's algorithm;</li>
+                            <br>
+                            <li><b>Confused pairs of characters ranking and confusion matrix</b>
+ : Visualize in the form of a ranking the most frequent pairs of 
+character errors between the reference and the prediction (occurrences),
+ this visualization is based on the Levenshtein algorithm;</li>
+                            <br>
+                            <li><b>Sequences in the form of signals</b> :
+ experimental visualization which aims to represent the sequences of 
+characters in the form of signals from a dictionary which assigns a 
+weight and / or a position to each of the known Latin glyphs in order to
+ finely visualize the errors of types accentuation, capitalization and /
+ or confusion of characters;</li>
+                            <br>
+                            <!--<li><b>Deltas visualizations</b> : experimental visualization based on the analysis of sequences in the form of signals; the deltas are understood as the distance between the weights-position of the reference sentence and the predicted sentence with respect to a position common to the reference sentence and the predicted sentence. The calculation of the standard deviation then makes it possible to create a classification of the deltas around the total mean of the deltas and to estimate the probabilities of errors in relation to the differences observed between the deltas and the mean of the deltas (distance more or less large compared to the total mean of a set of deltas included in intervals).</li>-->
+                            <br>
+                        </ul>
+                        <br>
+                        <h5>Evaluation of semantic similarity <i id="icon_2" class="fas fa-project-diagram" aria-hidden="true"></i></h5>
+
+                        <p>Beyond the performance evaluation of a 
+transcription model, Kraken-Benchmark also allows you to create an 
+evaluation pipeline from the transcription of a corpus to your NLP 
+projects (entity recognition, text mining, word spotting…) by proposing 
+“bag of words” type metrics (occurrences of words making up a given 
+document) of semantic analysis with:</p>
+                        <ul>
+                            <li><b><a href="https://en.wikipedia.org/wiki/Jaccard_index" alt="wikipédia - Jaccard index" target="_blank">Jaccard index</a></b></li>
+                            <br>
+                            <li><b><a href="https://en.wikipedia.org/wiki/Cosine_similarity" alt="wikipédia - Cosine similarity" target="_blank">Cosine similarity</a></b></li>
+                        </ul>
+                        <p>These metrics are based on normalization and 
+text segmentation modules implemented in Kraken-Benchmark such as word 
+and character tokenization and stop words removal.</p>
+                        <br>
+                        <p>** The application is still under development **</p>
+                        <ul>
+                            <li>The semantic analysis part should be improved later with the integration of the <a href="https://nerd.readthedocs.io/en/latest/restAPI.html" alt="entity-fishing documentation" target="_blank">entity-fishing</a> API;</li>
+                            <li>The evaluation of segmentation models is also planned over time.</li>
+                        </ul>
+                        <br>
+                        <p>The application relies on a research <a href="http://127.0.0.1:5000/KB-notebook" title="jupyter notebook" target="_blank">Jupyter notebook</a> that you can access for more details on the metrics and their implementations.</p>
+                        <br>
+                        <p>Access the <a href="https://gitlab.inria.fr/dh-projects/kraken-benchmark/-/tree/KB-app" title="source code Kraken-Benchmark" target="_blank">source code</a> project</p>
+                    </div>
+
+                    <h5>Proposition de méthodologie pour analyser votre 
+modèle de transcription / Methodology proposal to analyze your 
+transcription model</h5>
+
+                    <p>Afin de vous aider à interpréter vos résultats, 
+nous vous proposons un pas-à-pas pour circuler dans les fonctionnalités 
+et les métriques qu’offre Kraken-Benchmark.</p>
+                    <br>
+                    <p>To help you interpret your results, we provide 
+you with a step-by-step guide to navigate the features and metrics that 
+Kraken-Benchmark offers.</p>
+                    <br>
+                    <img src="Test_I_2_fichiers/method_analyze.png" class="img-thumbnail">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    /* Script JQuery @Lucas Terriel - main report */
+    // Manage Versus Text loading
+    $(function() {
+        $("button[id='preload_redirect']").click(function() {
+            var button = $(this);
+            if (!button.hasClass('disabled')) {
+                button.addClass('disabled').html('Processing... <span class="fa fa-spinner fa-pulse"></span>');
+            }
+        })
+    });
+
+    // Manage Sequence to Sequence steps graphs preload
+    $("p[id='help_graph']").hide()
+    // $("div[id='preload']").html('<div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status"> <span class="sr-only">Loading...</span> </div>').delay(4000).slideUp(400);
+    $("div[id='preload']").html('<div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status"> <span class="sr-only">Loading...</span> </div>').delay(4000).slideUp(400).queue(function() {
+        setTimeout(function() {
+            $("p[id='help_graph']").show()
+        })
+    });
+
+    // Manage Show Metrics
+    $('i[id="icon_1"]').click(function() {
+        var clicks = $(this).data('clicks');
+        if (clicks) {
+            $('div[id="metrics_1"]').slideDown()
+        } else {
+            $('div[id="metrics_1"]').slideUp()
+        }
+        $(this).data("clicks", !clicks);
+    });
+    $('i[id="icon_2"]').click(function() {
+        var clicks = $(this).data('clicks');
+        if (clicks) {
+            $('div[id="metrics_2"]').slideDown()
+        } else {
+            $('div[id="metrics_2"]').slideUp()
+        }
+        $(this).data("clicks", !clicks);
+    });
+
+    // Manage graph zoom
+    $('img[id="graph"]').click(function() {
+        var clicks = $(this).data('clicks');
+        var img = $(this);
+        if (clicks) {
+            img.css('width', '150px');
+        } else {
+            img.css('width', '400px');
+            img.css('margin-left', 'auto');
+            img.css('margin-right', 'auto');
+        }
+        $(this).data("clicks", !clicks);
+    })
+
+</script>
+
+
+
+<div class="cRetour" style="display: block;"></div>
+
+<!--Use this help modal canevas for another pages-->
+
+<!--<div class="hRetour">-->
+<!-- Button to Open the Modal -->
+<!--<button type="button" class="btn btn-primary btn-help" data-toggle="modal" data-target=".bd-example-modal-lg">
+        <i class="far fa-question-circle"></i>
+    </button>-->
+
+<!--The Modal-->
+<!--<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">-->
+
+<!-- Modal Header -->
+<!--<div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>-->
+
+<!-- Modal body -->
+<!--<div class="modal-body">
+                    <p>Modal body..</p>
+                </div>-->
+
+<!-- Modal footer -->
+<!--<div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<!--footer-->
+
+<footer id="sticky-footer" class="py-4 bg-dark text-white-50" style="flex-shrink: none;">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-sm">
+                <small>Copyright ©2020 Kraken-Benchmark | version 1.1.1</small>
+                <br>
+                <small>Inria-ALMAnaCH | Lucas Terriel | KB logo by Alix Chagué</small>
+            </div>
+            <div class="col-sm">
+                <p><a href="https://gitlab.inria.fr/dh-projects/kraken-benchmark/-/tree/KB-app" title="source code Kraken-Benchmark" target="_blank"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.33334 9.33332 7.58668 15.3333V9.33332L4.92001 1.14666C4.78334.725325 4.13601.725325 4.00001 1.14666L1.33334 9.33332z" fill="#e24329"></path>
+                            <path d="M22.6667 9.33332 16.4133 15.3333V9.33332L19.08 1.14666C19.2167.725325 19.864.725325 20 1.14666L22.6667 9.33332z" fill="#e24329"></path>
+                            <path d="M12 22.92 2 9.33334H22L12 22.92z" fill="#e24329"></path>
+                            <path d="M12 22.92 7.58668 9.33334H1.33334L4.00001 16.6667 12 22.92z" fill="#fc6d26"></path>
+                            <path d="M12 22.92 16.4133 9.33334H22.6667L20 16.6667 12 22.92z" fill="#fc6d26"></path>
+                            <path d="M1.33333 9.33334.0666658 13.44C-.0533342 13.8167.0666659 14.24.399999 14.48L12.0133 22.92 1.33333 9.33334z" fill="#fca326"></path>
+                            <path d="M22.6667 9.33334 23.9333 13.44C24.0533 13.8167 23.9333 14.24 23.6 14.48L12 22.92 22.6667 9.33334z" fill="#fca326"></path></svg></a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+        <script>
+            // Manage scroll observer
+            // script inspired source code : @DjangoBlais API
+
+            jQuery(document).ready(function() {
+                var duration = 500;
+                jQuery(window).scroll(function() {
+                    if (jQuery(this).scrollTop() > 100) {
+                        // If a scrolling of 100 pixels or more.
+                        // Add the button
+                        jQuery('.cRetour').fadeIn(duration);
+                    } else {
+                        // Otherwise remove the button
+                        jQuery('.cRetour').fadeOut(duration);
+                    }
+                });
+
+                jQuery('.cRetour').click(function(event) {
+                    // A click causes the animated return to top.
+                    event.preventDefault();
+                    jQuery('html, body').animate({
+                        scrollTop: 0
+                    }, duration);
+                    return false;
+                })
+            });
+
+            jQuery(document).ready(function() {
+                var duration = 500;
+                jQuery(window).scroll(function() {
+                    if (jQuery(this).scrollTop() > 100) {
+                        jQuery('.hRetour').fadeIn(duration);
+                    } else {
+                        jQuery('.hRetour').fadeOut(duration);
+                    }
+                });
+            })
+
+            // Manage Help pop-up
+
+            $(".first").click(function() {
+                $("div[id='help_pop_1']").hide()
+            });
+
+
+            $(".second").click(function() {
+                $("div[id='help_pop_2']").hide()
+            });
+            
+        </script>
+    
+
+    </body></html>

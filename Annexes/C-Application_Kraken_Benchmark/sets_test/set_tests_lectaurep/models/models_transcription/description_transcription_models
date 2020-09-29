@@ -1,0 +1,25 @@
+Name model : model_test_lectaurep_bin_accuracy_6064
+
+Accuracy : 0.6064
+
+parameters : 135 pages / defaults (ketos train -f alto --device cuda:0 -t rigault.xmllist)
+
+Epochs : 18/23
+
+
+------------
+
+Name model : model_test_lectaurep_bin_accuracy_8164
+
+Accuracy : 0.8164 (75%)
+
+parameters : 67 pages / defaults (marotte train -f alto --device cuda:0 -t marotte.xmllist)
+
+Epochs : 09/14
+
+------------
+
+biais :
+
+* same hands on images set
+

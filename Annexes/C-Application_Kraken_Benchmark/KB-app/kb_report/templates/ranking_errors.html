@@ -1,0 +1,24 @@
+				{% extends 'layout.html' %}
+
+				{% block content %}
+				<div class="container">
+				    <h3>Ranking of the most frequent pairs of character errors</h3>
+				</div>
+				<br>
+				<div class="container">
+				    <div class="row">
+				        <!--confusion matrix figure-->
+				        <div style="position:fixed; padding:7px 95px 61px 800px">
+				            <img src="/confusion-matrix-{{number}}.png" alt="confusion matrix of errors characters pairs" width="460px" style="border-width: 1px; border-style: solid; border-color: black">
+				        </div>
+				        <!-- pairs of ranking characters errors-->
+				        <div class="col-sm">
+				            <h5>Total pairs of character errors : {{ total_pairs_errors }}</h5>
+				            <br>
+				            <h5>--- ranking of the most recurring errors ---</h5>
+				            <div>{{ all_ranking | join | safe }}</div>
+				        </div>
+				    </div>
+				</div>
+
+				{% endblock content %}

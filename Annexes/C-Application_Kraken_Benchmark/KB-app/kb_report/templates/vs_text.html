@@ -1,0 +1,71 @@
+				{% extends 'layout.html' %}
+
+				{% block content %}
+
+				<!--Description - Infos part-->
+				<div class="container">
+				    <div class="row">
+				        <div class="col-3" style="position: relative">
+				            <table class="diff" summary="Legends">
+				                <hr>
+				                <tr>
+				                    <th colspan="2"><u><b>Legends</b></u></th>
+				                </tr>
+				                <tr>
+				                    <td>
+				                        <table border="" summary="Colors">
+				                            <tr>
+				                                <th> Colors </th>
+				                            </tr>
+				                            <tr>
+				                                <td class="diff_exact">&nbsp;Exact match&nbsp;</td>
+				                            </tr>
+				                            <tr>
+				                                <td class="diff_insert">&nbsp;Insertion&nbsp;</td>
+				                            </tr>
+				                            <tr>
+				                                <td class="diff_error">&nbsp;Deletion / Substitution&nbsp;</td>
+				                            </tr>
+				                        </table>
+				                    </td>
+				                </tr>
+				            </table>
+				        </div>
+				        <br>
+				        <div class="col-6">
+				            {% if edit_distance_levensthein <= 10 %}
+				            <div class="distance" style="color: black">{{ edit_distance_levensthein }}</div>
+				            {% else %}
+				            <div class="distance" style="color: #D2122E">{{ edit_distance_levensthein }}</div>
+				            {% endif %}
+				            <br>
+				            <p class="distance-label">Levenshtein distance</p>
+				        </div>
+				    </div>
+				    <br>
+				    <hr>
+				</div>
+				
+				<!--Texts part-->
+				<div class="container">
+				    <br />
+				    <div class="row">
+				        <div class="col-sm">
+				            <h3 style="text-align: center"><u>Reference</u></h3>
+				            <p class="bg-light border-top" style="text-align: justify">{{reference}}</p>
+				        </div>
+				        <div class="col-sm">
+				            <h3 style="text-align: center"><u>Versus text</u></h3>
+				            <p class="bg-light border-top" style="text-align: justify">{{color_diff_source_prediction | join('')| string| safe}}</p>
+				        </div>
+				        <div class="col-sm">
+				            <h3 style="text-align: center"><u>Prediction</u></h3>
+				            <p class="bg-light border-top" style="text-align: justify">{{prediction}}</p>
+				        </div>
+				    </div>
+				    <br />
+				    <br />
+				</div>
+
+
+				{% endblock content %}

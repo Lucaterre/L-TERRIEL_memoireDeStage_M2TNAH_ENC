@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<!-- ***********************************************************     -->
+<!-- Version 1.1.1 / Date : 2020-07-27                               -->
+<!--                                                                 -->
+<!-- La template suivante est développée dans le cadre du projet     -->
+<!-- LECTAUREP en lien avec les Archives Nationales/INRIA            -->
+<!-- pour envisager un format XML TEI Pivot pour rassembler          -->
+<!-- les données  dans une structure logique                         -->
+<!-- provenant des schémas suivants (CF. ODD) :                      -->
+<!--                                                                 -->
+<!-- + EAD (Encoded Archival Description)                            -->
+<!-- + EAC-CPF (Encoded Archival Context for Corporate Bodies,       -->
+<!--   Persons, and Families)                                        -->
+<!-- + ALTO (Analysed Layout and Text Object) - structure physique   -->
+<!--   document de vérité                                            -->
+<!-- + EXIF (Exchangeable image file format)                         -->
+<!--                                                                 -->
+<!-- ***********************************************************     -->
+<!--  Author : Lucas Terriel                                         -->
+<!--  Reviewers : Laurent Romary, Alix Chagué                        -->
+<!--          Des Questions ?                                        -->
+<!-- @Gitlab-INRIA/ALMANACH                                          -->
+<!-- ***********************************************************     -->
+<!--                                                                 -->
+<!-- ***********************************************************     -->
+<!-- Ce script est libre à la réutilisation selon les termes         -->
+<!-- de la Creative Commons Attribution license.                     -->
+<!-- ***********************************************************     -->
+<!--                                                                 -->
+<!-- Les éléments contenus dans les attributs @ sont ici à titre     -->
+<!-- d'exemples                                                      -->
+<!-- ***********************************************************     -->
+
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <!--*********************************************************** -->
+   <!-- LIAISON AVEC INSTRUMENTS DE RECHERCHE EAD & FICHE PRO-     -->
+   <!-- DUCTEUR EAC                                                -->
+   <!--*********************************************************** -->
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Répertoire du notaire <!-- EAD: <persname> --> - <!-- EAD: <corpname> --></title>
+            <respStmt>
+               <persName>
+                  <!-- EAD : <persname> -->
+                  <forename><!-- ** Prénom notaire --></forename>
+                  <surname><!-- ** Nom notaire --></surname>
+               </persName>
+               <resp>Conversion des instruments de recherche en EAD :
+                  <!-- récupération des noms des fichiers EAD <eadid> -->, des fiches producteurs
+                  EAC, des fichiers ALTO, et des métadonnées EXIF vers le format pivot TEI
+                  <!-- valeur par défaut --></resp>
+            </respStmt>
+         </titleStmt>
+
+         <!-- PARTIE ADMINISTRATIVE -->
+
+         <publicationStmt>
+            <publisher>
+               <orgName>Minutier central des notaires parisiens, Archives nationales de France
+                  <!-- valeur par défaut --></orgName>
+            </publisher>
+            <pubPlace>
+               <address>
+                  <addrLine>11 rue des Quatre-Fils <!-- valeur par défaut --></addrLine>
+                  <addrLine>75003 Paris <!-- valeur par défaut --></addrLine>
+                  <addrLine>FRANCE <!-- valeur par défaut --></addrLine>
+               </address>
+            </pubPlace>
+            <availability status="free">
+               <!-- Voir pour changer le status -->
+               <p>Format XML-TEI pivot pour le projet Lectaurep <!-- valeur par défaut --></p>
+               <!-- Ajout d'une licence à discuter -->
+            </availability>
+         </publicationStmt>
+
+         <!-- PARTIE CONCERNANT LES SOURCES DE REPERTOIRES -->
+
+         <sourceDesc>
+            <!-- ** Identification de la localisation des répertoires du notaire -->
+            <msDesc xml:id="id_automatique" xml:lang="fr">
+               <msIdentifier>
+                  <country>France</country>
+                  <settlement>Paris</settlement>
+                  <institution>Archives nationales de France</institution>
+                  <repository>Minutier central des notaires parisiens</repository>
+                  <idno type="identifiant">
+                     <!--EAD [Images et répertoires de notaires] : cotes étude MC/RE => <unitid type="cote-de-consultation"> --></idno>
+               </msIdentifier>
+
+               <!-- ** Description du contenu des répertoires -->
+               <!-- Rassemble les métadonnées présentes dans EAD [Images et répertoires de notaires] -->
+               <msContents>
+                  <summary>
+                     <!-- premier niveau -->
+                     <!-- EAD : @xml:id correspond à l'identifiant du premier <c> -->
+                     <list type="Répertoire" xml:id="id_repertoire">
+                        <item>
+                           <idno><!-- EAD : cote du repertoire <unitid type="cote-de-consultation"> --></idno>
+                           <origDate from="1000" to="1000"
+                              ><!-- EAD :  Date du répertoire <unitdate> --></origDate>
+                           <desc><!-- EAD : Description physique du répertoire  <physdesc> --></desc>
+                           <note><!-- EAD : Informations supplémentaires sur le répertoire <scopecontent> --></note>
+                           <!-- deuxième niveau -->
+                           <list type="Contenu_Répertoire">
+                              <!-- EAD : @xml:id correspond à l'identifiant des <c> inférieurs -->
+                              <item xml:id="Id_table-listechrono">
+                                 <idno type="pieces"
+                                    ><!-- EAD : pages recto/verso <unitid> --></idno>
+                                 <title><!--  EAD : <unittitle> --></title>
+                                 <material><!-- EAD : nombre de feuillets <physdesc>/<extent>--></material>
+                                 <note><!-- EAD (optionnel) : informations supplémentaires <scopecontent> --></note>
+                                 <!-- On rapporte dans <graphic> ici de l'intervalle des images qui comprend les 
+                                 les feuillets -->
+                                 <graphic
+                                    url="DAFANCH96_023MIC08132_L.jpg#DAFANCH96_023MIC08141_L.jpg"/>
+                              </item>
+                              <item xml:id="Id_table-listechrono2"/>
+                              <!-- ... -->
+                           </list>
+                        </item>
+                     </list>
+                  </summary>
+                  <msItemStruct xml:lang="fr">
+                     <locus from="MC/RE/XXX" to="MC/RE/XXX"
+                        ><!-- EAD [Images et répertoires de notaires] : <unitid type="cote-de-consultation"> première et derniere côte des répertoires --></locus>
+                     <!-- ** Authentification du notaire et de l'étude -->
+                     <author>
+                        <!-- Ici on fait le lien avec la fiche producteur EAC via les attributs @source-->
+                        <persName source="lien_vers_fiche_EAC_Notaire">
+                           <!-- EAD : <persname> -->
+                           <forename><!-- ** Prénom notaire --></forename>
+                           <surname><!-- ** Nom notaire --></surname>
+                        </persName>
+                        <!-- *** Affiliation à une étude -->
+                        <orgName source="lien_vers_fiche_EAC_Etude"
+                           ><!-- EAD : <corpname> --></orgName>
+                        <!-- *** Dates des répertoires == Dates d'exercices du notaire (EAC) -->
+                        <date when-custom="1875-02-24 / 1875-02-24"
+                           ><!-- EAD : <did>/<unitdate> --></date>
+                     </author>
+                     <textLang mainLang="fr">français <!-- valeur par défaut --></textLang>
+                  </msItemStruct>
+               </msContents>
+               <!-- Ici on gère les genres auxquels sont rattachés les répertoires -->
+               <additional>
+                  <surrogates>
+                     <bibl source="Référentiel_genreform">
+                        <title type="genreform" xml:id="ID_genreform1"
+                           ><!-- EAD : répertoire d'officier public ministériel <controlaccess>/<genreform> --></title>
+                        <title type="genreform" xml:id="ID_genreform2"
+                           ><!-- EAD : répertoire <controlaccess>/<genreform> --></title>
+                     </bibl>
+                  </surrogates>
+               </additional>
+            </msDesc>
+         </sourceDesc>
+      </fileDesc>
+      <!--***********************************************************   -->
+      <!-- LIAISON AVEC LES METADONNEES TECHNIQUES DES IMAGES AU FORMAT -->
+      <!-- EXIF DANS DES ELEMENTS TEI <XenoData>                        -->
+      <!-- chaque élément <XenoData> reçoit :
+        - @xmlns : espace de nom correspondant au schéma des métadonnées techniques EXIF
+        - @facs : qui permet aux groupe de métadonnées EXIF d'être relier à un fichier
+        image contenu dans @id de <graphic> (voir plus bas)
+        - @n : contient le nom du fichier image avec l'extension de fichier
+      -->
+      <!--***********************************************************   -->
+
+      <!-- Exemple Exif :  -->
+
+      <xenoData xmlns:exif="http://ns.adobe.com/exif/1.0/" facs="#FRAN_0025_0039_L-1"
+         n="FRAN_0025_0039_L-1.jpeg">
+         <!-- @facs : relier à <graphic> -->
+         <exif:EXIF>
+            <exif:ApertureValue/>
+            <exif:ColorSpace/>
+            <!-- ... -->
+         </exif:EXIF>
+      </xenoData>
+      <xenoData>
+         <!-- .... -->
+      </xenoData>
+      <xenoData>
+         <!-- ... -->
+      </xenoData>
+      <!-- Notifications effectuées sur le Format pivot TEI -->
+      <encodingDesc>
+         <editorialDecl>
+            <p><!-- en cas de modifications ou spécificités aux format pivot TEI à documenter --></p>
+         </editorialDecl>
+      </encodingDesc>
+      <revisionDesc>
+         <change when="2020-05-14">File created</change>
+      </revisionDesc>
+   </teiHeader>
+
+   <!--***********************************************************          -->
+   <!-- LIAISON AVEC LES FICHIERS XML ALTO (1ere partie : <facsimile>)      -->
+   <!-- 
+        + <facsimile> : contient les représentations des répertoires de notaires sous la forme d'un ensemble d'images (correspond au <Layout>);
+      Puis pour chaque fichiers ALTO : 
+        + 1 <surface> : correspond à la surface en deux dimensions qui correspond à la page de l'image transcrite (élément ALTO : <Page>)
+           - @facs : reçoit l'identifiant de l'élément ci-dessous <graphic>
+        + 1 <graphic> : correspond à l'image transcrite
+           - @url : lien vers le nom du fichier image
+           - @xml:id : reçoit un identifiant nommé tel que name_img...
+        + 1 à n <zone> qui correspondent aux éléments ALTO : <PrintSpace> (Rectangle couvrant la zone imprimée d'une page == <surface>) => <TextBlock> (bloc/paragraphe de texte) => <TextLine> (une ligne de texte) => <String> (contient des mots) => <Shape>/<Polygon> (forme du texte) : 
+           - @type : reprend l'intitulé de la balise ALTO (sauf pour <Shape> qui prend la valeur "Polygon")
+           - @xml:id : chaque zone dispose d'un identifiant nommé tel que facPS_name_img => facblock_name_img => facline_name_img_1 => facs_name_img_1
+           - @ulx-@uly-@lrx-@lry : coordonnées de la zone concernée dans le XML ALTO (@WIDTH, @HEIGHT, @VPOS et @HPOS)
+           - @points : pour <zone type="Polygon"> représente les points du polygones
+
+    -->
+   <!--***********************************************************           -->
+
+   <!-- Exemple Alto (partie 1) :  -->
+   <facsimile>
+      <surface facs="#FRAN_0025_0039_L-1">
+         <graphic url="FRAN_0025_0039_L-1.jpeg" xml:id="FRAN_0025_0039_L-1"/>
+         <zone type="PrintSpace" xml:id="facPS_FRAN_0025_0039_L-1" ulx="0" uly="0" lrx="2972"
+            lry="4356">
+            <zone type="TextBlock" xml:id="facblock_FRAN_0025_0039_L-1">
+               <zone type="TextLine" xml:id="facline_FRAN_0025_0039_L-1_1" ulx="2575" uly="284"
+                  lrx="2830" lry="348">
+                  <zone type="String" xml:id="facs_FRAN_0025_0039_L-1_1" ulx="2575" uly="284"
+                     lrx="2830" lry="348"/>
+                  <zone type="Polygon"
+                     points="2585,217 2588,206 2594,212 2618,207 2626,213 2644,216 2662,208 2675,218 2700,216 2720,227 2727,220 2744,217 2745,232 2720,228 2710,233 2687,231 2681,235 2675,227 2653,227 2644,217 2627,217 2607,228 2602,225 2585,229"
+                  />
+               </zone>
+            </zone>
+         </zone>
+      </surface>
+      <surface>
+         <!-- ... -->
+      </surface>
+      <surface>
+         <!-- ... -->
+      </surface>
+   </facsimile>
+
+   <!--***********************************************************          -->
+   <!-- LIAISON AVEC LES FICHIERS XML ALTO (2eme partie : <body>/<div>)     -->
+   <!-- Pour chaque fichiers XML ALTO : 
+      + 1 <div> : correspond à une <surface> (voir plus haut) reçoit :
+      - @facs : nom de l'image correspondant à l'id de <graphic> (voir plus haut)
+      + 1 <ab> : correspond à un bloc de texte quelconque et correspond à la zone de type "TextBlock" reçoit :
+      - @facs : correspond à l'id de la zone de type "TextBlock"
+      - @xml_id : un identifiant unique comme block_name_image_1 pour le premier
+      + 1 à n <w> : élément vide ou non qui contient des données textuelles et reçoit :
+      - @xml:id : un identifiant unique comme w_name_image_1
+      - @facs : relie les données textuelles à sa zone de type String via l'identifiant de ce dernier
+      + 1 à n <lb> : qui correspond à la zone contenant la ligne de texte (TextLine) et reçoit
+      - @xml:id : un identifiant unique noté tel que esc_line_name_image_1 pour le premier
+      - @facs : relie la ligne à sa zone de type TextLine via l'identifiant de ce dernier
+   -->
+   <!--***********************************************************          -->
+   <text>
+      <body>
+         <!-- Exemple Alto (partie 2) :  -->
+         <div type="GT" facs="#FRAN_0025_0039_L-1">
+            <ab facs="#facblock_FRAN_0025_0039_L-1" xml:id="block_FRAN_0025_0039_L-1_1">
+               <w facs="#facs_FRAN_0025_0039_L-1_1" xml:id="w_FRAN_0025_0039_L-1_1"/>
+               <lb facs="#facs_FRAN_0025_0039_L-1_1" xml:id="esc_line_FRAN_0025_0039_L-1_1"/>
+               <w facs="#facs_FRAN_0025_0039_L-1_2" xml:id="w_FRAN_0025_0039_L-1_2">Ceci est un
+                  élément w contenant du texte</w>
+               <lb facs="#facline_FRAN_0025_0039_L-1_2" xml:id="esc_line_FRAN_0025_0039_L-1_2"/>
+               <!-- ... -->
+            </ab>
+         </div>
+         <div>
+            <!-- ... -->
+         </div>
+         <div>
+            <!-- ... -->
+         </div>
+      </body>
+   </text>
+</TEI>
