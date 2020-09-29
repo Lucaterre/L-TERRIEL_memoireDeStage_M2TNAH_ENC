@@ -83,7 +83,7 @@ localisation : \citecode{/B-Format\_pivot\_XML\_TEI\_Lectaurep} contenant :
 \skip
 \dirtree{%
 .1 /B-Format\_pivot\_XML\_TEI\_Lectaurep/.
-   .2 Doc/\DTcomment{Regroupe la documentation sur le projet du fichier pivot XML TEI pour Lectaurep}.
+   .2 Doc/\DTcomment{Regroupe la documentation sur le projet du fichier pivot XML-TEI pour Lectaurep}.
         .3 Modélisation\_et\_documentation\_format\_pivot/.
            .4 template\_pivot\_TEI\_lectaurep.xml\DTcomment{Canevas (\textit{template}) pour formaliser les attentes et les réflexions des acteurs pour l'inclusion des données et des métadonnées Lectaurep dans le fichier pivot XML-TEI.}.
            .4 Les ODD aux formats : XML, PDF et HTML.\DTcomment{La documentation standard TEI pour le fichier pivot XML-TEI Lectaurep.}.
@@ -101,7 +101,7 @@ localisation : \citecode{/B-Format\_pivot\_XML\_TEI\_Lectaurep} contenant :
             .4  test\_legay\_tei.xml\DTcomment{Exemple de fichier pivot TEI Lectaurep de test généré en sortie du \textit{script}.}.
         .3 Sets\_test\_Legay/\DTcomment{Contient un ensemble de fichiers correspondant aux données fournies par Lectaurep pour tester le programme \textit{generator Lectaurep2TEI} et générer une première version du format pivot.}.
             .4  Data\_xml\_alto/\DTcomment{Fichiers XML ALTO correspondants aux transcriptions vérité terrain récupérées sur l'espace \textit{ShareDocs} relatives aux images numérisées du répertoire de notaire d'Ernest Legay (étude XXIII).}.
-            .4  Data\_xml\_ead\_eac/\DTcomment{fichiers XML EAD et XML EAC-CPF correpondants aux instruments de recherche des répertoires du notaire Ernest Legay (étude XXIII) et notices producteurs récupérées sur la Salle des inventaires virtuels des Archives nationales.}.
+            .4  Data\_xml\_ead\_eac/\DTcomment{Fichiers XML EAD et XML EAC-CPF correpondants aux instruments de recherche des répertoires du notaire Ernest Legay (étude XXIII) et notices producteurs récupérées sur la Salle des inventaires virtuels des Archives nationales.}.
                 .5 FRAN\_IR\_041698.xml \DTcomment{IR \inquote{Minutes et répertoires du notaire Ernest LEGAY, 25 février 1875 - 14 mai 1902 (étude XXIII)}.}.
                 .5 FRAN\_IR\_051379.xml \DTcomment{IR \inquote{Images des répertoires du notaire Ernest Legay pour l'étude XXIII}.}.
                 .5 FRAN\_NP\_010150.xml \DTcomment{Notice producteur de l'étude XXIII.}.
@@ -153,7 +153,7 @@ localisation : \citecode{/C-Application\_Kraken\_Benchmark} contenant :
     .3 kraken\_benchmark.py.\DTcomment{\textit{Script} principal pour l'exécution de l'application \textit{Kraken-Benchmark}.}.
    .2 sets\_test/.\DTcomment{Jeux de fichiers pour effectuer des tests dans \textit{Kraken-Benchmark} et \textit{scripts} Python complémentaires.}.
     .3 jules\_verne\_set\_test/.\DTcomment{Jeux de données utilisés pour les tests fonctionnels de l'application.}.
-        .4  images/.\DTcomment{Contient des numérisations (formats \citecode{.jpeg}) de l'ouvrage \textit{Voyage au centre de la terre} récupérés sur \og Gallica\fg{}}.
+        .4  images/.\DTcomment{Contient des numérisations (formats \citecode{.jpeg}) de l'ouvrage \textit{Voyage au centre de la terre} récupérés sur \textit{Gallica}.}.
         .4  dataset\_GT/.\DTcomment{Contient les vérités terrains en format texte brut utilisées pour comparer les résultats issus de l'HTR de \textit{Kraken-Benchmark}. Édités à partir du CLI Kraken.}.
         .4  model/.\DTcomment{Contient le modèle (format \citecode{.mlmodel}) entraîné sur le CLI Kraken pour réaliser l'OCR dans \textit{Kraken-Benchmark} sur le \textit{set} de numérisations de \textit{Voyage au centre de la terre}.}.
     .3 sets\_tests\_lectaurep/.\DTcomment{Jeux de données utilisés pour tester les modèles de transcription issus du CLI Kraken sur des images de répertoires de notaires sélectionnées pour leurs particularismes (pour plus de détails sur les sets d'images et les modèles HTR utilisés voir le fichier \citecode{CR\_tests\_lectaurep\_KB.md}) pour évaluer la qualité des transcriptions. pour plus de précisions, Cf. section \ref{tests_KB_lectaurep}}.
@@ -236,13 +236,13 @@ localisation : \citecode{/E-Doc\_travail\_KB} contenant :
     \label{fig:algo-kb}
 \end{figure}
 
-\chapter{\textit{Scripts} Python complémentaires}
+\chapter{\textit{Scripts} Python complémentaires}\label{anx_scripts_comp}
 localisation : \citecode{/F-scripts\_python\_comp} contenant :
 
 \begin{itemize}
     \item \citecode{script\_python\_POS.py} ou Figure \ref{fig:script_python_POS}
     \item \citecode{script\_python\_exif.py} ou Figure \ref{fig:script_python_exif}
-    \item \citecode{script\_calc\_RO.py} ou Figure \ref{fig:script_calc_RO}
+    \item \citecode{script\_calc.py} ou Figure \ref{fig:script_calc}
 \end{itemize}
 
 \begin{figure}[h]
@@ -291,7 +291,6 @@ options = {"color": "red", "font": "Source Sans Pro"}
 # Visualisation POS dans le navigateur
 doc = model_fr(test)
 displacy.serve(doc, style="dep", options=options)
-
 \end{lstlisting}
 \caption{\textit{Script} Python pour effectuer de l'étiquetage morpho-syntaxique (POS) \textcopyright L. Terriel, 2020}
 \label{fig:script_python_POS}
@@ -325,27 +324,153 @@ for key, value in metadata.items():
 \end{figure}
 
 \begin{figure}[h]
+    \caption{\textit{Script} Python pour illustrer les différents scores de similarité syntaxique entre deux chaînes de caractères et leurs implémentations \textcopyright L. Terriel, 2020}
+    \label{fig:script_calc}
 \lstset{language=Python}
 \begin{lstlisting}
 """
-Script pour afficher un score de similarité basé sur l'algorithme Ratcliff/Obershelp
+Script pour illustrer les différents scores de similarité syntaxique
+entre deux chaînes de caractères et leurs implémentations en Python :
+
+* Algorithme Ratcliff/Obershelp
+* Distance de Levenshtein
+* Word Error Rate (Taux d'erreur de mots)
+* Character Error Rate (Taux d'erreur de mots)
+* Word Accuracy (Taux de reconnaissance de mots)
+
+! Voir les résultats à la fin du script !
 
 Auteur : Lucas Terriel
 Date : 14/09/2020
 """
 
+# On importe le module NLTK pour découper les phrases en mots et en caractères
+from nltk import regexp_tokenize
+
 # On importe le module built-in implémentant l'algorithme Ratcliff/Obershelp
 import difflib
 
-# On récupère le score 
-similarite_ro = difflib.SequenceMatcher(None, "En l'an 1920 par la procuration", "En l'an 1920 par le procureur").ratio()
+# On importe la fonction _fast_levenshtein() de l'API Kraken (module lib.dataset)
+from kraken.lib.dataset import _fast_levenshtein
 
-# On affiche le score
-print(f'Le score de similarité est de : {similarite_ro}')
+# On définit une phrase de référence (Ground Truth) et une prédiction (transcription HTR) de test
 
->>> Le score de similarité est de : 0.8333333333333334
+reference = "En l'an 1920 par la procuration"
+
+prediction = "En l'an 1920 par le procureur"
+
+# ! Pré-traitements textuels de la phrase de référence (pour le WER et le CER) !
+
+def tokenize_words_char(sequence:str) -> list:
+	"""
+	* découpage en mots (regex : \W)
+	* decoupage en lettres (regex : '')
+
+	sequence (str) : sequence à tokeniser
+	return (list) : tokens mots ou caractères
+	"""
+	tok_mots = regexp_tokenize(sequence, pattern='\W', gaps=True)
+	tok_caracteres = regexp_tokenize(sequence, pattern='', gaps=True)
+	return tok_mots, tok_caracteres
+\end{lstlisting}
+\end{figure}
+\begin{figure}[h]
+\small{\textit{suite du script}}
+\lstset{language=Python}
+\begin{lstlisting}
+# Tokenisation de la référence et de la prédiction (au niveau des mots et des caractères)
+reference_tok_mots, reference_tok_caracteres = tokenize_words_char(reference)
+prediction_tok_mots, prediction_tok_caracteres = tokenize_words_char(prediction)
+
+# Exemples de découpage pour la phrase de référence
+
+print(reference_tok_mots)
+print(prediction_tok_mots)
+
+>>> ['En', 'l', 'an', '1920', 'par', 'la', 'procuration']
+
+print(reference_tok_caracteres)
+print(prediction_tok_caracteres)
+
+>>> ['E', 'n', ' ', 'l', "'", 'a', 'n', ' ', '1', '9', '2', '0', 
+>>> ' ', 'p', 'a', 'r', ' ', 'l', 
+>>> 'a', ' ', 'p', 'r', 'o', 'c', 'u', 'r', 'a', 't', 'i', 'o', 'n']
+
+# calcul du score de similarité avec l'algorithme Ratcliff/Obershelp
+similarite_ro = difflib.SequenceMatcher(None, reference, prediction).ratio()
+
+# calcul de la distance de Levenshtein
+lev_distance = _fast_levenshtein(reference, prediction)
+
+# calcul du WER (Word Error Rate)
+def WER(distance:int, reference_mots :list) -> int:
+	"""
+	Calcul du Word Error Rate
+	WER = Distance(reference,prediction) / nombre_total_mots_référence
+	(On donne le résultat en pourcentage et en décimal pour le Word accuracy)
+	
+	distance (int) : distance d'édition
+	reference_mots (list) : phrase découpée en mots
+	returns (int) : taux d'erreur de mots (WER) en décimal et en pourcentage
+	"""
+	resultat = (distance / len(reference_mots))
+	resultat_pourcent = (distance / len(reference_mots)) * 100
+	return resultat, resultat_pourcent
+
+# Le WER travaille au niveau des mots
+resultat_wer_dec, resultat_wer = WER(_fast_levenshtein(reference_tok_mots, prediction_tok_mots), reference_tok_mots)
 
 \end{lstlisting}
-\caption{\textit{Script} Python pour calculer un score de similarité suivant l'algorithme Ratcliff/Obershelp  \textcopyright L. Terriel, 2020}
-\label{fig:script_calc_RO}
 \end{figure}
+\begin{figure}[h]
+\small{\textit{suite et fin du script}}
+\begin{lstlisting}
+
+# calcul du CER (Character Error Rate)
+def CER(distance:int, reference_caracteres :list) -> int:
+	"""
+	Calcul du Word Error Rate
+	CER = Distance(reference,prediction) / nombre_total_caracteres_référence
+	(On donne le résultat en pourcentage)
+	
+	distance (int) : distance d'édition
+	reference_mots (list) : phrase découpée en caractères
+	return (int) : taux d'erreur de caractères en pourcentage (CER)
+	"""
+	resultat_pourcent = (distance / len(reference_caracteres)) * 100
+	return resultat_pourcent
+
+# Le CER travail au niveau des caractères
+resultat_cer = CER(lev_distance, reference_tok_caracteres)
+
+# calcul du Word Accuracy (Taux de reconnaissance des mots)
+def W_acc(WER:int) -> int:
+	"""
+	Calcul du Word Accuracy (Taux de reconnaissance des mots)
+	W_Acc = (1 - WER) * 100 
+	(On donne le résultat en pourcentage)
+	
+	WER (int) : résultat du WER en décimal
+	return (int) : résultat du Word accuracy
+	"""
+	resultat_pourcent = (1-WER) * 100
+	return resultat_pourcent
+
+resultat_wacc = W_acc(resultat_wer_dec)
+
+
+# On affiche les différents scores :
+print(f'Le score de similarité (Ratcliff/Obershelp) est de : {similarite_ro}')
+print(f'La distance de Levenshtein est de : {lev_distance}')
+print(f'Le CER est de : {resultat_cer} %')
+print(f'Le WER est de : {resultat_wer} %')
+print(f'Le Word accuracy est de : {resultat_wacc} %')
+
+>>> Le score de similarité (Ratcliff/Obershelp) est de : 0.8333333333333334
+>>> La distance de Levenshtein est de : 6
+>>> Le CER est de : 19.35483870967742 %
+>>> Le WER est de : 28.57142857142857 %
+>>> Le Word accuracy est de : 71.42857142857143 %
+\end{lstlisting}
+\end{figure}
+
