@@ -19,6 +19,8 @@ Le document XML TEI est actuellement conforme et valide du point de vue du sché
 
 ## Installation 
 
+### ! Attention ce programme nécéssite d'installer le pré-processeur Saxon pour fonctionner !
+
 1. Installer generator Lectaurep-TEI à partir de la branche master du dépôt Documentation Gitlab :
 `$ git clone https://gitlab.inria.fr/almanach/lectaurep/documentation.git `
 
