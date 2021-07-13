@@ -4,6 +4,7 @@
 ###### auteur : Lucas Terriel
 ###### date : 2020
 ###### lieu de stage : INRIA (ALMAnaCH)
+###### dirigé par @alix-tz et @PonteIneptique 
 --------------
 
 - `memoire_L-Terriel_latex` : Code-source ![](latex_logo.png)   du mémoire de stage
@@ -26,3 +27,13 @@
     - `E-Doc_travail_KB`
     
     - `F-scripts_python_comp`
+
+----------------
+
+<p align="center">
+  <img src="./memoire_L-Terriel_latex/images/etalab-logo.png" />
+</p>
+<p align="center">
+    <i>contenu sous Licence ouverte 2.0</i>
+</p>
+
