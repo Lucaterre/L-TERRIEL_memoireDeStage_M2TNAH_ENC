@@ -31,7 +31,7 @@
 ----------------
 
 <p align="center">
-  <img src="./memoire_L-Terriel_latex/images/etalab-logo.png" />
+  <img src="./memoire_L-Terriel_latex/images/etalab-logo.png" width="100px", height="150px"/>
 </p>
 <p align="center">
     <i>contenu sous Licence ouverte 2.0</i>
