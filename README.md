@@ -1,3 +1,5 @@
+[![License: CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc/4.0/)
+
 # - Dépôt du Mémoire de stage du master TNAH de l'ENC - :mortar_board: :computer:
 
 ## *Représenter et évaluer les données issues du traitement automatique d'un corpus de documents historiques. L'exemple de la reconnaissance des écritures manuscrites dans les répertoires de notaires du projet LectAuRep.*
@@ -31,9 +33,6 @@
 ----------------
 
 <p align="center">
-  <img src="./memoire_L-Terriel_latex/images/etalab-logo.png" width="100px", height="150px"/>
-</p>
-<p align="center">
-    <i>contenu sous Licence ouverte 2.0</i>
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />Ce contenu est sous licence <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 </p>
 
