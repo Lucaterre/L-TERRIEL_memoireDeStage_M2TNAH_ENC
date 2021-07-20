@@ -1,5 +1,3 @@
-[![License: CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc/4.0/)
-
 # - Dépôt du Mémoire de stage du master TNAH de l'ENC - :mortar_board: :computer:
 
 ## *Représenter et évaluer les données issues du traitement automatique d'un corpus de documents historiques. L'exemple de la reconnaissance des écritures manuscrites dans les répertoires de notaires du projet LectAuRep.*
