@@ -31,6 +31,6 @@
 ----------------
 
 <p align="center">
-  <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />Ce contenu est sous licence <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+  <a rel="license" href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf"><img alt="etalab-logo-LO/OL" style="border-width:0" src="memoire_L-Terriel_latex/images/etalab-logo.png" width="80px" /></a><br />Ce contenu est sous<a rel="license" href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf"> licence ouverte 2.0</a>.
 </p>
 
